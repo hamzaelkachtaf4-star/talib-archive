@@ -1,0 +1,222 @@
+{
+  "ORG-FINANCES": {
+    "sourceUrl": "https://adala.justice.gov.ma/api/uploads/2024/02/13/%D8%A7%D9%84%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D8%A7%D9%84%D8%AA%D9%86%D8%B8%D9%8A%D9%85%D9%8A%20%D9%84%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D8%A7%D9%84%D9%85%D8%A7%D9%84%D9%8A%D8%A9-1707834502972.pdf",
+    "consolidatedAsOf": "2024-02-13",
+    "asOfBasis": "upload date on adala (organic law 130.13, dahir 1.15.62)",
+    "pdfSha256": "d7256e2e8ff1a6deccf709639cf5f21984250a45156c9f8f0e93ac27c8c1353c",
+    "textSha256": "26b3560babbf806ba874afb5cc0886e14f3d1f20bd091cb04cf7a97571bfdb77",
+    "articles": 70,
+    "warnings": 0,
+    "extraction": "text",
+    "obtained": "download"
+  },
+  "FRAMEWORK-INVESTMENT": {
+    "sourceUrl": "https://adala.justice.gov.ma/api/uploads/2026/02/12/%D8%B8%D9%80%D9%87%D9%80%D9%8A%D9%80%D8%B1%20%D8%B4%D8%B1%D9%8A%D9%81%20%D8%B1%D9%82%D9%85%201.22.76%20%D8%A8%D8%AA%D9%86%D9%81%D9%8A%D8%B0%20%D8%A7%D9%84%D9%82%D8%A7%D9%86%D9%88%D9%86%20-%20%D8%A7%D9%84%D8%A5%D8%B7%D8%A7%D8%B1%20%D8%B1%D9%82%D9%85%2003.22%20%D8%A8%D9%85%D8%AB%D8%A7%D8%A8%D8%A9%20%D9%85%D9%8A%D8%AB%D8%A7%D9%82%20%D8%A7%D9%84%D8%A7%D8%B3%D8%AA%D8%AB%D9%85%D8%A7%D8%B1-1770890118949.pdf",
+    "consolidatedAsOf": "2026-02-12",
+    "asOfBasis": "upload date on adala (framework law 03.22)",
+    "pdfSha256": "f811ecf861f8c8a81c4d0f4d5097e39090d228e2f37c95339d55e70d0b33ef37",
+    "textSha256": "7b53c0ff72930d2c72edbf560095afb9aad517544962c0063eba46d644b1e5fc",
+    "articles": 41,
+    "warnings": 0,
+    "extraction": "text",
+    "obtained": "download"
+  },
+  "FRAMEWORK-HEALTH": {
+    "sourceUrl": "https://adala.justice.gov.ma/api/uploads/2026/01/06/%D8%B8%D9%87%D9%8A%D8%B1%20%D8%B4%D8%B1%D9%8A%D9%81%20%D8%B1%D9%82%D9%85%201.22.77%20%D8%A8%D8%AA%D9%86%D9%81%D9%8A%D8%B0%20%D8%A7%D9%84%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D8%B1%D9%82%D9%85%2006.12%20%D8%A7%D9%84%D9%85%D8%AA%D8%B9%D9%84%D9%82%20%D8%A8%D8%A7%D9%84%D9%85%D9%86%D8%B8%D9%88%D9%85%D8%A9%20%D8%A7%D9%84%D8%B5%D8%AD%D9%8A%D8%A9%20%D8%A7%D9%84%D9%88%D8%B7%D9%86%D9%8A%D8%A9-1767698533550.pdf",
+    "consolidatedAsOf": "2026-01-06",
+    "asOfBasis": "upload date on adala (framework law 06.22)",
+    "pdfSha256": "cf62a10994c29cfa7d919c98d2fa0f4c624afc570e8fad23f95cc98b2c3e0cba",
+    "textSha256": "9b6d611d4ba3011c1982b42af4d0005d6b649762ad568038d55dbb3499e889f7",
+    "articles": 34,
+    "warnings": 0,
+    "extraction": "text",
+    "obtained": "download"
+  },
+  "DOC": {
+    "sourceUrl": "https://adala.justice.gov.ma/api/uploads/2026/07/29/%D8%B8%D9%87%D9%8A%D8%B1%20%D8%A8%D9%85%D8%AB%D8%A7%D8%A8%D8%A9%20%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D8%A7%D9%84%D8%A7%D9%84%D8%AA%D8%B2%D8%A7%D9%85%D8%A7%D8%AA%20%D9%88%D8%A7%D9%84%D8%B9%D9%82%D9%88%D8%AF%20%D8%B5%D9%8A%D8%BA%D8%A9%20%D9%85%D8%AD%D9%8A%D9%86%D8%A9-1785316295256.pdf",
+    "consolidatedAsOf": "2026-07-16",
+    "asOfBasis": "header: صيغة محينة بتاريخ 16 يوليو 2026",
+    "pdfSha256": "22ad53b6b5d45c94250080b2469536ec24822484569d885d8b40a2673999d503",
+    "textSha256": "3c5f5ea4b652e98950d2e3acd9b9e25487cd29c645c4aa3f43a78add31dfb9ea",
+    "articles": 1247,
+    "warnings": 0,
+    "extraction": "text",
+    "obtained": "download"
+  },
+  "CP": {
+    "sourceUrl": "https://adala.justice.gov.ma/api/uploads/2025/03/14/%D8%B8%D9%80%D9%87%D9%8A%D8%B1%20%D8%B4%D9%80%D8%B1%D9%8A%D9%81%20%D8%B1%D9%82%D9%85%201.59.413%20%D8%A8%D8%A7%D9%84%D9%85%D8%B5%D8%A7%D8%AF%D9%82%D8%A9%20%D8%B9%D9%84%D9%89%20%D9%85%D8%AC%D9%85%D9%88%D8%B9%D8%A9%20%D8%A7%D9%84%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D8%A7%D9%84%D8%AC%D9%86%D8%A7%D8%A6%D9%8A-1741952873602.pdf",
+    "consolidatedAsOf": "2024-08-22",
+    "asOfBasis": "header: صيغة محينة بتاريخ 22 غشت 2024",
+    "pdfSha256": "5e099dad87748c98b5e8321f7b33afa17d33b6588d22520f2b2928ba900fb424",
+    "textSha256": "590ab0d2885e7f287fe13b555ed12419d4a1530b1cfd615b172499805ce49f18",
+    "articles": 605,
+    "warnings": 0,
+    "extraction": "text",
+    "obtained": "download"
+  },
+  "CPP": {
+    "sourceUrl": "https://adala.justice.gov.ma/api/uploads/2026/09/09/%D8%B8%D9%87%D9%8A%D8%B1%20%D8%B4%D8%B1%D9%8A%D9%81%20%D8%B1%D9%82%D9%85%201.02.255%20%D8%A8%D8%AA%D9%86%D9%81%D9%8A%D8%B0%20%D8%A7%D9%84%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D8%B1%D9%82%D9%85%2022.01%20%D8%A7%D9%84%D9%85%D8%AA%D8%B9%D9%84%D9%82%20%D8%A8%D8%A7%D9%84%D9%85%29-1788960852357.pdf",
+    "consolidatedAsOf": "2025-09-08",
+    "asOfBasis": "header: صيغة محينة بتاريخ 8 سبتمبر 2025",
+    "pdfSha256": "1cb583821ddfd894f77a6da79370a19156c95763a7b5a92c1939cf1b406cb79b",
+    "textSha256": "1dcab08374df2e8ec49102282cf471bddb2d70fd0fe859261f6289e89b2a3da5",
+    "articles": 756,
+    "warnings": 0,
+    "extraction": "text",
+    "obtained": "download"
+  },
+  "CPC-58.25": {
+    "sourceUrl": "https://adala.justice.gov.ma/api/uploads/2026/09/09/%D8%B8%D9%87%D9%8A%D8%B1%20%D8%B4%D8%B1%D9%8A%D9%81%20%D8%B1%D9%82%D9%85%201.26.07%20%D8%A8%D8%AA%D9%86%D9%81%D9%8A%D8%B0%20%D8%A7%D9%84%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D8%B1%D9%82%D9%85%2058.25%20%D8%A7%D9%84%D9%85%D8%AA%D8%B9%D9%84%D9%82%20%D8%A8%D8%A7%D9%84%D9%85%D8%B3%D8%B7%D8%B1%D8%A9%20%D8%A7%D9%84%D9%85%D8%AF%D9%86%D9%8A%D8%A9-1788960927552.pdf",
+    "consolidatedAsOf": "2026-09-09",
+    "asOfBasis": "upload date on adala (dahir 1.26.07 of 2026-02-11, original text)",
+    "pdfSha256": "e2bfa1a22de556d3c8a6fa68379edb76e864af4ae20a1f2d2e2888cbce61867e",
+    "textSha256": "f7332807ce6fd60fa6d3055aa663cd590470c0bfe32a0d5ac8381e456ee00b88",
+    "articles": 644,
+    "warnings": 0,
+    "extraction": "text",
+    "obtained": "download"
+  },
+  "CPC-1974": {
+    "sourceUrl": "https://adala.justice.gov.ma/api/uploads/2026/08/27/%D8%B8%D9%87%D9%8A%D8%B1%20%D8%B4%D8%B1%D9%8A%D9%81%20%D8%A8%D9%85%D8%AB%D8%A7%D8%A8%D8%A9%20%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D8%B1%D9%82%D9%85%201.74.447%20%D8%A8%D8%A7%D9%84%D9%85%D8%B5%D8%A7%D8%AF%D9%82%D8%A9%20%D8%B9%D9%84%D9%89-1787838360852.pdf",
+    "consolidatedAsOf": "2026-08-27",
+    "asOfBasis": "upload date on adala (copied version, repealed by law 58.25)",
+    "pdfSha256": "55ce02d53f9919a393b731a4de4dbcbd68514dc17a1f6ee1268e8960ae52c816",
+    "textSha256": "941752e72970b0ccc6afc14ca1c28df6094e061c9aeccd7d95bee1669415c798",
+    "articles": 471,
+    "warnings": 0,
+    "extraction": "text",
+    "obtained": "download"
+  },
+  "MOUDAWANA": {
+    "sourceUrl": "https://adala.justice.gov.ma/api/uploads/2024/07/22/%D9%85%D8%AF%D9%88%D9%86%D8%A9%20%D8%A7%D9%84%D8%A3%D8%B3%D8%B1%D8%A9-1721646687560.pdf",
+    "consolidatedAsOf": "2021-07-29",
+    "asOfBasis": "header: صيغة محينة بتاريخ 29 يوليو 2021",
+    "pdfSha256": "a6d5bd1c0f8e7320493d974c702cb874fbbeab07a730bf6c094002635e96a18f",
+    "textSha256": "0ed56c9a3600b5cc1095da9e4cd56d70a5503072dc52928e16300586b4c2d3e7",
+    "articles": 400,
+    "warnings": 0,
+    "extraction": "text",
+    "obtained": "download"
+  },
+  "CCOM": {
+    "sourceUrl": "https://adala.justice.gov.ma/api/uploads/2026/05/25/%D8%B8%D9%80%D9%80%D9%87%D9%80%D9%80%D9%8A%D9%80%D9%80%D8%B1%20%D8%B4%D9%80%D9%80%D8%B1%D9%8A%D9%80%D9%80%D9%81%20%D8%B1%D9%82%D9%80%D9%80%D9%85%201.96.83%20%D8%A8%D8%AA%D9%86%D9%81%D9%8A%D8%B0%20%D8%A7%D9%84%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D8%B1%D9%82%D9%85%2015.95-1779718527894.pdf",
+    "consolidatedAsOf": "2026-01-29",
+    "asOfBasis": "header: صيغة محينة بتاريخ 29 يناير 2026",
+    "pdfSha256": "0dab0eee87f2075d66715b7535e8819c6aa97a32ca52882bfdf0cd1f80023f18",
+    "textSha256": "72e25ecb3eb90d194d2c1da114c84604c095d6046f61d790cbfcc85cd7bcfab8",
+    "articles": 798,
+    "warnings": 0,
+    "extraction": "text",
+    "obtained": "download"
+  },
+  "CONST-2011": {
+    "sourceUrl": "https://adala.justice.gov.ma/api/uploads/2024/01/30/%D8%A7%D9%84%D8%AF%D8%B3%D8%AA%D9%88%D8%B1-1706626006826.pdf",
+    "consolidatedAsOf": "2024-01-30",
+    "asOfBasis": "upload date on adala (dahir 1.11.91 original text)",
+    "pdfSha256": "df3fa3c9547dabc2e69aa179b938ed583c9d462e592113304f2f7960efccc9e8",
+    "textSha256": "69310eb31f68d64ae5001f34742e31d15a86f9de3e3532ae73593cb2cd19e1b0",
+    "articles": 180,
+    "warnings": 0,
+    "extraction": "text",
+    "obtained": "download"
+  },
+  "ORG-COMMUNES": {
+    "sourceUrl": "https://adala.justice.gov.ma/api/uploads/2025/03/19/%D8%B8%D9%80%D9%87%D9%8A%D8%B1%20%D8%B4%D9%80%D8%B1%D9%8A%D9%81%20%D8%B1%D9%82%D9%85%201.15.85%20%D8%A8%D8%AA%D9%86%D9%81%D9%8A%D8%B0%20%D8%A7%D9%84%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D8%A7%D9%84%D8%AA%D9%86%D8%B8%D9%8A%D9%85%D9%8A%20%D8%B1%D9%82%D9%85%20113.14%20%D8%A7%D9%84%D9%85%D8%AA%D8%B9%D9%84%D9%82%20%D8%A8%D8%A7%D9%84%D8%AC%D9%85%D8%A7%D8%B9%D8%A7%D8%AA-1742382816926.pdf",
+    "consolidatedAsOf": "2025-03-19",
+    "asOfBasis": "upload date on adala",
+    "pdfSha256": "baad848bff89684315c84db336ad4e7a04243193876d15f08e81035148806a07",
+    "textSha256": "91c264b4b2dc7dea5d32c33f26143af865ac4673e552ad8e4b771503e9d9a4d3",
+    "articles": 283,
+    "warnings": 0,
+    "extraction": "text",
+    "obtained": "download"
+  },
+  "ORG-PREFECTURES": {
+    "sourceUrl": "https://adala.justice.gov.ma/api/uploads/2024/02/06/%D8%A7%D9%84%D8%B9%D9%85%D8%A7%D9%84%D8%A7%D8%AA%20%D9%88%D8%A7%D9%84%D8%A3%D9%82%D8%A7%D9%84%D9%8A%D9%85-1707225933208.pdf",
+    "consolidatedAsOf": "2024-02-06",
+    "asOfBasis": "upload date on adala",
+    "pdfSha256": "514cb3bd266b9abb28895323e89dcbb334f2bafad6a10500f657c3dd8642dcb4",
+    "textSha256": "82b6db082a8ee07f776f9f7a3af31115e5f716af969bd92a512d75b913f62aff",
+    "articles": 228,
+    "warnings": 0,
+    "extraction": "text",
+    "obtained": "download"
+  },
+  "ORG-REGIONS": {
+    "sourceUrl": "https://adala.justice.gov.ma/api/uploads/2026/09/04/%D8%B8%D9%87%D9%8A%D8%B1%20%D8%B4%D8%B1%D9%8A%D9%81%20%D8%B1%D9%82%D9%85%201.15.83%20%D8%A8%D8%AA%D9%86%D9%81%D9%8A%D8%B0%20%D8%A7%D9%84%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D8%A7%D9%84%D8%AA%D9%86%D8%B8%D9%8A%D9%85%D9%8A%20%D8%B1%D9%82%D9%85%20111.14-1788534561364.pdf",
+    "consolidatedAsOf": "2026-09-04",
+    "asOfBasis": "upload date on adala",
+    "pdfSha256": "517d75c636527632c9b0b17a1e052533a51b4d21cafc0db0e0818e44249eeb86",
+    "textSha256": "1f61beab43de3f9f6aa6ae836df265a389463347af0a7e82a6f5844dee7c3ec9",
+    "articles": 256,
+    "warnings": 0,
+    "extraction": "text",
+    "obtained": "download"
+  },
+  "FRAMEWORK-EDUCATION": {
+    "sourceUrl": "https://adala.justice.gov.ma/api/uploads/2026/03/18/%D8%B8%D9%87%D9%8A%D8%B1%20%D8%B4%D8%B1%D9%8A%D9%81%20%D8%B1%D9%82%D9%85%201.19.113%20%20%D8%A8%D8%AA%D9%86%D9%81%D9%8A%D8%B0%20%D8%A7%D9%84%D9%82%D8%A7%D9%86%D9%88%D9%86%20-%20%D8%A7%D9%84%D8%A5%D8%B7%D8%A7%D8%B1%20%D8%B1%D9%82%D9%85%2051.17-1773827596851.pdf",
+    "consolidatedAsOf": "2026-03-18",
+    "asOfBasis": "upload date on adala (framework law 51.17)",
+    "pdfSha256": "8f3455000a564af9bbfde3e82b0dc1b248d4e187b842898ba2755ccf2ccfb64b",
+    "textSha256": "2fec7dd17c35ac6d6f5917b34d92989fee33d8a18d7b2a64395e0fcc142b716c",
+    "articles": 59,
+    "warnings": 0,
+    "extraction": "text",
+    "obtained": "download"
+  },
+  "CT": {
+    "sourceUrl": "https://adala.justice.gov.ma/api/uploads/2026/09/18/%D8%B8%D9%87%D9%8A%D8%B1%20%D8%B4%D8%B1%D9%8A%D9%81%20%D8%B1%D9%82%D9%85%201.03.194%20%D8%A8%D8%AA%D9%86%D9%81%D9%8A%D8%B0%20%D8%A7%D9%84%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D8%B1%D9%82%D9%85%2065.99%20%D8%A7%D9%84%D9%85%D8%AA%D8%B9%D9%84%D9%82%20%D8%A8%D9%85%D8%AF%D9%88%D9%86%D8%A9%20%D8%A7%D9%84%D8%B4%D8%BA%D9%84%28%20%D8%AA%D8%AD%D8%AF%D9%8A%D8%AB%201%29-1789723578772.pdf",
+    "consolidatedAsOf": "2026-07-16",
+    "asOfBasis": "header: صيغة محينة بتاريخ 16 يوليو 2026",
+    "pdfSha256": "2e1e488a8428b9bc5207be80a9aed946238a07919a34db69b2d1507f0e7b7141",
+    "textSha256": "5c48677de366c7e6bdd6c6ae5250f46c463303e34fabd7a32332baceed8eaa19",
+    "articles": 584,
+    "warnings": 0,
+    "extraction": "ocr",
+    "obtained": "download"
+  },
+  "DAHIR-LAND-REG": {
+    "sourceUrl": "https://adala.justice.gov.ma/api/uploads/2026/03/19/%D8%B8%D9%87%D9%8A%D8%B1%20%D8%B4%D8%B1%D9%8A%D9%81%20%20%D8%A7%D9%84%D9%85%D8%AA%D8%B9%D9%84%D9%82%20%D8%A8%D8%A7%D9%84%D8%AA%D8%AD%D9%81%D9%8A%D8%B8%20%D8%A7%D9%84%D8%B9%D9%82%D8%A7%D8%B1%D9%8A-1773931844340.pdf",
+    "consolidatedAsOf": "2026-03-19",
+    "asOfBasis": "upload date on adala",
+    "pdfSha256": "5756056853ee705c4b8c0b6bea58849d0898a695d3393f986122ec2a4dad5402",
+    "textSha256": "e3ee0d4a08128af5bb23369e91bc45262f905fda2b2a2674df62e338f74b9f12",
+    "articles": 107,
+    "warnings": 0,
+    "extraction": "text",
+    "obtained": "download"
+  },
+  "DECREE-PUBLIC-PROCUREMENT": {
+    "sourceUrl": "https://adala.justice.gov.ma/api/uploads/2026/08/13/%D9%85%D8%B1%D8%B3%D9%88%D9%85%20%D8%B1%D9%82%D9%85%202.22.431%20%D9%8A%D8%AA%D8%B9%D9%84%D9%82%20%D8%A8%D8%A7%D9%84%D8%B5%D9%81%D9%82%D8%A7%D8%AA%20%D8%A7%D9%84%D8%B9%D9%85%D9%88%D9%85%D9%8A%D8%A9%28%D8%AA%D8%AD%D8%AF%D9%8A%D8%AB%201%29%20%281%29-1786629046586.pdf",
+    "consolidatedAsOf": "2026-08-13",
+    "asOfBasis": "upload date on adala",
+    "pdfSha256": "3fe30ee7682946ad789fa6e84521cdad251847aa637cae694ba34479be77abbf",
+    "textSha256": "efeac1b04b341a388166d6071e25e11cae27081eb4653b6311c999d8822c2051",
+    "articles": 170,
+    "warnings": 0,
+    "extraction": "text",
+    "obtained": "download"
+  },
+  "ORG-PARTIS": {
+    "sourceUrl": "https://adala.justice.gov.ma/api/uploads/2026/08/27/%D8%A7%D9%84%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D8%A7%D9%84%D8%AA%D9%86%D8%B8%D9%8A%D9%85%D9%8A%20%D8%A7%D9%84%D9%85%D8%AA%D8%B9%D9%84%D9%82%20%D8%A8%D8%A7%D9%84%D8%A3%D8%AD%D8%B2%D8%A7%D8%A8%20%D8%A7%D9%84%D8%B3%D9%8A%D8%A7%D8%B3%D9%8A%D8%A9-1787840164916.pdf",
+    "consolidatedAsOf": "2026-08-27",
+    "asOfBasis": "upload date on adala",
+    "pdfSha256": "606ec359ff51c95ad85524083a959520938993ea1ec767c232e7cf147dc0aa1a",
+    "textSha256": "07df4bde7080078db32327f282f3fb739d706668b7951170afb655a41cc5216d",
+    "articles": 72,
+    "warnings": 0,
+    "extraction": "text",
+    "obtained": "download"
+  },
+  "law-38-15-judicial-organization": {
+    "sourceUrl": "https://adala.justice.gov.ma/api/uploads/2026/03/25/%D8%B8%D9%87%D9%8A%D8%B1%20%D8%B4%D8%B1%D9%8A%D9%81%20%D8%B1%D9%82%D9%85%201.22.38%20%D8%A8%D8%AA%D9%86%D9%81%D9%8A%D8%B0%20%D8%A7%D9%84%D9%82%D8%A7%D9%86%D9%88%D9%86%20%D8%B1%D9%82%D9%85%2038.15-1774431886496.pdf",
+    "consolidatedAsOf": "2026-03-25",
+    "asOfBasis": "upload date on adala (law 38.15 on judicial organisation)",
+    "pdfSha256": "272c9d3403e590412998f398b199acbf6ef4449ec76a8f1b1c97174f177a0f18",
+    "textSha256": "bdf52bf916824fdfb39801c59b9029b8be58316c9dc2aa8b42f63810b7384f09",
+    "articles": 109,
+    "warnings": 0,
+    "extraction": "text",
+    "obtained": "manual"
+  }
+}

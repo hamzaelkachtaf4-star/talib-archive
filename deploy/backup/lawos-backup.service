@@ -1,0 +1,12 @@
+[Unit]
+Description=LAW-OS nightly backup (SQLite snapshot + storage)
+Wants=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+EnvironmentFile=-/etc/default/lawos-backup
+ExecStart=/opt/lawos/deploy/backup/lawos-backup.sh
+# The dv6 has an HDD shared with Jellyfin/Immich: stay out of their way.
+Nice=10
+IOSchedulingClass=idle

@@ -1,0 +1,29 @@
+{
+  "key": "s3-public-ar-2",
+  "semester": "S3",
+  "track": "PUBLIC",
+  "language": "AR",
+  "facultyCodes": null,
+  "verified": false,
+  "source": "Project lead, October 2026 (delivery spec): module names only. Not certified by the faculty; the student confirms the list.",
+  "modules": [
+    {
+      "title": "المسؤولية المدنية"
+    },
+    {
+      "title": "قانون الشركات"
+    },
+    {
+      "title": "القانون الاجتماعي / قانون الشغل"
+    },
+    {
+      "title": "التنظيم القضائي للمملكة"
+    },
+    {
+      "title": "الأنظمة الدستورية المقارنة"
+    },
+    {
+      "title": "قانون الميزانية والمالية العامة"
+    }
+  ]
+}

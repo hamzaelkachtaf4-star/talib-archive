@@ -1,0 +1,26 @@
+v-env
+.env
+!.env.example
+
+node_modules
+__pycache__
+v-env
+.DS_Store
+aws_cf_deploy_anything_llm.json
+yarn.lock
+*.bak
+.idea
+
+# LAW-OS deploy secrets
+docker/lawos.env
+
+# Release APK is distributed from the server, not git
+frontend/public/downloads/*.apk
+bundleinspector.html
+server/storage/corpus-sources/*.pdf
+server/storage/corpus-sources/*.txt
+
+# local database backups and scratch copies (contain user data)
+server/storage/*.bak*
+server/storage/*.scratch*
+server/data/law/corpus/*.bak*

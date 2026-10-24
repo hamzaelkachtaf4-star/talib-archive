@@ -1,0 +1,29 @@
+{
+  "key": "s3-prive-fr-2",
+  "semester": "S3",
+  "track": "PRIVE",
+  "language": "FR",
+  "facultyCodes": null,
+  "verified": false,
+  "source": "Project lead, October 2026 (delivery spec): module names only. Not certified by the faculty; the student confirms the list.",
+  "modules": [
+    {
+      "title": "Responsabilité civile"
+    },
+    {
+      "title": "Droit des sociétés"
+    },
+    {
+      "title": "Droit social / du travail"
+    },
+    {
+      "title": "Organisation judiciaire du Royaume"
+    },
+    {
+      "title": "Systèmes constitutionnels comparés"
+    },
+    {
+      "title": "Finances publiques et droit budgétaire"
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "_comment": "Scraper targets (spec §6.5). Verified against the live sites on 2026-10-11, see docs/SOURCES.md. Site structures change: edit here, not in code. Only listing pages are fetched on schedule; documents are downloaded only when the student imports one.",
+  "ignorePatterns": ["مصر", "المصري", "المصرية", "Égypte", "Egypte", "egyptien"],
+  "sources": [
+    {
+      "id": "adala-new-releases",
+      "origin": "adala",
+      "label": "عدالة: المستجدات",
+      "url": "https://adala.justice.gov.ma/new_releases",
+      "linkSelector": "a[href]",
+      "linkPattern": "/api/uploads/\\d{4}/\\d{2}/\\d{2}/.+\\.pdf",
+      "enabled": true
+    },
+    {
+      "id": "sgg-bo",
+      "origin": "sgg_bo",
+      "label": "الجريدة الرسمية (SGG)",
+      "url": "https://www.sgg.gov.ma/BulletinOfficiel.aspx",
+      "linkSelector": "a[href]",
+      "linkPattern": "\\.pdf",
+      "enabled": false,
+      "disabledReason": "issue table is filled by ASP.NET postbacks; a plain GET has no rows (checked 2026-10-11). Import BO PDFs manually."
+    }
+  ]
+}

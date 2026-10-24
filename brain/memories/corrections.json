@@ -1,0 +1,911 @@
+{
+  "version": 1,
+  "entries": [
+    {
+      "id": "L-0001",
+      "date": "2026-10-12",
+      "category": "DATA",
+      "symptom": "Streak/quota day boundaries shift around Ramadan",
+      "rootCause": "Fixed UTC offsets used for Morocco local time",
+      "fix": "Seed (spec §0.4); server/utils/law/time.js owns day logic",
+      "rule": "Never use fixed UTC offsets; compute local days via Africa/Casablanca (luxon or time.js)",
+      "guard": {
+        "type": "grep",
+        "ref": "gate.sh:fixed-utc-offset"
+      },
+      "tags": [
+        "timezone",
+        "quota",
+        "streak"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0002",
+      "date": "2026-10-12",
+      "category": "I18N_RTL",
+      "symptom": "Layout breaks when mirrored to RTL",
+      "rootCause": "Physical CSS (ml-/mr-/left-/text-left) in new code",
+      "fix": "Seed (spec rule 4)",
+      "rule": "New code uses logical utilities (ms-/me-/ps-/pe-/start-/end-/text-start); flip directional icons with rtl:-scale-x-100",
+      "guard": {
+        "type": "grep",
+        "ref": "gate.sh:physical-css"
+      },
+      "tags": [
+        "rtl",
+        "css"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0003",
+      "date": "2026-10-12",
+      "category": "ARCH",
+      "symptom": "Product rename requires touching dozens of files (177 legacy hits at 2026-10-12)",
+      "rootCause": "Brand strings hard-coded across UI and server",
+      "fix": "Seed (spec rule 3); brand.js introduced in Phase 1",
+      "rule": "No product-name literals outside config/brand.js, locale files and Android strings.xml",
+      "guard": {
+        "type": "grep",
+        "ref": "gate.sh:brand-string"
+      },
+      "tags": [
+        "brand"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0004",
+      "date": "2026-10-12",
+      "category": "DATA",
+      "symptom": "Users lose offline flashcards after an app update",
+      "rootCause": "IndexedDB upgrade handler that deletes/recreates stores",
+      "fix": "Seed; idb.js upgrade() only creates missing stores",
+      "rule": "Bump the IndexedDB VERSION and only add stores in upgrade(); never deleteObjectStore (upload engine must carry the identical upgrade)",
+      "guard": {
+        "type": "grep",
+        "ref": "gate.sh:idb-destructive-upgrade"
+      },
+      "tags": [
+        "indexeddb",
+        "offline"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0005",
+      "date": "2026-10-12",
+      "category": "AI",
+      "symptom": "Students could see unverified parsed legal text as authoritative",
+      "rootCause": "Parsed corpus/timetable shown before review",
+      "fix": "Seed; corpus import review flow (LawCorpusImport)",
+      "rule": "Parsed legal or timetable data stays staged/unreviewed until an admin publishes it; cited articles must resolve to LawArticle",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/corpus.integration.test.js"
+      },
+      "tags": [
+        "corpus",
+        "grounding"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0006",
+      "date": "2026-10-12",
+      "category": "I18N_RTL",
+      "symptom": "Exported Arabic PDFs show disconnected/reversed letters",
+      "rootCause": "PDF libraries without Arabic shaping",
+      "fix": "Seed (spec §9.4)",
+      "rule": "Render PDFs via headless Chromium or the browser print stylesheet; never add pdf-lib/pdfkit/jspdf",
+      "guard": {
+        "type": "grep",
+        "ref": "gate.sh:pdf-no-arabic-shaping"
+      },
+      "tags": [
+        "pdf",
+        "arabic"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0007",
+      "date": "2026-10-12",
+      "category": "BUG",
+      "symptom": "Weekly recap test failed on every date after 2026-10-11; the recap covered the wall-clock week, not the scheduled week",
+      "rootCause": "weeklyRecap job ignored payload.weekStart and used new Date()",
+      "fix": "server/utils/law/jobs/radar.js uses job.payload.weekStart",
+      "rule": "Scheduled jobs compute from their payload/injected time, never the wall clock",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/radar.integration.test.js"
+      },
+      "tags": [
+        "tests",
+        "time"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0008",
+      "date": "2026-10-12",
+      "category": "DATA",
+      "symptom": "Student B signing in on a device after A signed out (offline data kept) would see/upload A's offline pack",
+      "rootCause": "Sign-out kept IndexedDB but removed the only record of whose data it was",
+      "fix": "session.js OWNER_KEY survives sign-out; startSession compares it",
+      "rule": "Offline data must carry a device-owner marker that survives sign-out; wipe whenever a different account signs in",
+      "guard": {
+        "type": "grep",
+        "ref": "gate.sh:device-owner-wipe"
+      },
+      "tags": [
+        "offline",
+        "auth",
+        "privacy"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0009",
+      "date": "2026-10-12",
+      "category": "BUG",
+      "symptom": "Changing one setting reset theme/locale/sound and could reload the app into Arabic",
+      "rootCause": "First PATCH created a server row of defaults; the next mount pulled them over the device's choices",
+      "fix": "prefsSync.js sends the device snapshot with every write, dirty flag, once-per-session reload",
+      "rule": "Preference writes include the full device snapshot; pulls never override unsent device changes; reload-on-locale at most once per session",
+      "guard": {
+        "type": "grep",
+        "ref": "gate.sh:prefs-snapshot-push"
+      },
+      "tags": [
+        "preferences",
+        "i18n"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0010",
+      "date": "2026-10-12",
+      "category": "BUG",
+      "symptom": "PATCH with avatar key 'constructor' returned 500",
+      "rootCause": "Prototype lookup on a plain-object whitelist",
+      "fix": "Object.hasOwn for whitelist lookups",
+      "rule": "Look up user-supplied keys in whitelists with Object.hasOwn, never obj[key]",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/phase3.integration.test.js"
+      },
+      "tags": [
+        "validation",
+        "security"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0011",
+      "date": "2026-10-12",
+      "category": "DATA",
+      "symptom": "createMany failed with 'does not match any query' (HTTP 500)",
+      "rootCause": "Prisma 5.3.1 on SQLite does not implement createMany",
+      "fix": "models/lawFdcTimetable.js uses $transaction of create()",
+      "rule": "Never call createMany in LAW code on SQLite/Prisma 5.3; use db.$transaction([...creates])",
+      "guard": {
+        "type": "grep",
+        "ref": "gate.sh:no-createmany"
+      },
+      "tags": [
+        "prisma",
+        "sqlite"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0012",
+      "date": "2026-10-12",
+      "category": "DATA",
+      "symptom": "FDC PDFs concatenate columns (\"...ELYOUSFIG01LUNDI11H-13H152\"); a naive \\b-based parser matched nothing",
+      "rootCause": "pdf-parse emits table cells with no separators; word boundaries do not exist between letters and digits",
+      "fix": "parseFdcPdf.js row grammar (slots end in 00/15/30/45 minutes); unmatched/split rows are reported, never guessed",
+      "rule": "Timetable parsers run against the real fixture PDFs in server/__tests__/fixtures/fdc and must count rows they cannot attach",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/utils/law/fdcParser.test.js"
+      },
+      "tags": [
+        "timetable",
+        "parser",
+        "pdf"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0013",
+      "date": "2026-10-12",
+      "category": "ARCH",
+      "symptom": "Admin fetch job could be pointed at any host/redirect via a crafted href on the scraped page (SSRF) and had no size caps",
+      "rootCause": "Scraped URLs were fetched without origin checks",
+      "fix": "fetchSources.js: same-origin https only, redirect:'error', byte caps",
+      "rule": "Never fetch a URL taken from scraped HTML unless it is https on the index page's own origin; refuse redirects; cap response size",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/phase5.integration.test.js"
+      },
+      "tags": [
+        "security",
+        "ssrf",
+        "fetch"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0014",
+      "date": "2026-10-12",
+      "category": "DATA",
+      "symptom": "Republishing a timetable silently orphaned every student's overrides",
+      "rootCause": "Overrides pointed at session ids that publish deleted and recreated",
+      "fix": "publish() remaps overrides by natural key in the same transaction; merge mode; SUPERSEDED sources",
+      "rule": "Anything that deletes+recreates rows other tables reference must remap or remove the references in the same transaction",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/phase5.integration.test.js"
+      },
+      "tags": [
+        "timetable",
+        "integrity"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0015",
+      "date": "2026-10-12",
+      "category": "ARCH",
+      "symptom": "A second account on a device skipped onboarding",
+      "rootCause": "A device-wide localStorage flag overrode the server's answer",
+      "fix": "OnboardingGate trusts the server; flags are cleared on wipe",
+      "rule": "Per-account state decisions come from the server; device flags are only an offline hint and are cleared when the account changes",
+      "guard": {
+        "type": "grep",
+        "ref": "gate.sh:onboarding-server-authoritative"
+      },
+      "tags": [
+        "onboarding",
+        "auth"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0016",
+      "date": "2026-10-12",
+      "category": "AI",
+      "symptom": "Chat answers could keep a bare 'المادة 77 من مدونة التجارة' / 'article 3 du Code pénal' / 'CP:3' that was never retrieved",
+      "rootCause": "Number allowlist ignored scope and code; only the [CODE:n] form and Arabic bare mentions were checked",
+      "fix": "chatCitations.scrub: every non-bracket article reference is removed unless it hugs an allowed bracketed id with the same number",
+      "rule": "Legal chat output: only [CODE:n] ids from THIS turn's evidence survive; all other article references (any language, digit script, plural, abbreviation, ordinal) are scrubbed and flagged",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/chat.integration.test.js"
+      },
+      "tags": [
+        "grounding",
+        "citations",
+        "ai"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0017",
+      "date": "2026-10-12",
+      "category": "AI",
+      "symptom": "A student could get unlimited billed model calls (refund after a billed call; double refund; free paid uploads)",
+      "rootCause": "Catch-all refund after generate(); receipts refundable twice; attachment extraction bypassed the quota",
+      "fix": "refund only when the model call itself failed, once per receipt; AI extraction reserves a consultation; upload caps + GC",
+      "rule": "Refund a quota turn only if the provider call failed, at most once; any paid AI call must reserve quota first",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/chat.integration.test.js"
+      },
+      "tags": [
+        "quota",
+        "ai",
+        "budget"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0018",
+      "date": "2026-10-12",
+      "category": "ARCH",
+      "symptom": "Blocks, private notes and moderation could be bypassed through side doors (legacy friend flow, change-request reads, rebases, reports)",
+      "rootCause": "Each new feature re-implemented access checks instead of one shared rule",
+      "fix": "blockedBetween() everywhere a user acts on another user's content; CR reads require a live (public+ACTIVE) note for non-owners",
+      "rule": "Every cross-user action checks blockedBetween() and the target's current visibility/moderation state at the time of the request, not at creation",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/phase8.integration.test.js"
+      },
+      "tags": [
+        "privacy",
+        "blocks",
+        "moderation"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0019",
+      "date": "2026-10-12",
+      "category": "ARCH",
+      "symptom": "Daily limits could be multiplied by parallel requests or reset by deleting rows",
+      "rootCause": "read-then-write counters stored in settings / derived from deletable rows",
+      "fix": "utils/law/rateLimit.js hit(): atomic conditional UPDATE on LawRateCounter",
+      "rule": "Rate limits use rateLimit.hit() (atomic, not derived from deletable data)",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/phase7.integration.test.js"
+      },
+      "tags": [
+        "rate-limit",
+        "concurrency"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0020",
+      "date": "2026-10-12",
+      "category": "AI",
+      "symptom": "Citation scrubbing mangled ordinary answers (times, URLs, 'الفصل الأول من الكتاب', 'Amende: 2000') and raised false 'unverified' banners",
+      "rootCause": "Over-broad id regex (any word:number) and semester/chapter sense of الفصل",
+      "fix": "ids are matched only for real corpus slugs; الفصل N is kept before من السنة/الكتاب...; article ordinals only for المادة",
+      "rule": "Scrub only what is provably an article reference; add the false-positive sample to the test table whenever the patterns change",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/chat.integration.test.js"
+      },
+      "tags": [
+        "citations",
+        "i18n"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0021",
+      "date": "2026-10-12",
+      "category": "DATA",
+      "symptom": "Background Brain writes made request writes (and test helpers) fail with 'Timed out during query execution' on SQLite",
+      "rootCause": "The chat classifier writes concurrently with request writes; Prisma+SQLite update/upsert are read-then-write transactions",
+      "fix": "LawBrain write paths use serialWrite(); tests drain() the background classifier before the next request and before closing the DB",
+      "rule": "Any fire-and-forget DB work must go through utils/law/writeLock.serialWrite and expose drain() so tests are deterministic",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/phase10.integration.test.js"
+      },
+      "tags": [
+        "sqlite",
+        "concurrency",
+        "tests"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0022",
+      "date": "2026-10-12",
+      "category": "AI",
+      "symptom": "Risk of profiling students and of an unverified correction poisoning every answer",
+      "rootCause": "Memory and corrections could have been free-text / unreviewed",
+      "fix": "Closed taxonomy, span-in-student-message rule, opt-out stops collection+injection, k>=20 aggregates; only admin-verified MODEL_ERROR is global",
+      "rule": "Learner memory is academic-only and keyed to the closed taxonomy; nothing from a student's report reaches other students before an admin verifies it against the corpus",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/phase10.integration.test.js"
+      },
+      "tags": [
+        "privacy",
+        "brain",
+        "ai"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0023",
+      "date": "2026-10-12",
+      "category": "AI",
+      "symptom": "Unreviewed AI drills were served to every student as fact; reports could un-review the whole bank; one student could drain the shared Brain budget",
+      "rootCause": "AI output reached the shared bank without ownership, scrubbing or rate limits",
+      "fix": "AI items private to their owner until reviewed, scrubbed like chat answers, wrong picks on them never count, per-user + separate global generation budget, 3-distinct-reporter rule",
+      "rule": "Model-written content is private to the requesting student until a human reviews it, and every paid AI call has a per-user and a global bucket",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/phase10.integration.test.js"
+      },
+      "tags": [
+        "ai",
+        "brain",
+        "budget"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0024",
+      "date": "2026-10-12",
+      "category": "AI",
+      "symptom": "Student text could break out of the <verified_corrections> prompt block and the admin saw private chat text",
+      "rootCause": "Correction text pasted unescaped; eval case included the student's previous message",
+      "fix": "plain() strips angle brackets/newlines, admin owns the final wording and the eval question, only claim+fix+corpus ids are stored",
+      "rule": "Anything from a user that is inserted into a prompt block passes plain(); eval cases never contain a student's conversation",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/phase10.integration.test.js"
+      },
+      "tags": [
+        "prompt-injection",
+        "privacy"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0025",
+      "date": "2026-10-12",
+      "category": "BUG",
+      "symptom": "Radar/timetable fetchers followed redirects to any host (SSRF)",
+      "rootCause": "politeFetch used fetch(redirect:follow) with no host allowlist or private-range check",
+      "fix": "utils/law/safeFetch.js: exact-host allowlist, connect-time DNS check, per-hop redirect validation, size/time caps",
+      "rule": "Every server-side fetch of a non-fixed URL goes through safeFetch; never raw fetch()",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/utils/law/safeFetch.test.js"
+      },
+      "tags": [
+        "ssrf",
+        "security"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0026",
+      "date": "2026-10-12",
+      "category": "BUG",
+      "symptom": "A private account with a public profile exposed XP/streak/notes to strangers and blocked users",
+      "rootCause": "Hub profile checked only publicProfile, not isPrivate/follow/block",
+      "fix": "utils/law/privacy.js canViewProfile (FULL/PUBLIC_CARD/NONE) + allowlist publicCard",
+      "rule": "Any endpoint returning another student's data calls canViewProfile and builds the response by picking fields",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/qanouniHub.integration.test.js"
+      },
+      "tags": [
+        "privacy",
+        "security"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0027",
+      "date": "2026-10-12",
+      "category": "BUG",
+      "symptom": "AI routes had no per-user concurrency cap or per-IP limit",
+      "rootCause": "Only the daily quota existed",
+      "fix": "utils/law/aiGuard.js in front of every provider-reaching route",
+      "rule": "New AI route = auth + aiGuard + quota/budget",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/utils/law/aiGuard.test.js"
+      },
+      "tags": [
+        "ai",
+        "abuse"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0028",
+      "date": "2026-10-12",
+      "category": "BUG",
+      "symptom": "Phone hash secret was short and its absence was only caught at request time",
+      "rootCause": "PHONE_HASH_PEPPER >=16 chars, no boot check",
+      "fix": "PHONE_HASH_KEY >=32 chars, server refuses to start with the feature on and no key",
+      "rule": "Secrets that gate a feature are validated at boot",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/utils/law/phoneKey.test.js"
+      },
+      "tags": [
+        "secrets",
+        "privacy"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0029",
+      "date": "2026-10-12",
+      "category": "AI",
+      "symptom": "The model could emit a bracketed id of a non-corpus code ([FRCC:1134]) and it stayed in the answer",
+      "rootCause": "scrub only recognised corpus slugs as ids",
+      "fix": "chatCitations step 1b strips any bracketed [CODE:n] not in this turn's evidence",
+      "rule": "Anything shaped like a bracketed citation that is not in the evidence is removed and flagged",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/utils/law/chatCitations.test.js"
+      },
+      "tags": [
+        "citations",
+        "grounding"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0030",
+      "date": "2026-10-12",
+      "category": "AI",
+      "symptom": "Student attachments/notes were inlined next to the instructions without a data fence",
+      "rootCause": "Prompt v2 only said they were study material",
+      "fix": "legal_tutor.v3 + <student_material> wrapper (closing tags stripped) + branch modules",
+      "rule": "User-supplied text reaches the model inside a delimited data block and the prompt says it is never instructions",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/chat.integration.test.js"
+      },
+      "tags": [
+        "prompt-injection"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0031",
+      "date": "2026-10-12",
+      "category": "BUG",
+      "symptom": "UI chrome drifted back to toy aesthetics (3D buttons, confetti, emoji, game words, hard-coded colours)",
+      "rootCause": "Colours and vocabulary were inlined per component",
+      "fix": "styles/tokens.css single token source; flat controls; gate sections ui-hex and game-terms",
+      "rule": "No hex colours and no game vocabulary/emoji in LAW-OS UI strings; colours come from --law-* tokens",
+      "guard": {
+        "type": "grep",
+        "ref": "gate.sh:ui-hex"
+      },
+      "tags": [
+        "design",
+        "terminology"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0032",
+      "date": "2026-10-13",
+      "category": "AI",
+      "symptom": "A stalled provider connection hung the single worker; billed-but-discarded AI output (truncated, empty, bad JSON) was not counted against the budget; one 429 failed an OCR/transcription job",
+      "rootCause": "Provider fetches had no timeout, errors dropped the usage metadata, and multimodal purposes have no fallback or retry",
+      "fix": "ai/http.js timedFetch (300 s generate / 600 s upload); ProviderError carries usage and retryAfterMs; router logs billed failures and retries 429/5xx once (jitter, capped 30 s) for ocr, transcription, pdf_vision",
+      "rule": "Every provider request has a deadline; a failed provider call that returned usage is logged with its cost; only 429/5xx are retried, never truncation or timeouts",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/routerFailures.integration.test.js"
+      },
+      "tags": [
+        "ai",
+        "budget",
+        "reliability"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0033",
+      "date": "2026-10-13",
+      "category": "AI",
+      "symptom": "candidate_atoms sent every unit of a document in one prompt and extract_pdf sent every scanned page in one 65k-token vision call, so a 200-page course would blow the token cap, the 300 s deadline and the output limit",
+      "rootCause": "Jobs were written for single lectures; nothing bounded the size of a model call",
+      "fix": "jobs/windows.js; candidate_atoms uses 12 000-char windows keyed by content (an edited text never reuses stale results); extract_pdf sends sub-PDFs of at most 10 pages through jobs/pdfPages.js (handle with pageCount/sub only; encrypted or unopenable PDFs and PDFs over 40 MB use the whole file, uploaded once per PDF, in windows of 40 pages: each call then re-bills every page as input), halves a truncated window, and both checkpoint per window and drop the checkpoints from the payload when the result is saved",
+      "rule": "A model call over user documents is bounded (characters or pages) and checkpointed per window; the whole document never travels in one call except the documented whole-file fallback, whose pages are requested in bounded windows. pdf-lib may only copy pages (gate: pdf-no-arabic-shaping, exact exempt path)",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/courseWindowing.integration.test.js"
+      },
+      "tags": [
+        "ai",
+        "scalability",
+        "jobs"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0034",
+      "date": "2026-10-13",
+      "category": "AI",
+      "symptom": "One page the model could never read (output limit, empty or unusable answer) failed the whole PDF job after repeated attempts, so no page of a 200-page course was saved",
+      "rootCause": "extract_pdf treated an unresolvable single page like a transient provider failure",
+      "fix": "A window that is truncated, empty or unusable is halved; a single page still unreadable is marked vision_failed (content.failedPages); pages omitted from a successful answer are re-asked once then flagged; each window has a call budget (12) so one student's PDF cannot burn the shared monthly budget; transient errors still fail and retry",
+      "rule": "A page the model cannot read is flagged for the student, never the reason a whole document is lost; only unresolvable single pages are skipped, transient errors still retry",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/courseWindowing.integration.test.js"
+      },
+      "tags": [
+        "ai",
+        "pdf",
+        "jobs"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0035",
+      "date": "2026-10-13",
+      "category": "DATA",
+      "symptom": "Real CherryTree course notebooks have level=0 on every node, odd is_richtxt flags and XML in the text column; trusting them (or parsing the XML with a real parser, or opening an arbitrary uploaded SQLite file freely) would break the outline or expose the server",
+      "rootCause": "The .ctb format stores depth only implicitly (children edges) and the file is untrusted user input",
+      "fix": "utils/law/course/ctb.js read in a worker thread with a timeout and heap cap: SQLite header check, immutable read-only open, node/children must be plain tables (no virtual tables, generated or hidden columns), node/edge/depth/title/text limits applied inside SQL and the scanner, linear-time <rich_text> scanner, depth and order from the children edges, cycles/orphans/dropped objects reported as warnings; an import is refused above a stored-size budget, built under an IMPORTING status, and a crashed one is rebuilt, never trusted",
+      "rule": "A student-supplied course notebook is untrusted: validate its schema before reading, read it off the main thread with bounded size, time and memory, never trust the level column, keep tenant filters inside shared search indexes (user_id), and never expose or reuse a half-imported course",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/utils/law/ctb.test.js"
+      },
+      "tags": [
+        "course",
+        "import",
+        "security"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0036",
+      "date": "2026-10-13",
+      "category": "BUG",
+      "symptom": "Course search used one shared FTS index with a global LIMIT 100 and filtered by owner afterwards, so another student's many matches could push a student's own results out (0 results), and 'replace' could delete a sibling course with the same title",
+      "rootCause": "The owner was not part of the index query, and earlier courses were matched by title against rows created in the same import",
+      "fix": "law_fts_course_topics has a user_id column that every query filters on; an import takes one snapshot of the student's earlier courses and matches each root to at most one of them (by content hash first, then title)",
+      "rule": "A shared index must filter by owner inside the query, never after the limit; matching imported roots to earlier courses is one-to-one on a snapshot taken before the import writes anything",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/course.integration.test.js"
+      },
+      "tags": [
+        "course",
+        "tenancy",
+        "search"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0037",
+      "date": "2026-10-13",
+      "category": "BUG",
+      "symptom": "Importing a large notebook took 87 s because every index insert first DELETEd by an unindexed column over all students' rows; hostile heading paths were built in memory (up to 765 MB) before the size budget was checked; a budget cut flagged readable PDF pages as failed; any number of notebooks could be parsed in parallel; search and topic exposed courses still importing",
+      "rootCause": "Costs and visibility were tested on one student's small data, and limits were checked after the work they were meant to prevent",
+      "fix": "No per-row DELETE in the shared FTS table (ids are fresh, search de-duplicates); the stored-size budget is arithmetic over the tree before any string is built; control characters in titles become spaces and invisible format characters are removed; unsent PDF pages get a fresh window budget and the zero-progress breaker only applies while nothing of that PDF has been read (cost: a refused stretch of r pages costs about 2r calls); at most 2 notebook reader THREADS exist at once (a slot is freed only when the thread has exited); search excludes importing courses inside the FTS query; import keeps updatedAt fresh so a long import is not mistaken for a crash",
+      "rule": "A cost or size limit is checked before the work, by arithmetic where possible; work on a shared index must not scale with other users' rows; a budget running out must never mark untried input as failed",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/course.integration.test.js"
+      },
+      "tags": [
+        "course",
+        "performance",
+        "security",
+        "pdf"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0038",
+      "date": "2026-10-13",
+      "category": "AI",
+      "symptom": "A course gap radar could invent statute content, flag gaps in areas the student never studied, or let a client mint Brain memories by reporting diagnostic results",
+      "rootCause": "Comparing a student's notes with a statute is tempting to delegate to a model, and diagnostic results are only trustworthy when the server knows the answer key",
+      "fix": "utils/law/course/gapRadar.js is rule-based and pure (idf-weighted term coverage, the article's own period compared with the note's, real citation parsing that ignores durations and other codes, section gating) and runs in a worker thread with input caps; models/lawGap.js reports corpus_empty instead of guessing, quotes the in-force article text, reconciles only the analysed codes against the FULL detected set (never the stored top N), persists under a write lock, and records DIAGNOSTIC Brain evidence only for gaps whose concept is admin-REVIEWED (re-checked at record time), once per gap per day, never for closed gaps; no route accepts client-reported diagnostic results",
+      "rule": "A gap names an article that exists in the corpus and quotes its text; an empty corpus is reported, never filled in; re-analysis never wipes what it did not re-judge; Brain evidence from a diagnostic comes from the server with a known answer key, only for a reviewed concept, at most once per gap per day",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/gaps.integration.test.js"
+      },
+      "tags": [
+        "course",
+        "gaps",
+        "brain",
+        "grounding"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0039",
+      "date": "2026-10-13",
+      "category": "DATA",
+      "symptom": "An official-looking Code de commerce PDF has a text layer in visual order (words reversed, letters split: 'ريغ نيبو مهنيب'); extract_pdf accepted it as good text because it was not empty, so a statute built from it would carry corrupted words",
+      "rootCause": "A page was judged scanned only when it had almost no text, never when its text was wrong",
+      "fix": "jobs/textQuality.js looksGarbledArabic (isolated single letters >= 2% and >= 5 per page after NFKC folding and re-joining detached vowel marks; letters beside digits, lone و, and abjad-ordered list markers do not count; typed Arabic measures <= 0.5%, the PDF 1.5-15%) sends such pages to vision OCR, or marks them garbled_pending_ai (listed in content.garbledPages) with the corrupt text discarded; also: replacing a course copies the student's gap decisions inside one transaction while the new course is still invisible and abandons the replacement, keeping the old course, if the copy fails",
+      "rule": "Text extracted from a legal PDF is only trusted when it passes a quality check; a non-empty text layer is not proof of correct text, and statute text is never imported from a layer in visual order",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/utils/law/textQuality.test.js"
+      },
+      "tags": [
+        "pdf",
+        "corpus",
+        "arabic",
+        "grounding"
+      ],
+      "source": "agent"
+    },
+    {
+      "id": "L-0040",
+      "date": "2026-10-14",
+      "category": "DEPLOY",
+      "symptom": "The app crashed on /law/profile and /law/timetable because migrations had been created but never applied to the dev database",
+      "rootCause": "Nothing checked the dev DB for pending migrations; only a temp DB was migrated in tests",
+      "fix": "gate.sh runs prisma migrate status against server/storage/anythingllm.db and fails on pending migrations; a new migration is created and applied (migrate deploy) in the same step",
+      "rule": "Every schema change is followed by `prisma migrate deploy` on the dev DB in the same step; never migrate reset the dev DB",
+      "guard": {
+        "type": "grep",
+        "ref": "gate.sh:migrations-applied"
+      },
+      "tags": [
+        "prisma",
+        "migrations",
+        "deploy"
+      ],
+      "source": "owner"
+    },
+    {
+      "id": "L-0041",
+      "date": "2026-10-14",
+      "category": "PROCESS",
+      "symptom": "S3 opened with no modules (or only a faculty-published one) because a stale test and a seed condition kept the list empty",
+      "rootCause": "The curriculum was copied in only when nothing official covered the semester, and the list had five modules for one track and language",
+      "fix": "Six S3 modules seeded for both tracks and both languages (ar/fr titles); seeding skips titles already present instead of being blocked by official modules",
+      "rule": "A test that asserts old behavior is rewritten when the owner's spec replaces that behavior; the product is never weakened to keep it green",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/rc3Modules.integration.test.js"
+      },
+      "tags": [
+        "curriculum",
+        "s3",
+        "tests"
+      ],
+      "source": "owner"
+    },
+    {
+      "id": "L-0042",
+      "date": "2026-10-14",
+      "category": "DATA",
+      "symptom": "Every student's timetable started with seven invented sessions (Monday 3, Wednesday 2, Thursday 2) shown as classes on Today",
+      "rootCause": "The timetable model seeded placeholder rows 'until the student completes them'",
+      "fix": "The seed is gone, a migration deletes the untouched ones, and a student's timetable starts empty",
+      "rule": "Nothing is invented for a student: no seeded sessions, counters or example rows in shipped data paths",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/reviewSync.integration.test.js"
+      },
+      "tags": [
+        "placeholder",
+        "timetable"
+      ],
+      "source": "owner"
+    },
+    {
+      "id": "L-0043",
+      "date": "2026-10-14",
+      "category": "BUG",
+      "symptom": "The desktop QR card always said it could not load the code",
+      "rootCause": "The modal read friendCode from /me/profile, a field that endpoint never returned; the test mocked the wrong shape",
+      "fix": "The card reads /friends/code (share code XXXX-XXXX) and shows avatar, name, faculty, copy and WhatsApp",
+      "rule": "A UI test mocks the real response shape of the endpoint, not what the component hopes for",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/rc3Shell.test.js"
+      },
+      "tags": [
+        "qr",
+        "contract"
+      ],
+      "source": "owner"
+    },
+    {
+      "id": "L-0044",
+      "date": "2026-10-14",
+      "category": "DATA",
+      "symptom": "The Library listed official legal texts as 'not imported yet' cards and the corpus was empty",
+      "rootCause": "The catalog forced status pending_source on every entry and no importer existed",
+      "fix": "server/scripts/import-corpus.js downloads the official PDFs, extracts the text, parses articles and records source URL, date and hash; only imported texts are listed",
+      "rule": "Statute text enters only through the importer with provenance; the catalog never carries placeholder status",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/rc4CorpusSources.test.js"
+      },
+      "tags": [
+        "corpus",
+        "provenance"
+      ],
+      "source": "owner"
+    },
+    {
+      "id": "L-0045",
+      "date": "2026-10-14",
+      "category": "BUG",
+      "symptom": "A new friend request produced no notification, so the bell popover had nothing to accept",
+      "rootCause": "Share-code friendships (lawFriendship) never wrote a notification",
+      "fix": "Requests and acceptances notify the other student with the friendship id and the popover answers them in place",
+      "rule": "Every cross-user action that needs an answer writes a notification the popover can act on",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/rc4Friends.integration.test.js"
+      },
+      "tags": [
+        "notifications",
+        "friends"
+      ],
+      "source": "owner"
+    },
+    {
+      "id": "L-0046",
+      "date": "2026-10-14",
+      "category": "ARCH",
+      "symptom": "Stale tests held the old product shape in place (five-tab mobile bar with More, admin-only wall posts, subjects link on the path hub)",
+      "rootCause": "Tests encoded earlier behaviour as if it were a requirement",
+      "fix": "Tests were rewritten to assert the delivery spec (six hubs everywhere, student wall post types, modules open their own workspace)",
+      "rule": "When the owner's spec replaces behaviour, rewrite the test to the new behaviour in the same commit; never bend the product to a stale test",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/rc3Shell.test.js"
+      },
+      "tags": [
+        "process",
+        "tests"
+      ],
+      "source": "owner"
+    },
+    {
+      "id": "L-0047",
+      "date": "2026-10-22",
+      "category": "ARCH",
+      "symptom": "L-0031 blocked tactile 3D controls, Apple-grade light mode, and modern Moroccan legal student identity",
+      "rootCause": "L-0031 was overly restrictive against modern tactile UI feedback",
+      "fix": "Owner explicitly approved Talib Apple-grade tactile design: 3D interactive controls, Phosphor icons for streak/trust, enforced crisp paper light mode immune to system dark mode",
+      "rule": "Talib uses crisp high-contrast Apple-grade light theme with 3D tactile controls; raw hex avoided in favor of Tailwind rgb/tokens; Phosphor icons represent streak/security",
+      "guard": {
+        "type": "grep",
+        "ref": "gate.sh:ui-hex"
+      },
+      "tags": [
+        "design",
+        "theme",
+        "talib"
+      ],
+      "source": "owner"
+    },
+    {
+      "id": "L-0048",
+      "date": "2026-10-22",
+      "category": "ARCH",
+      "symptom": "RC3 spec fixed four hubs (today, path, library, exam); the Talib v3 master (CLAUDE_TALIB_V3_MASTER.md) specifies five",
+      "rootCause": "The owner replaced the RC3 navigation spec with the Talib v3 design export",
+      "fix": "NAV_HUBS is now community, today (Learn), squads, exam, library; the study path moved to the sidebar accordion (PATH_HUB); rc3Shell and rc3Library tests rewritten in the same commit. Night theme is an explicit toggle only (L-0047 still forbids following the OS). Mockup demo values (names, XP, sessions) are never shown: the shell reads real user data",
+      "rule": "Navigation follows the Talib v3 five hubs; never display fabricated user data, counters or live sessions from design mockups",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/rc3Shell.test.js"
+      },
+      "tags": [
+        "design",
+        "navigation",
+        "talib"
+      ],
+      "source": "owner"
+    },
+    {
+      "id": "L-0049",
+      "date": "2026-10-23",
+      "category": "ARCH",
+      "symptom": "L-0047 forced the crisp light theme; the owner then asked for the Talib v3 Dark Navy (#0b1220) as the default",
+      "rootCause": "The Talib v3 design is Dark Navy first; the light theme became the secondary option",
+      "fix": "getTheme() defaults to dark, applyTheme maps everything but an explicit light to dark, the header and the account menu keep a light/night toggle available on every width, the OS colour scheme is still never followed (no prefers-color-scheme in tokens.css)",
+      "rule": "Dark Navy is the default theme; a light/night toggle is always reachable; the OS colour scheme never switches the theme",
+      "guard": {
+        "type": "test",
+        "ref": "server/__tests__/law/rc3Shell.test.js"
+      },
+      "tags": [
+        "design",
+        "theme",
+        "talib"
+      ],
+      "source": "owner"
+    }
+  ]
+}

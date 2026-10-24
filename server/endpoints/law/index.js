@@ -1,0 +1,65 @@
+// LAW-OS API, mounted on the upstream apiRouter (served under /api/law). Each phase adds its own file here.
+const { lawSystemEndpoints } = require("./system");
+const { lawAuthEndpoints } = require("./auth");
+const { lawAcademicEndpoints } = require("./academic");
+const { lawCardEndpoints } = require("./cards");
+const { lawCaptureEndpoints } = require("./capture");
+const { lawInboxEndpoints } = require("./inbox");
+const { lawCorpusEndpoints } = require("./corpus");
+const { lawNotesEndpoints } = require("./notes");
+const { lawMethodEndpoints } = require("./method");
+const { lawRadarEndpoints } = require("./radar");
+const { lawQrEndpoints } = require("./qr");
+const { lawProfileEndpoints } = require("./profile");
+const { lawMeEndpoints } = require("./me");
+const { lawTimetableEndpoints } = require("./timetable");
+const { lawChatEndpoints } = require("./chat");
+const { lawSocialEndpoints } = require("./social");
+const { lawHubCollabEndpoints } = require("./hubcollab");
+const { lawSquadDocsEndpoints } = require("./squadDocs");
+const { lawCampusEndpoints } = require("./campus");
+const { lawFriendsEndpoints } = require("./friends");
+const { lawPathEndpoints } = require("./path");
+const { lawBrainEndpoints } = require("./brain");
+const { lawCollabEndpoints } = require("./collab");
+const { lawHubEndpoints } = require("./hub");
+const { lawCourseEndpoints } = require("./course");
+const { lawTodoEndpoints } = require("./todos");
+const { lawModuleEndpoints } = require("./modules");
+const { lawExamEndpoints } = require("./exams");
+const { lawGraphEndpoints } = require("./graph");
+
+function lawEndpoints(router) {
+  if (!router) return;
+  lawSystemEndpoints(router);
+  lawAuthEndpoints(router);
+  lawAcademicEndpoints(router);
+  lawCardEndpoints(router);
+  lawCaptureEndpoints(router);
+  lawInboxEndpoints(router);
+  lawCorpusEndpoints(router);
+  lawNotesEndpoints(router);
+  lawMethodEndpoints(router);
+  lawRadarEndpoints(router);
+  lawQrEndpoints(router);
+  lawProfileEndpoints(router);
+  lawMeEndpoints(router);
+  lawTimetableEndpoints(router);
+  lawChatEndpoints(router);
+  lawSocialEndpoints(router);
+  lawHubCollabEndpoints(router);
+  lawSquadDocsEndpoints(router);
+  lawCampusEndpoints(router);
+  lawFriendsEndpoints(router);
+  lawPathEndpoints(router);
+  lawBrainEndpoints(router);
+  lawCollabEndpoints(router);
+  lawHubEndpoints(router);
+  lawCourseEndpoints(router);
+  lawTodoEndpoints(router);
+  lawModuleEndpoints(router);
+  lawExamEndpoints(router);
+  lawGraphEndpoints(router);
+}
+
+module.exports = { lawEndpoints };

@@ -1,0 +1,322 @@
+import React, { useEffect, useState } from "react";
+import Sidebar from "@/components/SettingsSidebar";
+import { isMobile } from "react-device-detect";
+import System from "@/models/system";
+import showToast from "@/utils/toast";
+import AnythingLLMIcon from "@/media/logo/anything-llm-icon.png";
+import OpenAiLogo from "@/media/llmprovider/openai.png";
+import AzureOpenAiLogo from "@/media/llmprovider/azure.png";
+import GeminiAiLogo from "@/media/llmprovider/gemini.png";
+import LocalAiLogo from "@/media/llmprovider/localai.png";
+import OllamaLogo from "@/media/llmprovider/ollama.png";
+import LMStudioLogo from "@/media/llmprovider/lmstudio.png";
+import CohereLogo from "@/media/llmprovider/cohere.png";
+import VoyageAiLogo from "@/media/embeddingprovider/voyageai.png";
+import LiteLLMLogo from "@/media/llmprovider/litellm.png";
+import GenericOpenAiLogo from "@/media/llmprovider/generic-openai.png";
+import MistralAiLogo from "@/media/llmprovider/mistral.jpeg";
+import OpenRouterLogo from "@/media/llmprovider/openrouter.jpeg";
+import LemonadeLogo from "@/media/llmprovider/lemonade.png";
+
+import PreLoader from "@/components/Preloader";
+import ChangeWarningModal from "@/components/ChangeWarning";
+import OpenAiOptions from "@/components/EmbeddingSelection/OpenAiOptions";
+import AzureAiOptions from "@/components/EmbeddingSelection/AzureAiOptions";
+import GeminiOptions from "@/components/EmbeddingSelection/GeminiOptions";
+import LocalAiOptions from "@/components/EmbeddingSelection/LocalAiOptions";
+import NativeEmbeddingOptions from "@/components/EmbeddingSelection/NativeEmbeddingOptions";
+import OllamaEmbeddingOptions from "@/components/EmbeddingSelection/OllamaOptions";
+import LMStudioEmbeddingOptions from "@/components/EmbeddingSelection/LMStudioOptions";
+import CohereEmbeddingOptions from "@/components/EmbeddingSelection/CohereOptions";
+import VoyageAiOptions from "@/components/EmbeddingSelection/VoyageAiOptions";
+import LiteLLMOptions from "@/components/EmbeddingSelection/LiteLLMOptions";
+import GenericOpenAiEmbeddingOptions from "@/components/EmbeddingSelection/GenericOpenAiOptions";
+import OpenRouterOptions from "@/components/EmbeddingSelection/OpenRouterOptions";
+import MistralAiOptions from "@/components/EmbeddingSelection/MistralAiOptions";
+import LemonadeOptions from "@/components/EmbeddingSelection/LemonadeOptions";
+
+import EmbedderItem from "@/components/EmbeddingSelection/EmbedderItem";
+import { useModal } from "@/hooks/useModal";
+import Modal from "@/components/lib/Modal";
+import CTAButton from "@/components/lib/CTAButton";
+import { useTranslation } from "react-i18next";
+import ProviderSearchMenu from "@/components/lib/ProviderSearchMenu";
+
+const EMBEDDERS = [
+  {
+    name: "AnythingLLM Embedder",
+    value: "native",
+    logo: AnythingLLMIcon,
+    options: (settings) => <NativeEmbeddingOptions settings={settings} />,
+    description:
+      "Use the built-in embedding provider for AnythingLLM. Zero setup!",
+  },
+  {
+    name: "OpenAI",
+    value: "openai",
+    logo: OpenAiLogo,
+    options: (settings) => <OpenAiOptions settings={settings} />,
+    description: "The standard option for most non-commercial use.",
+  },
+  {
+    name: "Azure OpenAI",
+    value: "azure",
+    logo: AzureOpenAiLogo,
+    options: (settings) => <AzureAiOptions settings={settings} />,
+    description: "The enterprise option of OpenAI hosted on Azure services.",
+  },
+  {
+    name: "Gemini",
+    value: "gemini",
+    logo: GeminiAiLogo,
+    options: (settings) => <GeminiOptions settings={settings} />,
+    description: "Run powerful embedding models from Google AI.",
+  },
+  {
+    name: "Local AI",
+    value: "localai",
+    logo: LocalAiLogo,
+    options: (settings) => <LocalAiOptions settings={settings} />,
+    description: "Run embedding models locally on your own machine.",
+  },
+  {
+    name: "Ollama",
+    value: "ollama",
+    logo: OllamaLogo,
+    options: (settings) => <OllamaEmbeddingOptions settings={settings} />,
+    description: "Run embedding models locally on your own machine.",
+  },
+  {
+    name: "LM Studio",
+    value: "lmstudio",
+    logo: LMStudioLogo,
+    options: (settings) => <LMStudioEmbeddingOptions settings={settings} />,
+    description:
+      "Discover, download, and run thousands of cutting edge LLMs in a few clicks.",
+  },
+  {
+    name: "Lemonade",
+    value: "lemonade",
+    logo: LemonadeLogo,
+    options: (settings) => <LemonadeOptions settings={settings} />,
+    description:
+      "Run embedding models locally on your own machine using Lemonade.",
+  },
+  {
+    name: "OpenRouter",
+    value: "openrouter",
+    logo: OpenRouterLogo,
+    options: (settings) => <OpenRouterOptions settings={settings} />,
+    description: "Run embedding models from OpenRouter.",
+  },
+  {
+    name: "LiteLLM",
+    value: "litellm",
+    logo: LiteLLMLogo,
+    options: (settings) => <LiteLLMOptions settings={settings} />,
+    description: "Run powerful embedding models from LiteLLM.",
+  },
+  {
+    name: "Cohere",
+    value: "cohere",
+    logo: CohereLogo,
+    options: (settings) => <CohereEmbeddingOptions settings={settings} />,
+    description: "Run powerful embedding models from Cohere.",
+  },
+  {
+    name: "Voyage AI",
+    value: "voyageai",
+    logo: VoyageAiLogo,
+    options: (settings) => <VoyageAiOptions settings={settings} />,
+    description: "Run powerful embedding models from Voyage AI.",
+  },
+  {
+    name: "Mistral AI",
+    value: "mistral",
+    logo: MistralAiLogo,
+    options: (settings) => <MistralAiOptions settings={settings} />,
+    description: "Run powerful embedding models from Mistral AI.",
+  },
+  {
+    name: "Generic OpenAI",
+    value: "generic-openai",
+    logo: GenericOpenAiLogo,
+    options: (settings) => (
+      <GenericOpenAiEmbeddingOptions settings={settings} />
+    ),
+    description: "Run embedding models from any OpenAI compatible API service.",
+  },
+];
+
+export default function GeneralEmbeddingPreference() {
+  const [saving, setSaving] = useState(false);
+  const [hasChanges, setHasChanges] = useState(false);
+  const [hasEmbeddings, setHasEmbeddings] = useState(false);
+  const [hasCachedEmbeddings, setHasCachedEmbeddings] = useState(false);
+  const [settings, setSettings] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedEmbedder, setSelectedEmbedder] = useState(null);
+  const { isOpen, openModal, closeModal } = useModal();
+  const { t } = useTranslation();
+
+  function embedderModelChanged(formEl) {
+    try {
+      const formData = new FormData(formEl);
+      const newModel =
+        formData.get("EmbeddingModelPref") ??
+        formData.get("AzureOpenAiEmbeddingModelPref") ??
+        null;
+      if (newModel === null) return false;
+      return settings?.EmbeddingModelPref !== newModel;
+    } catch (error) {
+      console.error(error);
+    }
+    return false;
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (
+      (selectedEmbedder !== settings?.EmbeddingEngine ||
+        embedderModelChanged(e.target)) &&
+      hasChanges &&
+      (hasEmbeddings || hasCachedEmbeddings)
+    ) {
+      openModal();
+    } else {
+      await handleSaveSettings();
+    }
+  };
+
+  const handleSaveSettings = async () => {
+    setSaving(true);
+    const form = document.getElementById("embedding-form");
+    const settingsData = {};
+    const formData = new FormData(form);
+    settingsData.EmbeddingEngine = selectedEmbedder;
+    for (var [key, value] of formData.entries()) settingsData[key] = value;
+
+    const { error } = await System.updateSystem(settingsData);
+    if (error) {
+      showToast(`Failed to save embedding settings: ${error}`, "error");
+      setHasChanges(true);
+    } else {
+      showToast("Embedding preferences saved successfully.", "success");
+      setHasChanges(false);
+    }
+    setSaving(false);
+    closeModal();
+  };
+
+  const updateChoice = (selection) => {
+    setSelectedEmbedder(selection);
+    setHasChanges(true);
+  };
+
+  useEffect(() => {
+    async function fetchKeys() {
+      const _settings = await System.keys();
+      setSettings(_settings);
+      setSelectedEmbedder(_settings?.EmbeddingEngine || "native");
+      setHasEmbeddings(_settings?.HasExistingEmbeddings || false);
+      setHasCachedEmbeddings(_settings?.HasCachedEmbeddings || false);
+      setLoading(false);
+    }
+    fetchKeys();
+  }, []);
+
+  const selectedEmbedderObject = EMBEDDERS.find(
+    (embedder) => embedder.value === selectedEmbedder
+  );
+
+  return (
+    <div className="w-screen h-screen overflow-hidden bg-theme-bg-container flex">
+      <Sidebar />
+      {loading ? (
+        <div
+          style={{ height: isMobile ? "100%" : "calc(100% - 32px)" }}
+          className="relative md:ml-[2px] md:mr-[16px] md:my-[16px] md:rounded-[16px] bg-theme-bg-secondary w-full h-full overflow-y-scroll p-4 md:p-0"
+        >
+          <div className="w-full h-full flex justify-center items-center">
+            <PreLoader />
+          </div>
+        </div>
+      ) : (
+        <div
+          style={{ height: isMobile ? "100%" : "calc(100% - 32px)" }}
+          className="relative md:ml-[2px] md:mr-[16px] md:my-[16px] md:rounded-[16px] bg-theme-bg-secondary w-full h-full overflow-y-scroll p-4 md:p-0"
+        >
+          <form
+            id="embedding-form"
+            onSubmit={handleSubmit}
+            className="flex w-full"
+          >
+            <div className="flex flex-col w-full px-1 md:pl-6 md:pr-[50px] py-16 md:py-6">
+              <div className="w-full flex flex-col gap-y-1 pb-6 border-white light:border-theme-sidebar-border border-b-2 border-opacity-10">
+                <div className="flex gap-x-4 items-center">
+                  <p className="text-lg leading-6 font-bold text-white">
+                    {t("embedding.title")}
+                  </p>
+                </div>
+                <p className="text-xs leading-[18px] font-base text-white text-opacity-60">
+                  {t("embedding.desc-start")}
+                  <br />
+                  {t("embedding.desc-end")}
+                </p>
+              </div>
+              <div className="w-full justify-end flex">
+                {hasChanges && (
+                  <CTAButton
+                    onClick={() => handleSubmit()}
+                    className="mt-3 mr-0 -mb-14 z-10"
+                  >
+                    {saving ? t("common.saving") : t("common.save")}
+                  </CTAButton>
+                )}
+              </div>
+              <div className="text-base font-bold text-white mt-6 mb-4">
+                {t("embedding.provider.title")}
+              </div>
+              <div className="relative">
+                <ProviderSearchMenu
+                  items={EMBEDDERS}
+                  selected={selectedEmbedderObject}
+                  placeholder="Search all embedding providers"
+                  renderItem={(embedder, close) => (
+                    <EmbedderItem
+                      name={embedder.name}
+                      value={embedder.value}
+                      image={embedder.logo}
+                      description={embedder.description}
+                      checked={selectedEmbedder === embedder.value}
+                      onClick={() => {
+                        updateChoice(embedder.value);
+                        close();
+                      }}
+                    />
+                  )}
+                />
+              </div>
+              <div
+                onChange={() => setHasChanges(true)}
+                className="mt-4 flex flex-col gap-y-1"
+              >
+                {selectedEmbedder &&
+                  EMBEDDERS.find(
+                    (embedder) => embedder.value === selectedEmbedder
+                  )?.options(settings)}
+              </div>
+            </div>
+          </form>
+        </div>
+      )}
+      <Modal isOpen={isOpen} onClose={closeModal} size="lg">
+        <ChangeWarningModal
+          warningText="Switching the embedding model will reset all previously embedded documents in all workspaces.\n\nConfirming will clear all embeddings from your vector database and remove all documents from your workspaces. Your uploaded documents will not be deleted, they will be available for re-embedding."
+          onClose={closeModal}
+          onConfirm={handleSaveSettings}
+        />
+      </Modal>
+    </div>
+  );
+}

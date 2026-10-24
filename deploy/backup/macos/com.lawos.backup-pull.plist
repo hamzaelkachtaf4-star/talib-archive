@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- Installed by install-macos.sh, which fills in __HOME__, __LAWOS_HOST__, __LAWOS_SSH_USER__, __REMOTE_ROOT__. -->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.lawos.backup-pull</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>__HOME__/Library/Application Support/lawos/lawos-backup-pull.sh</string>
+  </array>
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>LAWOS_HOST</key>
+    <string>__LAWOS_HOST__</string>
+    <key>LAWOS_SSH_USER</key>
+    <string>__LAWOS_SSH_USER__</string>
+    <key>REMOTE_ROOT</key>
+    <string>__REMOTE_ROOT__</string>
+  </dict>
+  <key>StartInterval</key>
+  <integer>14400</integer>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>LowPriorityIO</key>
+  <true/>
+  <key>Nice</key>
+  <integer>10</integer>
+  <key>StandardOutPath</key>
+  <string>__HOME__/Library/Logs/lawos-backup-pull.log</string>
+  <key>StandardErrorPath</key>
+  <string>__HOME__/Library/Logs/lawos-backup-pull.log</string>
+</dict>
+</plist>

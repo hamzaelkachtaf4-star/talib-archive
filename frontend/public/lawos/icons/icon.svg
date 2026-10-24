@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- App icon: the mascot on warm cream. The artwork stays inside the central 66% (maskable-safe). -->
+  <rect width="512" height="512" fill="#fbf6e9"/>
+  <g transform="translate(112 118) scale(4.5)">
+<rect x="6" y="18" width="52" height="42" rx="12" fill="#034d2b"/>
+  <rect x="6" y="14" width="52" height="42" rx="12" fill="#0b5d3b"/>
+  <rect x="16" y="22" width="36" height="28" rx="8" fill="#fffdf6"/>
+  <ellipse cx="26" cy="35" rx="3.6" ry="4.6" fill="#1c2430"/>
+  <ellipse cx="42" cy="35" rx="3.6" ry="4.6" fill="#1c2430"/>
+  <circle cx="27.3" cy="33.2" r="1.4" fill="#fff"/>
+  <circle cx="43.3" cy="33.2" r="1.4" fill="#fff"/>
+  <path d="M27 42 Q34 49 41 42" fill="none" stroke="#1c2430" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M4 15 L32 3 L60 15 L32 26 Z" fill="#1c2430"/>
+  <line x1="54" y1="16" x2="54" y2="28" stroke="#b48a2c" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="54" cy="30" r="3" fill="#e6b93c"/>
+  </g>
+</svg>

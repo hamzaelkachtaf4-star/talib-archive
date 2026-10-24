@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><script src="./law-profiles.js"></script></helmet>
+<div dir="rtl" data-screen-label="Studio" style="display:flex; flex-direction:column; gap:20px; min-width:0;">
+
+  <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:14px;">
+      <div style="min-width:0;">
+        <h1 style="font-size:26px; font-weight:700; line-height:1.3;">تعلم</h1>
+        <div style="font-size:14px; color:var(--law-muted); margin-top:2px; text-wrap:pretty;">موادك من استعمال الزمن ديالك، وكل مادة كتحفظ طريقة التعلم ديالها.</div>
+      </div>
+      <button onClick="{{ startCreate }}" style="height:46px; padding:0 22px; margin-bottom:var(--depth, 4px); border-radius:14px; border:none; background:var(--law-accent); color:#ffffff; font-size:14.5px; font-weight:700; cursor:pointer; box-shadow:0 var(--depth, 4px) 0 var(--law-accent-deep), 0 14px 24px -12px var(--law-accent-glow); transition:transform 120ms, box-shadow 120ms; white-space:nowrap;" style-active="transform:translateY(var(--depth, 4px)); box-shadow:0 0 0 var(--law-accent-deep);">+ مادة جديدة</button>
+    </div>
+
+    <sc-if value="{{ noTT }}" hint-placeholder-val="{{ false }}">
+      <section style="padding:24px; border-radius:26px; background:var(--law-surface); border:1px solid var(--law-line); box-shadow:var(--law-shadow); display:flex; flex-direction:column; gap:16px; animation:talibSpring 0.45s ease-out both;">
+        <div style="display:flex; align-items:flex-start; gap:14px;">
+          <span style="width:48px; height:48px; border-radius:15px; background:var(--law-gold-tint); color:var(--law-gold); display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0;">📅</span>
+          <div style="flex:1; min-width:0;">
+            <h2 style="font-size:19px; font-weight:700; line-height:1.4;">ابدأ من استعمال الزمن ديالك</h2>
+            <p style="font-size:14px; line-height:1.8; color:var(--law-muted); text-wrap:pretty;">ارفع صورة أو PDF ديال استعمال الزمن، ونستخرج منه موادك والأساتذة والمواعيد. من بعد كنعدّو كل مادة وحدة بوحدة، وكل نهار كتلقى حصص اليوم هنا.</p>
+          </div>
+        </div>
+        <input type="file" ref="{{ ttFileRef }}" onChange="{{ onTTFile }}" accept="image/*,.pdf" style="display:none;"></input>
+        <div style="display:flex; flex-wrap:wrap; gap:10px; padding-bottom:var(--depth, 4px);">
+          <button onClick="{{ pickTT }}" disabled="{{ ttBusy }}" style="height:46px; padding:0 20px; border-radius:14px; border:none; background:var(--law-accent); color:#ffffff; font-size:14.5px; font-weight:700; cursor:pointer; box-shadow:0 var(--depth, 4px) 0 var(--law-accent-deep);" style-active="transform:translateY(var(--depth, 4px)); box-shadow:0 0 0 var(--law-accent-deep);">{{ ttUploadLabel }}</button>
+          <button onClick="{{ toggleTTManual }}" style="height:46px; padding:0 18px; border-radius:14px; border:1.5px solid var(--law-line-strong); background:var(--law-surface); font-size:14px; font-weight:700; cursor:pointer; box-shadow:0 var(--depth, 4px) 0 var(--law-line-strong);" style-active="transform:translateY(var(--depth, 4px)); box-shadow:0 0 0 var(--law-line-strong);">✍️ اكتب المواد بيدك</button>
+          <button onClick="{{ loadDemoTT }}" style="height:46px; padding:0 14px; border-radius:14px; border:none; background:transparent; color:var(--law-accent-light); font-size:13.5px; font-weight:700; cursor:pointer;">جرّب باستعمال زمن نموذجي ←</button>
+        </div>
+        <sc-if value="{{ ttManual }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex; flex-direction:column; gap:8px; animation:talibFade 0.25s ease-out both;">
+            <textarea rows="5" value="{{ ttText }}" onChange="{{ onTTText }}" placeholder="مادة في كل سطر، مثلاً:&#10;القانون الجنائي الخاص&#10;قانون الشغل&#10;المسطرة المدنية" style="width:100%; border-radius:14px; border:1px solid var(--law-line-strong); background:var(--law-surface-2); padding:12px 14px; font-size:14.5px; line-height:1.9; outline:none; resize:vertical;" style-focus="border-color:var(--law-accent);"></textarea>
+            <button onClick="{{ saveTTManual }}" style="align-self:flex-start; height:42px; padding:0 18px; border-radius:12px; border:none; background:var(--law-accent); color:#ffffff; font-size:14px; font-weight:700; cursor:pointer; box-shadow:0 3px 0 var(--law-accent-deep);">إضافة المواد</button>
+          </div>
+        </sc-if>
+        <div style="font-size:12px; color:var(--law-muted);">في هذا النموذج، قراءة الصورة مُحاكاة: كنستعملو استعمال زمن تجريبي ديال S3 قانون خاص.</div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ hasTT }}" hint-placeholder-val="{{ false }}">
+      <section style="padding:20px 22px; border-radius:24px; background:var(--law-surface); border:1px solid var(--law-line); box-shadow:var(--law-shadow); display:flex; flex-direction:column; gap:12px;">
+        <div style="display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:8px;">
+          <div style="display:flex; align-items:baseline; gap:8px;"><span style="font-size:16px; font-weight:700;">{{ dayTitle }}</span><span style="font-size:12.5px; color:var(--law-muted);">{{ daySub }}</span></div>
+          <button onClick="{{ resetTT }}" style="border:none; background:transparent; color:var(--law-muted); font-size:12.5px; font-weight:700; cursor:pointer;">↻ تحديث استعمال الزمن</button>
+        </div>
+        <sc-for list="{{ daySlots }}" as="d" hint-placeholder-count="2">
+          <div style="display:flex; flex-wrap:wrap; align-items:center; gap:10px 14px; padding:12px 14px; border-radius:18px; background:var(--law-surface-2); border-inline-start:4px solid {{ d.color }};">
+            <div style="width:86px; flex-shrink:0; line-height:1.3;"><bdi dir="ltr" style="display:block; font-family:'IBM Plex Mono', monospace; font-size:14px; font-weight:600;">{{ d.from }}</bdi><bdi dir="ltr" style="display:block; font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--law-muted);">{{ d.to }}</bdi></div>
+            <div style="flex:1 1 180px; min-width:0; line-height:1.45;">
+              <div style="display:flex; flex-wrap:wrap; align-items:center; gap:6px;"><span style="font-size:15px; font-weight:700;">{{ d.name }}</span><span style="font-size:11px; font-weight:700; padding:1px 8px; border-radius:999px; background:{{ d.stBg }}; color:{{ d.stFg }}; white-space:nowrap;">{{ d.status }}</span></div>
+              <div style="font-size:12.5px; color:var(--law-muted);">{{ d.kind }} · {{ d.room }} · {{ d.prof }}</div>
+            </div>
+            <button onClick="{{ d.go }}" style="height:38px; padding:0 16px; border-radius:12px; border:{{ d.border }}; background:{{ d.bg }}; color:{{ d.fg }}; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 3px 0 {{ d.edge }}; white-space:nowrap;" style-active="transform:translateY(3px); box-shadow:0 0 0 transparent;">{{ d.label }}</button>
+          </div>
+        </sc-for>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ hasContinue }}" hint-placeholder-val="{{ true }}">
+      <section onClick="{{ cont.open }}" style="display:flex; flex-wrap:wrap; align-items:center; gap:18px; padding:20px 22px; border-radius:24px; background:var(--law-surface); border:1px solid var(--law-line); box-shadow:var(--law-shadow); cursor:pointer; transition:transform 0.4s cubic-bezier(0.22,1,0.36,1);" style-hover="transform:translateY(-3px);">
+        <div style="position:relative; width:76px; height:76px; flex-shrink:0;">
+          <svg width="76" height="76" viewBox="0 0 104 104" style="transform:rotate(-90deg);">
+            <circle cx="52" cy="52" r="42" fill="none" stroke="var(--law-surface-2)" stroke-width="12"></circle>
+            <circle cx="52" cy="52" r="42" fill="none" stroke="{{ cont.color }}" stroke-width="12" stroke-linecap="round" stroke-dasharray="263.9" style="stroke-dashoffset:{{ cont.offset }}; transition:stroke-dashoffset 1s cubic-bezier(0.34,1.56,0.64,1);"></circle>
+          </svg>
+          <span style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:{{ cont.color }};"><dc-import name="TalibIcon" icon="{{ cont.icon }}" style="width:28px; height:28px;" hint-size="28px,28px"></dc-import></span>
+        </div>
+        <div style="flex:1 1 220px; min-width:0; line-height:1.5;">
+          <div style="font-size:12.5px; font-weight:700; color:var(--law-accent-light);">تابع من حيث توقفت</div>
+          <div style="font-size:19px; font-weight:700;">{{ cont.name }}</div>
+          <div style="font-size:13.5px; color:var(--law-muted);">{{ cont.sub }}</div>
+        </div>
+        <button onClick="{{ cont.open }}" style="height:44px; padding:0 22px; margin-bottom:var(--depth, 4px); border-radius:14px; border:none; background:var(--law-gold); color:#1a1405; font-size:14.5px; font-weight:700; cursor:pointer; box-shadow:0 var(--depth, 4px) 0 color-mix(in oklch, var(--law-gold) 60%, black); white-space:nowrap;" style-active="transform:translateY(var(--depth, 4px)); box-shadow:0 0 0 transparent;">تابع ←</button>
+      </section>
+    </sc-if>
+
+    <div style="display:flex; align-items:baseline; gap:8px;">
+      <span style="font-size:16px; font-weight:700;">موادي</span>
+      <span style="font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--law-muted);">{{ subjectCount }}</span>
+    </div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:16px;">
+      <sc-for list="{{ subjectsList }}" as="s" hint-placeholder-count="3">
+        <div onClick="{{ s.open }}" style="display:flex; flex-direction:column; border-radius:22px; background:var(--law-surface); border:1px solid var(--law-line); box-shadow:var(--law-shadow); cursor:pointer; overflow:hidden; transition:transform 0.4s cubic-bezier(0.22,1,0.36,1), box-shadow 0.4s;" style-hover="transform:translateY(-4px) rotateX(2deg); box-shadow:var(--law-shadow-pop);">
+          <div style="height:8px; background:{{ s.color }};"></div>
+          <div style="padding:18px; display:flex; flex-direction:column; gap:12px; flex:1;">
+            <div style="display:flex; align-items:flex-start; gap:12px;">
+              <span style="width:46px; height:46px; border-radius:14px; background:{{ s.tint }}; color:{{ s.color }}; display:flex; align-items:center; justify-content:center; flex-shrink:0;"><dc-import name="TalibIcon" icon="{{ s.icon }}" style="width:24px; height:24px;" hint-size="24px,24px"></dc-import></span>
+              <div style="flex:1; min-width:0; line-height:1.4;">
+                <div style="font-size:16px; font-weight:700;">{{ s.name }}</div>
+                <div style="font-size:12.5px; color:var(--law-muted);">{{ s.sem }} · {{ s.structLabel }}</div>
+                <sc-if value="{{ s.hasSched }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px; color:var(--law-muted); margin-top:2px;">📅 {{ s.sched }}</div></sc-if>
+              </div>
+            </div>
+            <div style="display:flex; flex-wrap:wrap; gap:4px;">
+              <sc-for list="{{ s.fmts }}" as="f" hint-placeholder-count="2">
+                <span style="font-size:11.5px; font-weight:600; padding:2px 9px; border-radius:999px; background:var(--law-surface-2); white-space:nowrap; display:inline-flex; align-items:center; gap:5px;"><span style="width:13px; height:13px; display:block;"><dc-import name="TalibIcon" icon="{{ f.icon }}" style="width:13px; height:13px;" hint-size="13px,13px"></dc-import></span>{{ f.label }}</span>
+              </sc-for>
+            </div>
+            <div style="margin-top:auto;">
+              <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--law-muted); margin-bottom:6px;"><span>{{ s.progText }}</span><bdi dir="ltr" style="font-family:'IBM Plex Mono', monospace;">{{ s.pctLabel }}</bdi></div>
+              <div style="height:8px; border-radius:999px; background:var(--law-surface-2); overflow:hidden;"><div style="height:100%; width:{{ s.pct }}; border-radius:999px; background:{{ s.color }}; transition:width 0.8s cubic-bezier(0.34,1.56,0.64,1);"></div></div>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; gap:8px; padding-top:10px; border-top:1px solid var(--law-line);">
+              <button onClick="{{ s.toggleVis }}" title="تغيير الظهور" style="display:flex; align-items:center; gap:6px; height:30px; padding:0 12px; border-radius:999px; border:none; background:{{ s.visBg }}; color:{{ s.visFg }}; font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap;">{{ s.visLabel }}</button>
+              <span style="font-size:12px; font-weight:700; color:var(--law-accent-light);">فتح ←</span>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+      <sc-for list="{{ pendingTT }}" as="p" hint-placeholder-count="0">
+        <div style="display:flex; flex-direction:column; gap:12px; padding:18px; border-radius:22px; border:2px dashed {{ p.color }}; background:var(--law-surface); animation:talibSpring 0.4s ease-out both;">
+          <div style="display:flex; align-items:center; gap:8px;"><span style="font-size:11.5px; font-weight:700; padding:2px 9px; border-radius:999px; background:var(--law-gold-tint); color:var(--law-gold);">في انتظار الإعداد</span><span style="font-size:11.5px; font-weight:700; color:var(--law-muted);">{{ p.branch }}</span></div>
+          <div style="line-height:1.45;"><div style="font-size:16px; font-weight:700;">{{ p.name }}</div><div style="font-size:12.5px; color:var(--law-muted);">{{ p.prof }}</div><div style="font-size:12px; color:var(--law-muted); margin-top:2px;">📅 {{ p.sched }}</div></div>
+          <button onClick="{{ p.setup }}" style="margin-top:auto; height:42px; margin-bottom:var(--depth, 4px); border-radius:13px; border:none; background:var(--law-accent); color:#ffffff; font-size:13.5px; font-weight:700; cursor:pointer; box-shadow:0 var(--depth, 4px) 0 var(--law-accent-deep);" style-active="transform:translateY(var(--depth, 4px)); box-shadow:0 0 0 var(--law-accent-deep);">أعدّ المادة مع المساعد ←</button>
+        </div>
+      </sc-for>
+      <button onClick="{{ startCreate }}" style="min-height:220px; border-radius:22px; border:2px dashed var(--law-line-strong); background:transparent; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; cursor:pointer; color:var(--law-muted); transition:border-color 0.2s, color 0.2s;" style-hover="border-color:var(--law-accent); color:var(--law-accent-light);">
+        <span style="font-size:30px; line-height:1;">+</span>
+        <span style="font-size:14.5px; font-weight:700;">مادة جديدة</span>
+        <span style="font-size:12.5px;">اختر طريقتك مرة واحدة، والمساعد يلتزم بها</span>
+      </button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isCreate }}" hint-placeholder-val="{{ false }}">
+    <dc-import name="TalibOnboard" preset="{{ onboardPreset }}" on-done="{{ onboardDone }}" on-cancel="{{ onboardCancel }}" hint-size="100%,640px"></dc-import>
+  </sc-if>
+
+  <sc-if value="{{ isForm }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start;">
+      <section style="flex:2 1 460px; min-width:0; padding:26px; background:var(--law-surface); border-radius:26px; border:1px solid var(--law-line); box-shadow:var(--law-shadow); display:flex; flex-direction:column; gap:24px; animation:talibSpring 0.45s ease-out both;">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:12px;">
+          <div>
+            <div style="font-size:13px; font-weight:700; color:var(--law-accent-light);">{{ formKicker }}</div>
+            <h2 style="font-size:24px; font-weight:700; line-height:1.4;">{{ formTitle }}</h2>
+          </div>
+          <button onClick="{{ cancelForm }}" style="height:36px; padding:0 14px; border-radius:11px; border:none; background:var(--law-surface-2); color:var(--law-muted); font-size:13px; font-weight:700; cursor:pointer;">إلغاء</button>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <label style="font-size:14px; font-weight:700;">اسم المادة</label>
+          <input type="text" value="{{ d.name }}" onChange="{{ onName }}" placeholder="مثلاً: قانون الشغل" style="height:50px; border-radius:15px; border:1px solid var(--law-line-strong); background:var(--law-surface-2); padding:0 16px; font-size:15.5px; font-weight:600; outline:none;" style-focus="border-color:var(--law-accent); box-shadow:0 0 0 4px var(--law-accent-tint);"></input>
+          <div style="display:flex; flex-wrap:wrap; align-items:center; gap:6px;">
+            <sc-for list="{{ semOpts }}" as="o" hint-placeholder-count="7">
+              <button onClick="{{ o.pick }}" style="height:34px; min-width:44px; padding:0 12px; border-radius:11px; border:1.5px solid {{ o.border }}; background:{{ o.bg }}; color:var(--law-text); font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 3px 0 {{ o.edge }}; white-space:nowrap;" style-active="transform:translateY(3px); box-shadow:0 0 0 transparent;">{{ o.label }}</button>
+            </sc-for>
+            <span style="width:1px; height:22px; background:var(--law-line-strong); margin:0 6px;"></span>
+            <sc-for list="{{ colorOpts }}" as="o" hint-placeholder-count="6">
+              <button onClick="{{ o.pick }}" title="لون المادة" style="width:30px; height:30px; border-radius:999px; border:3px solid {{ o.ring }}; background:{{ o.c }}; cursor:pointer; box-shadow:0 0 0 2px {{ o.outer }};"></button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="display:flex; align-items:baseline; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+            <label style="font-size:14px; font-weight:700;">كيف تحب أن تتعلم هذه المادة؟</label>
+            <span style="font-size:12.5px; color:var(--law-muted);">اختر طريقة أو أكثر · الرقم يحدد ترتيب العرض</span>
+          </div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); gap:10px; padding-bottom:var(--depth, 4px);">
+            <sc-for list="{{ formatOpts }}" as="o" hint-placeholder-count="7">
+              <button onClick="{{ o.pick }}" style="position:relative; display:flex; flex-direction:column; align-items:flex-start; gap:5px; padding:14px; border-radius:18px; border:2px solid {{ o.border }}; background:{{ o.bg }}; box-shadow:0 var(--depth, 4px) 0 {{ o.edge }}; text-align:right; cursor:pointer; transition:transform 120ms, box-shadow 120ms, background 0.2s, border-color 0.2s;" style-active="transform:translateY(var(--depth, 4px)); box-shadow:0 0 0 transparent;">
+                <sc-if value="{{ o.on }}" hint-placeholder-val="{{ false }}"><span style="position:absolute; top:10px; left:10px; width:24px; height:24px; border-radius:999px; background:var(--law-accent); color:#ffffff; font-family:'IBM Plex Mono', monospace; font-size:12.5px; font-weight:600; display:flex; align-items:center; justify-content:center; box-shadow:0 2px 0 var(--law-accent-deep); animation:talibSpring 0.35s ease-out both;">{{ o.order }}</span></sc-if>
+                <span style="width:40px; height:40px; border-radius:12px; background:var(--law-surface-2); color:var(--law-accent-light); display:flex; align-items:center; justify-content:center;"><dc-import name="TalibIcon" icon="{{ o.icon }}" style="width:22px; height:22px;" hint-size="22px,22px"></dc-import></span>
+                <span style="font-size:14.5px; font-weight:700; color:var(--law-text);">{{ o.label }}</span>
+                <span style="font-size:12px; line-height:1.55; color:var(--law-muted);">{{ o.desc }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-wrap:wrap; gap:20px;">
+          <div style="flex:1 1 240px; display:flex; flex-direction:column; gap:10px;">
+            <label style="font-size:14px; font-weight:700;">التقسيم</label>
+            <sc-for list="{{ structOpts }}" as="o" hint-placeholder-count="2">
+              <button onClick="{{ o.pick }}" style="display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:16px; border:2px solid {{ o.border }}; background:{{ o.bg }}; text-align:right; cursor:pointer; box-shadow:0 3px 0 {{ o.edge }};" style-active="transform:translateY(3px); box-shadow:0 0 0 transparent;">
+                <span style="font-size:22px;">{{ o.icon }}</span>
+                <span style="line-height:1.45;"><span style="display:block; font-size:14px; font-weight:700; color:var(--law-text);">{{ o.label }}</span><span style="display:block; font-size:12px; color:var(--law-muted);">{{ o.desc }}</span></span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="flex:1 1 240px; display:flex; flex-direction:column; gap:10px;">
+            <label style="font-size:14px; font-weight:700;">الظهور</label>
+            <sc-for list="{{ visOpts }}" as="o" hint-placeholder-count="2">
+              <button onClick="{{ o.pick }}" style="display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:16px; border:2px solid {{ o.border }}; background:{{ o.bg }}; text-align:right; cursor:pointer; box-shadow:0 3px 0 {{ o.edge }};" style-active="transform:translateY(3px); box-shadow:0 0 0 transparent;">
+                <span style="font-size:22px;">{{ o.icon }}</span>
+                <span style="line-height:1.45;"><span style="display:block; font-size:14px; font-weight:700; color:var(--law-text);">{{ o.label }}</span><span style="display:block; font-size:12px; color:var(--law-muted);">{{ o.desc }}</span></span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <label style="font-size:14px; font-weight:700;">ملاحظة للمساعد عن طريقتك <span style="font-weight:400; color:var(--law-muted);">(اختياري)</span></label>
+          <textarea rows="3" value="{{ d.note }}" onChange="{{ onNote }}" placeholder="مثلاً: أفهم أكثر بالأمثلة من الواقع المغربي، وأريد أسئلة قصيرة في آخر كل حصة…" style="display:block; width:100%; border-radius:16px; border:1px solid var(--law-line-strong); background:var(--law-surface-2); padding:14px 16px; font-size:14.5px; line-height:1.8; outline:none; resize:none;" style-focus="border-color:var(--law-accent); box-shadow:0 0 0 4px var(--law-accent-tint);"></textarea>
+        </div>
+
+        <div style="display:flex; align-items:center; justify-content:flex-end; gap:12px; padding-bottom:var(--depth, 4px); flex-wrap:wrap;">
+          <sc-if value="{{ formInvalid }}" hint-placeholder-val="{{ false }}"><span style="font-size:12.5px; color:var(--law-muted);">{{ formHint }}</span></sc-if>
+          <button onClick="{{ submitForm }}" disabled="{{ formInvalid }}" style="height:50px; padding:0 30px; border-radius:15px; border:none; background:var(--law-accent); color:#ffffff; font-size:15px; font-weight:700; cursor:pointer; opacity:{{ submitOpacity }}; box-shadow:0 var(--depth, 4px) 0 var(--law-accent-deep), 0 14px 24px -12px var(--law-accent-glow); transition:transform 120ms, box-shadow 120ms;" style-active="transform:translateY(var(--depth, 4px)); box-shadow:0 0 0 var(--law-accent-deep);">{{ submitLabel }}</button>
+        </div>
+      </section>
+
+      <aside style="flex:1 1 280px; min-width:0; position:sticky; top:90px; display:flex; flex-direction:column; gap:12px; padding:20px; background:var(--law-surface); border-radius:24px; border:1px solid var(--law-line); box-shadow:var(--law-shadow);">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="width:40px; height:40px; border-radius:13px; background:var(--law-accent); color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow:0 3px 0 var(--law-accent-deep);">✦</span>
+          <div style="line-height:1.35;"><div style="font-size:15px; font-weight:700;">مساعد طالب</div><div style="font-size:12px; color:var(--law-muted);">يرافقك خطوة بخطوة</div></div>
+        </div>
+        <sc-for list="{{ planLines }}" as="l" hint-placeholder-count="3">
+          <div style="padding:10px 14px; border-radius:16px 16px 16px 6px; background:var(--law-surface-2); font-size:13.5px; line-height:1.8; animation:talibFade 0.3s ease-out both;">{{ l }}</div>
+        </sc-for>
+        <sc-if value="{{ hasOrder }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:14px; border-radius:16px; border:1.5px dashed var(--law-line-strong);">
+            <div style="font-size:12px; font-weight:700; color:var(--law-muted); margin-bottom:8px;">شكل كل حصة</div>
+            <sc-for list="{{ orderList }}" as="o" hint-placeholder-count="2">
+              <div style="display:flex; align-items:center; gap:10px; padding:5px 0; font-size:13.5px; font-weight:600;"><span style="width:22px; height:22px; border-radius:7px; background:var(--law-accent-tint); color:var(--law-accent-light); font-family:'IBM Plex Mono', monospace; font-size:12px; display:flex; align-items:center; justify-content:center;">{{ o.n }}</span><span style="width:16px; height:16px; color:var(--law-accent-light);"><dc-import name="TalibIcon" icon="{{ o.icon }}" style="width:16px; height:16px;" hint-size="16px,16px"></dc-import></span>{{ o.label }}</div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </aside>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ isWork }}" hint-placeholder-val="{{ false }}">
+    <section style="padding:16px 20px; background:var(--law-surface); border-radius:22px; border:1px solid var(--law-line); box-shadow:var(--law-shadow); display:flex; flex-wrap:wrap; align-items:center; gap:12px 18px;">
+      <button onClick="{{ goHome }}" title="موادي" style="width:40px; height:40px; border-radius:12px; border:1.5px solid var(--law-line-strong); background:var(--law-surface); font-size:16px; cursor:pointer; box-shadow:0 3px 0 var(--law-line-strong); flex-shrink:0;" style-active="transform:translateY(3px); box-shadow:0 0 0 var(--law-line-strong);">→</button>
+      <div style="flex:1 1 200px; min-width:0;">
+        <div style="font-size:12px; font-weight:700; color:var(--law-accent-light);">تعلم · {{ cur.sem }}</div>
+        <h1 style="font-size:21px; font-weight:700; line-height:1.4;">{{ cur.name }}</h1>
+      </div>
+      <sc-if value="{{ multiFmt }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex; gap:2px; padding:3px; border-radius:12px; background:var(--law-surface-2); flex-wrap:wrap;">
+          <sc-for list="{{ viewTabs }}" as="f" hint-placeholder-count="3">
+            <button onClick="{{ f.pick }}" style="height:32px; padding:0 11px; border-radius:9px; border:none; background:{{ f.bg }}; color:{{ f.fg }}; box-shadow:{{ f.shadow }}; font-size:12.5px; font-weight:600; cursor:pointer; white-space:nowrap;">{{ f.label }}</button>
+          </sc-for>
+        </div>
+      </sc-if>
+      <div style="display:flex; gap:2px; padding:3px; border-radius:12px; background:var(--law-surface-2);">
+        <sc-for list="{{ structSeg }}" as="f" hint-placeholder-count="2">
+          <button onClick="{{ f.pick }}" style="height:32px; padding:0 12px; border-radius:9px; border:none; background:{{ f.bg }}; color:{{ f.fg }}; box-shadow:{{ f.shadow }}; font-size:12.5px; font-weight:600; cursor:pointer; white-space:nowrap;">{{ f.label }}</button>
+        </sc-for>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <span style="font-size:13px; font-weight:600; white-space:nowrap;">{{ visLabel }}</span>
+        <button onClick="{{ togglePublic }}" title="عمومي / خاص" style="width:46px; height:28px; border-radius:999px; border:none; padding:3px; background:{{ visBg }}; cursor:pointer; display:flex; transition:background 0.25s;"><span style="width:22px; height:22px; border-radius:999px; background:#ffffff; box-shadow:0 2px 4px rgba(0,0,0,0.25); transform:{{ visKnob }}; transition:transform 0.35s cubic-bezier(0.34,1.56,0.64,1);"></span></button>
+      </div>
+      <button onClick="{{ startEdit }}" style="height:36px; padding:0 14px; border-radius:11px; border:1.5px solid var(--law-line-strong); background:var(--law-surface); font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 3px 0 var(--law-line-strong); white-space:nowrap;" style-active="transform:translateY(3px); box-shadow:0 0 0 var(--law-line-strong);">⚙ طريقة التعلم</button>
+      <sc-if value="{{ cur.isPublic }}" hint-placeholder-val="{{ false }}">
+        <div style="flex-basis:100%; display:flex; flex-wrap:wrap; align-items:center; gap:10px 12px; padding:10px 14px; border-radius:14px; background:var(--law-accent-tint); font-size:13px; animation:talibSpring 0.4s ease-out both;">
+          <span style="flex:1 1 240px;">مادتك عمومية: تظهر في ملفك الشخصي وفي الملتقى، ويمكن لزملائك اقتراح تعديلات تقبلها أو ترفضها.</span>
+          <button onClick="{{ pubAction.run }}" style="height:34px; padding:0 14px; border-radius:10px; border:none; background:var(--law-accent); color:#ffffff; font-size:12.5px; font-weight:700; cursor:pointer; box-shadow:0 3px 0 var(--law-accent-deep); white-space:nowrap;" style-active="transform:translateY(3px); box-shadow:0 0 0 var(--law-accent-deep);">{{ pubAction.label }}</button>
+        </div>
+      </sc-if>
+    </section>
+
+    <dc-import name="TalibBranch" branch="{{ cur.branch }}" compact="{{ true }}" hint-size="100%,220px"></dc-import>
+    <sc-if value="{{ isLearnTab }}" hint-placeholder-val="{{ true }}">
+    <div style="display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start;">
+      <section style="flex:1 1 520px; min-width:0; display:flex; gap:20px; flex-wrap:wrap; padding:var(--pad, 22px); background:var(--law-surface); border-radius:22px; border:1px solid var(--law-line); box-shadow:var(--law-shadow);">
+
+        <div style="flex:0 0 180px; display:flex; flex-direction:column;">
+          <sc-if value="{{ isSessions }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex; flex-direction:column; gap:14px; padding:6px 0 10px;">
+              <sc-for list="{{ pathNodes }}" as="n" hint-placeholder-count="6">
+                <div style="display:flex; flex-direction:column; align-items:center; gap:6px; width:110px; margin-inline-start:{{ n.offset }};">
+                  <button onClick="{{ n.pick }}" title="{{ n.title }}" style="width:62px; height:58px; border-radius:999px; border:none; background:{{ n.bg }}; color:{{ n.fg }}; font-size:20px; font-weight:700; font-family:'IBM Plex Mono', monospace; cursor:pointer; box-shadow:0 6px 0 {{ n.edge }}, 0 0 0 {{ n.ring }} var(--law-accent-tint); transition:transform 120ms, box-shadow 120ms;" style-active="transform:translateY(6px); box-shadow:0 0 0 {{ n.edge }};">{{ n.glyph }}</button>
+                  <span style="font-size:11.5px; line-height:1.4; text-align:center; color:{{ n.labelFg }}; font-weight:600;">{{ n.short }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ isAxes }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex; flex-direction:column; gap:14px;">
+              <sc-for list="{{ axesTree }}" as="g" hint-placeholder-count="2">
+                <div>
+                  <div style="font-size:12px; font-weight:700; color:var(--law-muted); padding:0 8px 4px;">{{ g.h }}</div>
+                  <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="2">
+                    <button onClick="{{ it.pick }}" style="display:flex; align-items:center; gap:8px; width:100%; padding:8px; border-radius:10px; border:none; background:{{ it.bg }}; color:{{ it.fg }}; font-size:13px; font-weight:600; text-align:right; cursor:pointer; line-height:1.5;"><span style="width:16px; flex-shrink:0; color:var(--law-accent-light);">{{ it.mark }}</span><span>{{ it.label }}</span></button>
+                  </sc-for>
+                </div>
+              </sc-for>
+              <button onClick="{{ openCompose }}" style="height:36px; border-radius:11px; border:1.5px dashed var(--law-line-strong); background:transparent; color:var(--law-muted); font-size:12.5px; font-weight:700; cursor:pointer;">+ حصة جديدة</button>
+            </div>
+          </sc-if>
+        </div>
+
+        <article style="flex:1 1 260px; min-width:0; display:flex; flex-direction:column; gap:18px; animation:talibFade 0.35s ease-out both;">
+          <sc-if value="{{ showCompose }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:28px 22px; border-radius:20px; background:var(--law-surface-2); display:flex; flex-direction:column; align-items:center; gap:12px; text-align:center; animation:talibSpring 0.4s ease-out both;">
+              <span style="width:56px; height:56px; border-radius:18px; background:var(--law-accent); color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:24px; box-shadow:0 4px 0 var(--law-accent-deep);">✦</span>
+              <h2 style="font-size:19px; font-weight:700;">{{ composeTitle }}</h2>
+              <p style="font-size:13.5px; color:var(--law-muted); max-width:420px; text-wrap:pretty;">اكتب موضوع الحصة أو عنوان المحاضرة، وسيصوغها المساعد بطريقتك: {{ fmtList }}.</p>
+              <div style="display:flex; gap:8px; width:100%; max-width:460px; flex-wrap:wrap; padding-bottom:var(--depth, 4px);">
+                <input type="text" value="{{ genTopic }}" onChange="{{ onGenTopic }}" onKeyDown="{{ onGenKey }}" placeholder="مثلاً: عقد الشغل وعناصره" style="flex:1 1 200px; min-width:0; height:46px; border-radius:14px; border:1px solid var(--law-line-strong); background:var(--law-surface); padding:0 14px; font-size:14.5px; outline:none;" style-focus="border-color:var(--law-accent);"></input>
+                <button onClick="{{ generate }}" disabled="{{ genBusy }}" style="height:46px; padding:0 18px; border-radius:14px; border:none; background:var(--law-accent); color:#ffffff; font-size:14px; font-weight:700; cursor:pointer; box-shadow:0 var(--depth, 4px) 0 var(--law-accent-deep); white-space:nowrap;" style-active="transform:translateY(var(--depth, 4px)); box-shadow:0 0 0 var(--law-accent-deep);">{{ genLabel }}</button>
+              </div>
+              <sc-if value="{{ canCancelCompose }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ closeCompose }}" style="border:none; background:transparent; color:var(--law-muted); font-size:13px; font-weight:600; cursor:pointer;">رجوع إلى الحصة</button>
+              </sc-if>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ showUnit }}" hint-placeholder-val="{{ true }}">
+            <div>
+              <div style="font-size:12.5px; font-weight:700; color:var(--law-accent-light);">{{ unit.kicker }}</div>
+              <h2 style="font-size:22px; font-weight:700; line-height:1.45; margin-top:2px;">{{ unit.title }}</h2>
+              <div style="display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-top:8px;">
+                <span style="font-size:12px; font-weight:600; padding:2px 10px; border-radius:999px; background:var(--law-gold-tint); color:var(--law-gold); white-space:nowrap;">⚖️ {{ unit.ref }}</span>
+                <span title="{{ unit.originTip }}" style="font-size:12px; font-weight:600; padding:2px 10px; border-radius:999px; background:{{ unit.originBg }}; color:{{ unit.originFg }}; white-space:nowrap;">{{ unit.origin }}</span>
+                <sc-if value="{{ canEditUnit }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ startUnitEdit }}" style="height:28px; padding:0 12px; border-radius:999px; border:1.5px solid var(--law-line-strong); background:var(--law-surface); color:var(--law-text); font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap;" style-hover="border-color:var(--law-accent); color:var(--law-accent-light);">✎ عدّل بيدك</button>
+                </sc-if>
+              </div>
+            </div>
+
+            <sc-if value="{{ unit.pending }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:26px 22px; border-radius:20px; background:var(--law-surface-2); display:flex; flex-direction:column; align-items:center; gap:12px; text-align:center; animation:talibSpring 0.4s ease-out both;">
+                <span style="width:54px; height:54px; border-radius:17px; background:var(--law-accent); color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:23px; box-shadow:0 4px 0 var(--law-accent-deep); animation:{{ fillAnim }};">✦</span>
+                <div style="font-size:16.5px; font-weight:700;">{{ fillTitle }}</div>
+                <p style="font-size:13.5px; color:var(--law-muted); max-width:440px; text-wrap:pretty;">{{ fillText }}</p>
+                <button onClick="{{ fillUnit }}" disabled="{{ genBusy }}" style="height:46px; padding:0 22px; margin-bottom:var(--depth, 4px); border-radius:14px; border:none; background:var(--law-accent); color:#ffffff; font-size:14.5px; font-weight:700; cursor:pointer; box-shadow:0 var(--depth, 4px) 0 var(--law-accent-deep);" style-active="transform:translateY(var(--depth, 4px)); box-shadow:0 0 0 var(--law-accent-deep);">{{ fillLabel }}</button>
+              </div>
+            </sc-if>
+            <sc-if value="{{ ed.active }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex; flex-direction:column; gap:14px; padding:18px; border-radius:20px; border:2px solid var(--law-accent); background:var(--law-surface); animation:talibSpring 0.4s ease-out both;">
+                <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px;">
+                  <span style="font-size:14px; font-weight:700; color:var(--law-accent-light);">✎ تعديل الحصة بيدك</span>
+                  <span style="font-size:12px; color:var(--law-muted);">أو اطلب التعديل من المساعد في المحادثة</span>
+                </div>
+                <label style="display:flex; flex-direction:column; gap:6px; font-size:12.5px; font-weight:700;">العنوان<input type="text" value="{{ ed.title }}" onChange="{{ ed.onTitle }}" style="height:44px; border-radius:12px; border:1px solid var(--law-line-strong); background:var(--law-surface-2); padding:0 14px; font-size:15px; font-weight:600; outline:none;" style-focus="border-color:var(--law-accent);"></input></label>
+                <label style="display:flex; flex-direction:column; gap:6px; font-size:12.5px; font-weight:700;">السند القانوني<input type="text" value="{{ ed.ref }}" onChange="{{ ed.onRef }}" placeholder="مثلاً: ف.77 · ف.78 ق.ل.ع" style="height:40px; border-radius:12px; border:1px solid var(--law-line-strong); background:var(--law-surface-2); padding:0 14px; font-size:14px; outline:none;" style-focus="border-color:var(--law-accent);"></input></label>
+                <label style="display:flex; flex-direction:column; gap:6px; font-size:12.5px; font-weight:700;">المقدمة<textarea rows="2" value="{{ ed.intro }}" onChange="{{ ed.onIntro }}" style="border-radius:12px; border:1px solid var(--law-line-strong); background:var(--law-surface-2); padding:10px 14px; font-size:14px; line-height:1.8; outline:none; resize:vertical;" style-focus="border-color:var(--law-accent);"></textarea></label>
+                <sc-for list="{{ ed.items }}" as="b" hint-placeholder-count="3">
+                  <div style="display:flex; flex-direction:column; gap:8px; padding:14px; border-radius:16px; background:var(--law-surface-2);">
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      <span style="width:26px; height:26px; border-radius:8px; background:var(--law-accent); color:#ffffff; font-family:'IBM Plex Mono', monospace; font-size:12.5px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">{{ b.n }}</span>
+                      <input type="text" value="{{ b.t }}" onChange="{{ b.onT }}" placeholder="عنوان العنصر" style="flex:1; min-width:0; height:38px; border-radius:10px; border:1px solid var(--law-line-strong); background:var(--law-surface); padding:0 12px; font-size:14px; font-weight:700; outline:none;" style-focus="border-color:var(--law-accent);"></input>
+                      <button onClick="{{ b.up }}" title="للأعلى" disabled="{{ b.first }}" style="width:32px; height:32px; border-radius:9px; border:none; background:var(--law-surface); cursor:pointer; opacity:{{ b.upOp }};">↑</button>
+                      <button onClick="{{ b.down }}" title="للأسفل" disabled="{{ b.last }}" style="width:32px; height:32px; border-radius:9px; border:none; background:var(--law-surface); cursor:pointer; opacity:{{ b.downOp }};">↓</button>
+                      <button onClick="{{ b.remove }}" title="حذف" style="width:32px; height:32px; border-radius:9px; border:none; background:var(--law-surface); color:var(--law-danger); cursor:pointer;">✕</button>
+                    </div>
+                    <input type="text" value="{{ b.s }}" onChange="{{ b.onS }}" placeholder="تلخيص في سطر" style="height:36px; border-radius:10px; border:1px solid var(--law-line-strong); background:var(--law-surface); padding:0 12px; font-size:13.5px; outline:none;" style-focus="border-color:var(--law-accent);"></input>
+                    <textarea rows="2" value="{{ b.d }}" onChange="{{ b.onD }}" placeholder="الشرح" style="border-radius:10px; border:1px solid var(--law-line-strong); background:var(--law-surface); padding:8px 12px; font-size:13.5px; line-height:1.8; outline:none; resize:vertical;" style-focus="border-color:var(--law-accent);"></textarea>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                      <input type="text" value="{{ b.ref }}" onChange="{{ b.onRef }}" placeholder="السند: ف.77" style="flex:1 1 120px; min-width:0; height:36px; border-radius:10px; border:1px solid var(--law-line-strong); background:var(--law-surface); padding:0 12px; font-size:13px; outline:none;" style-focus="border-color:var(--law-accent);"></input>
+                      <input type="text" value="{{ b.ex }}" onChange="{{ b.onEx }}" placeholder="مثال تطبيقي" style="flex:3 1 200px; min-width:0; height:36px; border-radius:10px; border:1px solid var(--law-line-strong); background:var(--law-surface); padding:0 12px; font-size:13px; outline:none;" style-focus="border-color:var(--law-accent);"></input>
+                    </div>
+                  </div>
+                </sc-for>
+                <button onClick="{{ ed.add }}" style="height:42px; border-radius:13px; border:2px dashed var(--law-line-strong); background:transparent; color:var(--law-muted); font-size:13.5px; font-weight:700; cursor:pointer;" style-hover="border-color:var(--law-accent); color:var(--law-accent-light);">+ عنصر جديد</button>
+                <div style="display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px; padding-bottom:var(--depth, 4px);">
+                  <sc-if value="{{ ed.canRestore }}" hint-placeholder-val="{{ false }}">
+                    <button onClick="{{ ed.restore }}" style="height:44px; padding:0 14px; margin-inline-end:auto; border-radius:13px; border:none; background:transparent; color:var(--law-muted); font-size:13px; font-weight:700; cursor:pointer;">↺ استرجع النسخة الأصلية</button>
+                  </sc-if>
+                  <button onClick="{{ ed.cancel }}" style="height:44px; padding:0 18px; border-radius:13px; border:1.5px solid var(--law-line-strong); background:var(--law-surface); font-size:14px; font-weight:700; cursor:pointer; box-shadow:0 var(--depth, 4px) 0 var(--law-line-strong);" style-active="transform:translateY(var(--depth, 4px)); box-shadow:0 0 0 var(--law-line-strong);">إلغاء</button>
+                  <button onClick="{{ ed.save }}" style="height:44px; padding:0 22px; border-radius:13px; border:none; background:var(--law-accent); color:#ffffff; font-size:14px; font-weight:700; cursor:pointer; box-shadow:0 var(--depth, 4px) 0 var(--law-accent-deep);" style-active="transform:translateY(var(--depth, 4px)); box-shadow:0 0 0 var(--law-accent-deep);">حفظ التعديلات</button>
+                </div>
+              </div>
+            </sc-if>
+            <sc-for list="{{ blocks }}" as="blk" hint-placeholder-count="1">
+              <div style="display:flex; flex-direction:column; gap:12px;">
+                <sc-if value="{{ blk.showHead }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; align-items:center; gap:8px; padding-top:6px;">
+                    <span style="width:26px; height:26px; border-radius:8px; background:var(--law-accent-tint); display:flex; align-items:center; justify-content:center; color:var(--law-accent-light);"><dc-import name="TalibIcon" icon="{{ blk.icon }}" style="width:15px; height:15px;" hint-size="15px,15px"></dc-import></span>
+                    <span style="font-size:13.5px; font-weight:700;">{{ blk.label }}</span>
+                    <span style="flex:1; height:1px; background:var(--law-line);"></span>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ blk.isTree }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:flex; flex-direction:column; align-items:center; padding:4px 0;">
+                    <div style="padding:12px 20px; border-radius:16px; background:var(--law-accent); color:#ffffff; font-weight:700; font-size:15px; text-align:center; box-shadow:0 4px 0 var(--law-accent-deep);">{{ unit.title }}</div>
+                    <div style="width:2px; height:20px; background:var(--law-line-strong);"></div>
+                    <div style="position:relative; width:100%; display:grid; grid-template-columns:{{ treeCols }}; gap:10px;">
+                      <div style="position:absolute; top:0; left:{{ treeInset }}; right:{{ treeInset }}; height:2px; background:var(--law-line-strong);"></div>
+                      <sc-for list="{{ unit.branches }}" as="b" hint-placeholder-count="3">
+                        <div style="display:flex; flex-direction:column; align-items:center;">
+                          <div style="width:2px; height:18px; background:var(--law-line-strong);"></div>
+                          <div style="width:100%; padding:12px; border-radius:14px; background:var(--law-surface-2); border:1.5px solid var(--law-line-strong); text-align:center;">
+                            <div style="font-size:14px; font-weight:700; line-height:1.5;">{{ b.t }}</div>
+                            <div style="font-size:11px; font-weight:600; color:var(--law-gold); margin-top:4px;">{{ b.ref }}</div>
+                          </div>
+                          <div style="width:2px; height:14px; background:var(--law-line-strong);"></div>
+                          <div style="width:100%; padding:10px; border-radius:12px; border:1.5px dashed var(--law-line-strong); font-size:12.5px; line-height:1.6; color:var(--law-muted); text-align:center;">{{ b.s }}</div>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ blk.isTable }}" hint-placeholder-val="{{ false }}">
+                  <div style="border-radius:16px; overflow:hidden; border:1px solid var(--law-line-strong);">
+                    <table style="width:100%; border-collapse:collapse; font-size:13.5px; line-height:1.7;">
+                      <thead><tr style="background:var(--law-surface-2);"><th style="text-align:right; padding:10px 14px; font-weight:700; width:26%;">العنصر</th><th style="text-align:right; padding:10px 14px; font-weight:700;">المضمون</th><th style="text-align:right; padding:10px 14px; font-weight:700; width:18%;">السند</th></tr></thead>
+                      <tbody>
+                        <sc-for list="{{ unit.branches }}" as="b" hint-placeholder-count="3">
+                          <tr style="border-top:1px solid var(--law-line-strong);"><td style="padding:12px 14px; font-weight:700; vertical-align:top;">{{ b.t }}</td><td style="padding:12px 14px; color:var(--law-muted); vertical-align:top;">{{ b.d }}</td><td style="padding:12px 14px; vertical-align:top; color:var(--law-gold); font-weight:600; white-space:nowrap;">{{ b.ref }}</td></tr>
+                        </sc-for>
+                      </tbody>
+                    </table>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ blk.isFull }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; flex-direction:column; gap:12px; font-family:'Noto Naskh Arabic', serif; font-size:17px; line-height:2.05; text-wrap:pretty;">
+                    <p>{{ unit.intro }}</p>
+                    <sc-for list="{{ unit.branches }}" as="b" hint-placeholder-count="3">
+                      <p><strong style="font-family:'IBM Plex Sans Arabic', sans-serif; font-size:15.5px;">{{ b.t }}: </strong>{{ b.d }} <span style="color:var(--law-gold); font-size:14px;">({{ b.ref }})</span></p>
+                    </sc-for>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ blk.isBrief }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; flex-direction:column; gap:8px;">
+                    <sc-for list="{{ unit.branches }}" as="b" hint-placeholder-count="3">
+                      <div style="display:flex; align-items:baseline; gap:10px; padding:11px 14px; border-radius:14px; background:var(--law-surface-2);">
+                        <span style="color:var(--law-gold);">⚡</span>
+                        <span style="font-size:14.5px; line-height:1.7;"><strong>{{ b.t }}</strong> — {{ b.s }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ blk.isDetailed }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; flex-direction:column; gap:12px;">
+                    <p style="font-size:15px; line-height:1.9; color:var(--law-muted);">{{ unit.intro }}</p>
+                    <sc-for list="{{ unit.branches }}" as="b" hint-placeholder-count="3">
+                      <div style="padding:16px; border-radius:16px; border:1.5px solid var(--law-line-strong);">
+                        <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+                          <span style="font-size:15.5px; font-weight:700;">{{ b.t }}</span>
+                          <span style="font-size:11.5px; font-weight:600; color:var(--law-gold); white-space:nowrap;">{{ b.ref }}</span>
+                        </div>
+                        <p style="font-size:14.5px; line-height:1.85; color:var(--law-muted); margin-top:6px;">{{ b.d }}</p>
+                        <div style="margin-top:10px; padding:10px 12px; border-radius:12px; background:var(--law-accent-tint); font-size:13.5px; line-height:1.75;"><strong style="color:var(--law-accent-light);">مثال: </strong>{{ b.ex }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ blk.isCards }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); gap:12px;">
+                    <sc-for list="{{ blk.cards }}" as="c" hint-placeholder-count="3">
+                      <button onClick="{{ c.flip }}" style="position:relative; height:150px; border:none; padding:0; background:transparent; cursor:pointer; perspective:900px;">
+                        <span style="position:absolute; inset:0; display:block; transform-style:preserve-3d; transform:{{ c.rot }}; transition:transform 0.6s cubic-bezier(0.34,1.4,0.64,1);">
+                          <span style="position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; padding:14px; border-radius:18px; background:var(--law-surface-2); border:2px solid var(--law-line-strong); box-shadow:0 4px 0 var(--law-line-strong);">
+                            <span style="font-size:15px; font-weight:700; line-height:1.5; color:var(--law-text);">{{ c.front }}</span>
+                            <span style="font-size:11px; color:var(--law-muted);">اضغط لقلب البطاقة</span>
+                          </span>
+                          <span style="position:absolute; inset:0; backface-visibility:hidden; -webkit-backface-visibility:hidden; transform:rotateY(180deg); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; padding:14px; border-radius:18px; background:var(--law-accent); color:#ffffff; box-shadow:0 4px 0 var(--law-accent-deep);">
+                            <span style="font-size:14px; font-weight:600; line-height:1.6;">{{ c.back }}</span>
+                            <span style="font-size:11.5px; font-weight:700; opacity:0.85;">{{ c.ref }}</span>
+                          </span>
+                        </span>
+                      </button>
+                    </sc-for>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ blk.isQa }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; flex-direction:column; gap:8px;">
+                    <sc-for list="{{ blk.qa }}" as="q" hint-placeholder-count="3">
+                      <div style="border-radius:16px; border:1.5px solid var(--law-line-strong); overflow:hidden;">
+                        <button onClick="{{ q.toggle }}" style="display:flex; align-items:center; gap:10px; width:100%; padding:13px 16px; border:none; background:var(--law-surface); text-align:right; cursor:pointer;">
+                          <span style="width:26px; height:26px; border-radius:8px; background:var(--law-gold-tint); color:var(--law-gold); font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0;">س</span>
+                          <span style="flex:1; font-size:14.5px; font-weight:700; color:var(--law-text);">{{ q.q }}</span>
+                          <span style="color:var(--law-muted); transform:{{ q.chev }}; transition:transform 0.3s;">⌄</span>
+                        </button>
+                        <sc-if value="{{ q.open }}" hint-placeholder-val="{{ false }}">
+                          <div style="display:flex; gap:10px; padding:0 16px 14px; animation:talibFade 0.25s ease-out both;">
+                            <span style="width:26px; height:26px; border-radius:8px; background:var(--law-accent-tint); color:var(--law-accent-light); font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0;">ج</span>
+                            <span style="font-size:14px; line-height:1.85; color:var(--law-muted);">{{ q.a }} <span style="color:var(--law-gold); font-weight:600;">({{ q.ref }})</span></span>
+                          </div>
+                        </sc-if>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-for>
+
+            <sc-if value="{{ m.active }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:20px; border-radius:20px; border:2px solid var(--law-accent); background:var(--law-surface); display:flex; flex-direction:column; gap:12px; animation:talibSpring 0.4s ease-out both;">
+                <div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">
+                  <span style="font-size:13px; font-weight:700; color:var(--law-accent-light); white-space:nowrap;">تحقق من فهمك · <bdi dir="ltr" style="font-family:'IBM Plex Mono', monospace; white-space:nowrap;">{{ m.count }}</bdi></span>
+                  <button onClick="{{ m.cancel }}" style="border:none; background:transparent; color:var(--law-muted); font-size:12.5px; font-weight:700; cursor:pointer;">لاحقاً</button>
+                </div>
+                <div style="font-size:16.5px; font-weight:700; line-height:1.6;">{{ m.q }}</div>
+                <div style="display:flex; flex-direction:column; gap:8px; padding-bottom:4px;">
+                  <sc-for list="{{ m.options }}" as="o" hint-placeholder-count="3">
+                    <button onClick="{{ o.pick }}" disabled="{{ o.locked }}" style="min-height:48px; padding:10px 14px; border-radius:14px; border:2px solid {{ o.border }}; background:{{ o.bg }}; color:var(--law-text); font-size:14px; font-weight:600; line-height:1.6; text-align:right; cursor:pointer; box-shadow:0 4px 0 {{ o.edge }};" style-active="transform:translateY(4px); box-shadow:0 0 0 transparent;">{{ o.text }}</button>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ m.answered }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding:12px 14px; border-radius:14px; background:{{ m.fbBg }}; animation:talibFade 0.25s ease-out both;">
+                    <span style="flex:1 1 200px; font-size:13.5px; line-height:1.7;"><strong style="color:{{ m.fbFg }};">{{ m.verdict }}</strong> {{ m.why }}</span>
+                    <button onClick="{{ m.next }}" style="height:40px; padding:0 18px; margin-bottom:3px; border-radius:12px; border:none; background:{{ m.nextBg }}; color:#ffffff; font-size:13.5px; font-weight:700; cursor:pointer; box-shadow:0 3px 0 {{ m.nextEdge }};" style-active="transform:translateY(3px); box-shadow:0 0 0 transparent;">{{ m.nextLabel }}</button>
+                  </div>
+                </sc-if>
+              </div>
+            </sc-if>
+            <div style="display:flex; flex-wrap:wrap; align-items:center; gap:10px; padding-top:6px; padding-bottom:var(--depth, 4px);">
+              <button onClick="{{ completeUnit }}" style="height:46px; padding:0 22px; border-radius:14px; border:none; background:{{ doneBtn.bg }}; color:{{ doneBtn.fg }}; font-size:14.5px; font-weight:700; cursor:pointer; box-shadow:0 var(--depth, 4px) 0 {{ doneBtn.edge }}; transition:transform 120ms, box-shadow 120ms;" style-active="transform:translateY(var(--depth, 4px)); box-shadow:0 0 0 transparent;">{{ doneBtn.label }}</button>
+              <button onClick="{{ askQuiz }}" style="height:46px; padding:0 18px; border-radius:14px; border:1.5px solid var(--law-line-strong); background:var(--law-surface); font-size:14px; font-weight:700; cursor:pointer; box-shadow:0 var(--depth, 4px) 0 var(--law-line-strong); transition:transform 120ms, box-shadow 120ms;" style-active="transform:translateY(var(--depth, 4px)); box-shadow:0 0 0 var(--law-line-strong);">«شنو فهمت؟»</button>
+              <button onClick="{{ reportError }}" title="بلّغ عن خطأ في هذا المحتوى" style="height:46px; padding:0 14px; border-radius:14px; border:none; background:transparent; color:var(--law-muted); font-size:13px; font-weight:700; cursor:pointer;" style-hover="color:var(--law-danger);">⚑ بلّغ عن خطأ</button>
+            </div>
+          </sc-if>
+        </article>
+      </section>
+
+      <aside style="flex:1 1 300px; max-width:400px; min-width:0; display:flex; flex-direction:column; background:var(--law-surface); border-radius:22px; border:1px solid var(--law-line); box-shadow:var(--law-shadow); overflow:hidden;">
+        <div style="display:flex; align-items:center; gap:12px; padding:16px 18px; border-bottom:1px solid var(--law-line);">
+          <span style="width:38px; height:38px; border-radius:12px; background:var(--law-accent); color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:18px; box-shadow:0 3px 0 var(--law-accent-deep);">✦</span>
+          <div style="flex:1; line-height:1.35;">
+            <div style="font-size:15px; font-weight:700;">مساعد طالب</div>
+            <div style="font-size:12px; color:var(--law-muted);">{{ agentSub }}</div>
+          </div>
+        </div>
+        <div ref="{{ chatRef }}" style="display:flex; flex-direction:column; gap:10px; padding:16px; height:420px; overflow-y:auto;">
+          <sc-for list="{{ messages }}" as="m" hint-placeholder-count="1">
+            <sc-if value="{{ m.isAgent }}" hint-placeholder-val="{{ true }}">
+              <div style="align-self:flex-start; max-width:88%; padding:10px 14px; border-radius:18px 18px 18px 6px; background:var(--law-surface-2); font-size:14px; line-height:1.8; white-space:pre-wrap; animation:talibSpring 0.35s ease-out both;">{{ m.text }}</div>
+            </sc-if>
+            <sc-if value="{{ m.isUser }}" hint-placeholder-val="{{ false }}">
+              <div style="align-self:flex-end; max-width:85%; padding:10px 14px; border-radius:18px 18px 6px 18px; background:var(--law-accent); color:#ffffff; font-size:14px; line-height:1.8; white-space:pre-wrap;">{{ m.text }}</div>
+            </sc-if>
+            <sc-if value="{{ m.isNote }}" hint-placeholder-val="{{ false }}">
+              <div style="align-self:center; padding:4px 12px; border-radius:999px; background:var(--law-gold-tint); color:var(--law-gold); font-size:12px; font-weight:600; text-align:center;">{{ m.text }}</div>
+            </sc-if>
+          </sc-for>
+          <sc-if value="{{ busy }}" hint-placeholder-val="{{ false }}">
+            <div style="align-self:flex-start; padding:10px 14px; border-radius:18px; background:var(--law-surface-2); font-size:13px; color:var(--law-muted);">المساعد يكتب…</div>
+          </sc-if>
+        </div>
+        <div style="display:flex; gap:6px; flex-wrap:wrap; padding:0 16px 12px;">
+          <sc-for list="{{ suggestions }}" as="s" hint-placeholder-count="3">
+            <button onClick="{{ s.send }}" style="padding:5px 12px; border-radius:999px; border:1.5px solid var(--law-line-strong); background:var(--law-surface); font-size:12px; font-weight:600; cursor:pointer;" style-hover="border-color:var(--law-accent); color:var(--law-accent-light);">{{ s.label }}</button>
+          </sc-for>
+        </div>
+        <div style="display:flex; gap:8px; padding:12px 16px 16px; border-top:1px solid var(--law-line);">
+          <input type="text" value="{{ input }}" onChange="{{ onInput }}" onKeyDown="{{ onKeyDown }}" placeholder="اطلب أي تغيير أو اسأل عن الدرس…" style="flex:1; min-width:0; height:42px; border-radius:999px; border:1px solid var(--law-line-strong); background:var(--law-surface-2); padding:0 16px; font-size:14px; outline:none;" style-focus="border-color:var(--law-accent);"></input>
+          <button onClick="{{ sendInput }}" style="width:42px; height:42px; border-radius:999px; border:none; background:var(--law-accent); color:#ffffff; font-size:16px; cursor:pointer; box-shadow:0 3px 0 var(--law-accent-deep); flex-shrink:0;" style-active="transform:translateY(3px); box-shadow:0 0 0 var(--law-accent-deep);">↑</button>
+        </div>
+      </aside>
+    </div>
+    </sc-if>
+  </sc-if>
+
+  <sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; bottom:28px; left:50%; transform:translateX(-50%); z-index:90; padding:12px 20px; border-radius:999px; background:var(--law-text); color:var(--law-bg); font-size:14px; font-weight:600; box-shadow:var(--law-shadow-pop); animation:talibSpring 0.4s ease-out both;">{{ toast }}</div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;onNavigate&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(view: string) =&gt; void&quot;},&quot;onXp&quot;:{&quot;editor&quot;:null,&quot;tsType&quot;:&quot;(n: number, label: string) =&gt; void&quot;}}">
+class Component extends DCLogic {
+  FORMATS = [
+    ['tree', 'tree', 'خطاطات شجرية', 'كل مفهوم يتفرع إلى عناصره', 'خطاطات'],
+    ['table', 'table', 'جداول', 'العنصر، المضمون، السند', 'جداول'],
+    ['full', 'full', 'ملخص شامل', 'الدرس في نص واحد مترابط', 'شامل'],
+    ['brief', 'brief', 'ملخص موجز', 'الأفكار الأساسية في سطور', 'موجز'],
+    ['detailed', 'detailed', 'شرح مفصل مع أمثلة', 'كل فكرة مع مثال تطبيقي', 'مفصل'],
+    ['cards', 'cards', 'بطاقات مراجعة', 'مفهوم في الوجه، وتعريفه في الظهر', 'بطاقات'],
+    ['qa', 'qa', 'سؤال وجواب', 'أسئلة امتحانية مع أجوبتها', 'س/ج']
+  ];
+  STRUCTS = [
+    ['sessions', '🎯', 'حسب الحصص', 'مسار حصة بحصة مع تتبع التقدم', 'حصص'],
+    ['axes', '🗂️', 'حسب المحاور والمباحث', 'التقسيم الأكاديمي كما في المطبوع', 'محاور']
+  ];
+  COLORS = ['#1f8a5b', '#3b6fc4', '#c4683f', '#8b6cf0', '#c79a2e', '#1aa3a3'];
+  SEMS = ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'ماستر'];
+  SRC = {
+    civil: [
+      { id: 'intro', title: 'مفهوم المسؤولية المدنية وأنواعها', short: 'المفهوم والأنواع', ref: 'ف.77 · ف.263', intro: 'المسؤولية المدنية هي التزام شخص بتعويض الضرر الذي ألحقه بالغير، وتنقسم في ق.ل.ع إلى مسؤولية تقصيرية ومسؤولية عقدية.', branches: [
+        { t: 'المسؤولية التقصيرية', s: 'إخلال بواجب قانوني عام', d: 'تقوم عند الإضرار بالغير خارج أي رابطة عقدية، وأساسها الفصل 77 وما يليه من ق.ل.ع.', ref: 'ف.77', ex: 'سائق يصدم راجلاً فيلتزم بتعويضه رغم عدم وجود عقد بينهما.' },
+        { t: 'المسؤولية العقدية', s: 'إخلال بالتزام تعاقدي', d: 'تقوم عند عدم تنفيذ المدين لالتزامه أو تأخره فيه، وينظمها الفصل 263 وما بعده.', ref: 'ف.263', ex: 'مقاول يتأخر في تسليم بناية عن الأجل المتفق عليه.' },
+        { t: 'الأركان المشتركة', s: 'خطأ، ضرر، علاقة سببية', d: 'لا تقوم المسؤولية بنوعيها إلا باجتماع ثلاثة أركان: الخطأ والضرر والعلاقة السببية بينهما.', ref: 'ف.77 · ف.78', ex: 'إذا انتفى أحد الأركان، كغياب الضرر، فلا تعويض.' }] },
+      { id: 'fault', title: 'الخطأ', short: 'الخطأ', ref: 'ف.77 · ف.78', intro: 'الخطأ هو الركن الأول للمسؤولية، ويتحقق بالإخلال بواجب قانوني مع الإدراك.', branches: [
+        { t: 'الخطأ العمدي', s: 'فعل عن بينة واختيار', d: 'يقصد فيه الفاعل إحداث الضرر أو يقدم على الفعل عن بينة واختيار، وهو ما يقرره الفصل 77.', ref: 'ف.77', ex: 'شخص يكسر عمداً واجهة محل جاره.' },
+        { t: 'الخطأ غير العمدي', s: 'إهمال أو عدم تبصر', d: 'يتحقق بالإهمال أو عدم الحيطة دون قصد الإضرار، ويجعل صاحبه مسؤولاً متى كان السبب المباشر في الضرر.', ref: 'ف.78', ex: 'صاحب ورش يترك حفرة دون إشارة فيسقط فيها أحد المارة.' },
+        { t: 'معيار الخطأ', s: 'سلوك الشخص العادي', d: 'يقاس سلوك الفاعل بسلوك الشخص العادي المتبصر لو وجد في نفس الظروف.', ref: 'ف.78', ex: 'طبيب يخالف الأصول المستقرة في مهنته يعد مخطئاً.' }] },
+      { id: 'damage', title: 'الضرر', short: 'الضرر', ref: 'ف.77 · ف.98', intro: 'لا مسؤولية دون ضرر، فهو مناط التعويض ومقياسه.', branches: [
+        { t: 'الضرر المادي', s: 'مساس بالذمة المالية أو بالجسد', d: 'يشمل الخسارة الفعلية والمصروفات الضرورية وما فات المتضرر من كسب.', ref: 'ف.98', ex: 'مصاريف علاج ضحية حادثة وأجرها الضائع خلال مدة العجز.' },
+        { t: 'الضرر المعنوي', s: 'مساس بالشعور أو السمعة', d: 'يعوض عنه القانون المغربي صراحة، إذ يشير الفصل 77 إلى الضرر المادي أو المعنوي.', ref: 'ف.77', ex: 'التشهير بشخص على وسائل التواصل الاجتماعي.' },
+        { t: 'شروط الضرر', s: 'محقق، مباشر، شخصي', d: 'يشترط أن يكون الضرر محقق الوقوع ومباشراً وأن يصيب المدعي شخصياً، فلا تعويض عن الضرر الاحتمالي.', ref: 'ف.98', ex: 'لا يعوض تاجر عن أرباح متوهمة لا تقوم عليها أي قرينة.' }] },
+      { id: 'causation', title: 'العلاقة السببية', short: 'السببية', ref: 'ف.95', intro: 'يجب أن يكون الضرر نتيجة مباشرة للخطأ حتى يُسأل عنه الفاعل.', branches: [
+        { t: 'مفهوم السببية', s: 'الضرر نتيجة مباشرة للخطأ', d: 'تقوم العلاقة السببية متى كان الخطأ هو السبب المنتج للضرر.', ref: 'ف.77', ex: 'تسرب الماء من شقة علوية يتلف أثاث الشقة السفلية.' },
+        { t: 'السبب الأجنبي', s: 'قوة قاهرة أو حادث فجائي', d: 'تنتفي السببية إذا أثبت المدعى عليه أن الضرر نتج عن سبب أجنبي لا يد له فيه.', ref: 'ف.95', ex: 'فيضان استثنائي يجرف سيارة مركونة بشكل قانوني.' },
+        { t: 'خطأ المتضرر أو الغير', s: 'قطع رابطة السببية', d: 'قد يعفي خطأ المتضرر أو خطأ الغير من المسؤولية كلياً أو جزئياً بحسب أثره في وقوع الضرر.', ref: 'ف.95', ex: 'راجل يعبر الطريق السيار فجأة في مكان ممنوع.' }] },
+      { id: 'others', title: 'المسؤولية عن فعل الغير والأشياء', short: 'فعل الغير والأشياء', ref: 'ف.85 · ف.88', intro: 'قد يُسأل الشخص عن ضرر لم يرتكبه بنفسه، بسبب رقابته على الغير أو حراسته لشيء.', branches: [
+        { t: 'فعل الغير', s: 'الآباء، المخدومون، المعلمون', d: 'يُسأل الأب والأم عن أبنائهم القاصرين، والمخدوم عن تابعيه أثناء أداء عملهم.', ref: 'ف.85', ex: 'مشغل يُسأل عن حادثة تسبب فيها سائق شركته أثناء العمل.' },
+        { t: 'حراسة الأشياء', s: 'مسؤولية مفترضة على الحارس', d: 'يُسأل حارس الشيء عن الضرر الذي يحدثه، ما لم يثبت أنه فعل ما يلزم لمنعه وأن الضرر يرجع لسبب أجنبي.', ref: 'ف.88', ex: 'سقوط لوحة إشهارية على أحد المارة.' },
+        { t: 'الحيوان والبناء', s: 'حالات خاصة', d: 'يُسأل حارس الحيوان عن الضرر الذي يحدثه، ويُسأل مالك البناء عن انهياره الناتج عن قدمه أو عيب في صيانته.', ref: 'ف.86 · ف.89', ex: 'انهيار شرفة منزل قديم على سيارة متوقفة.' }] },
+      { id: 'exemption', title: 'الإعفاء من المسؤولية والتقادم', short: 'الإعفاء والتقادم', ref: 'ف.95 · ف.106 · ف.269', intro: 'يمكن للمسؤول دفع المسؤولية بأسباب محددة، كما تتقادم دعوى التعويض بمرور آجال معينة.', branches: [
+        { t: 'القوة القاهرة', s: 'أمر لا يمكن توقعه ولا دفعه', d: 'تعفي من التعويض إذا كانت غير متوقعة ويستحيل دفعها، ولم يسبقها خطأ من المدين.', ref: 'ف.268 · ف.269', ex: 'زلزال يمنع مقاولاً من التسليم في الأجل.' },
+        { t: 'الدفاع الشرعي', s: 'رد اعتداء حال', d: 'لا محل للمسؤولية المدنية في حالة الدفاع الشرعي متى توفرت شروطه.', ref: 'ف.95', ex: 'شخص يدفع معتدياً عنه فيسقط ويصاب.' },
+        { t: 'تقادم دعوى التعويض', s: '5 سنوات من العلم، و20 سنة كحد أقصى', d: 'تتقادم دعوى التعويض التقصيرية بخمس سنوات من علم المتضرر بالضرر وبالمسؤول عنه، وفي جميع الأحوال بعشرين سنة من وقت حدوث الضرر.', ref: 'ف.106', ex: 'متضرر علم بالمسؤول سنة 2020، فعليه رفع دعواه قبل 2025.' }] }
+    ],
+    company: [
+      { id: 'c1', title: 'عقد الشركة وأركانه', short: 'عقد الشركة', ref: 'ف.982 ق.ل.ع', intro: 'الشركة عقد يضع بمقتضاه شخصان أو أكثر أموالهم أو عملهم أو هما معاً لتكون مشتركة بينهم، بقصد تقسيم الربح الذي قد ينتج عنها.', branches: [
+        { t: 'الأركان الموضوعية العامة', s: 'الرضا، الأهلية، المحل، السبب', d: 'عقد الشركة كسائر العقود يشترط لصحته رضا الشركاء وأهليتهم ومحلاً وسبباً مشروعين.', ref: 'ف.2 ق.ل.ع', ex: 'شركة يكون محلها الاتجار في المخدرات باطلة لعدم مشروعية المحل.' },
+        { t: 'الأركان الموضوعية الخاصة', s: 'تعدد الشركاء، الحصص، نية المشاركة، اقتسام الأرباح', d: 'يتميز عقد الشركة بتعدد الشركاء (مع استثناء شركة الشخص الواحد)، وتقديم الحصص، ونية المشاركة، واقتسام الأرباح والخسائر.', ref: 'ف.982', ex: 'شرط يحرم أحد الشركاء من كل ربح (شرط الأسد) يخالف جوهر عقد الشركة.' },
+        { t: 'أنواع الحصص', s: 'نقدية، عينية، حصة عمل', d: 'قد تكون الحصة مبلغاً من المال، أو مالاً منقولاً أو عقاراً، أو عملاً يقدمه الشريك.', ref: 'ف.982', ex: 'شريك يقدم محلاً تجارياً كحصة عينية وآخر يقدم 50.000 درهم نقداً.' }] },
+      { id: 'c2', title: 'الشركة ذات المسؤولية المحدودة', short: 'SARL', ref: 'القانون 5.96', intro: 'ينظم القانون رقم 5.96 الشركة ذات المسؤولية المحدودة، وتتميز بأن مسؤولية الشركاء فيها محدودة بقدر حصصهم.', branches: [
+        { t: 'عدد الشركاء', s: 'من شريك واحد إلى خمسين', d: 'يمكن تأسيسها من شريك واحد (شركة الشخص الواحد) ولا يجوز أن يتجاوز عدد الشركاء خمسين.', ref: 'القانون 5.96', ex: 'طالب يؤسس وحده شركة ذات مسؤولية محدودة بشريك وحيد لمشروعه الرقمي.' },
+        { t: 'رأس المال', s: 'يحدده الشركاء في النظام الأساسي', d: 'بعد تعديل القانون 21.19 أصبح الشركاء يحددون رأس المال بحرية في النظام الأساسي دون حد أدنى قانوني.', ref: 'القانون 21.19', ex: 'شريكان يحددان رأس مال شركتهما في 1.000 درهم.' },
+        { t: 'التسيير', s: 'مسير أو أكثر من الأشخاص الذاتيين', d: 'يتولى تسيير الشركة مسير أو أكثر من الأشخاص الذاتيين، سواء كانوا من الشركاء أو من غيرهم.', ref: 'القانون 5.96', ex: 'تعيين مدير غير شريك لتسيير الشركة بموجب النظام الأساسي.' }] }
+    ]
+  };
+  AXES_SRC = {
+    civil: [['تمهيد', ['intro']], ['القسم الأول: أركان المسؤولية', ['fault', 'damage', 'causation']], ['القسم الثاني: الحالات الخاصة والإعفاء', ['others', 'exemption']]],
+    company: [['المحور الأول: النظرية العامة للشركة', ['c1']], ['المحور الثاني: الشركات التجارية', ['c2']]]
+  };
+  SEED = [
+    { id: 'civil', src: 'civil', name: 'المسؤولية المدنية', sem: 'S3', color: 0, formats: ['tree', 'detailed'], structure: 'sessions', note: '', isPublic: true, pubXp: true, done: { intro: true, fault: true }, unitId: 'damage', units: [] },
+    { id: 'company', src: 'company', name: 'قانون الشركات', sem: 'S3', color: 1, formats: ['table', 'brief', 'qa'], structure: 'axes', note: 'بغيت أسئلة امتحان فآخر كل محور', isPublic: false, done: {}, unitId: 'c1', units: [] },
+    { id: 'labor', src: null, name: 'قانون الشغل', sem: 'S3', color: 2, formats: ['cards', 'brief'], structure: 'sessions', note: '', isPublic: false, done: {}, unitId: null, units: [] }
+  ];
+
+  constructor(p) {
+    super(p);
+    let saved = null;
+    try { saved = JSON.parse(localStorage.getItem('talib.studio.v2') || 'null'); } catch (e) {}
+    this.state = { subjects: (saved && saved.subjects) || this.SEED, lastId: (saved && saved.lastId) || 'civil', mode: 'home', openId: null, draft: null, chats: {}, viewTab: 'all', flipped: {}, qaOpen: {}, input: '', busy: false, compose: false, genTopic: '', genBusy: false, toast: '', tab: 'learn', mastery: null, edit: null };
+    this.chatRef = React.createRef();
+    this.ttFileRef = React.createRef();
+    Object.assign(this.state, { tt: (saved && saved.tt) || null, ttPreset: null, ttBusy: false, ttManual: false, ttText: '' });
+  }
+  DAYS = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+  DEMO_TT = [
+    ['المسؤولية المدنية', 'ذة. نادية بنعمر', [[1, '08:30', '10:30', 'محاضرة', 'المدرج 3'], [3, '10:30', '12:30', 'محاضرة', 'المدرج 3']]],
+    ['قانون الشركات', 'ذ. كريم العلوي', [[2, '14:30', '16:30', 'محاضرة', 'المدرج 1'], [4, '08:30', '10:30', 'أعمال موجهة', 'القاعة 12']]],
+    ['القانون الجنائي الخاص', 'ذ. عبد الحق الزياني', [[3, '14:30', '16:30', 'محاضرة', 'المدرج 2']]],
+    ['قانون الشغل', 'ذة. سعاد المرابط', [[1, '14:30', '16:30', 'محاضرة', 'المدرج 4']]],
+    ['المسطرة المدنية', 'ذ. رشيد بلقاضي', [[2, '08:30', '10:30', 'محاضرة', 'المدرج 1'], [3, '16:30', '18:00', 'أعمال موجهة', 'القاعة 7']]],
+    ['القانون العقاري', 'ذ. حسن الوردي', [[4, '14:30', '16:30', 'محاضرة', 'المدرج 2']]],
+    ['المصطلحات القانونية بالفرنسية', 'Mme Leila Benjelloun', [[5, '10:30', '12:30', 'محاضرة', 'القاعة 3']]]
+  ];
+  buildTT(rows) {
+    const L = window.TALIB_LAW;
+    return rows.map(([name, prof, slots], i) => { const ex = this.state.subjects.find(x => x.name.trim() === name.trim()); return { id: 'tt' + i + '_' + Date.now(), name, prof, branch: L ? L.detect(name) : 'civil', slots: (slots || []).map(([d, from, to, kind, room]) => ({ d, from, to, kind, room })), subjectId: ex ? ex.id : null, color: i % 6 }; });
+  }
+  schedText(t) { return t.slots.length ? t.slots.map(x => this.DAYS[x.d] + ' ' + x.from).join(' · ') : 'لم تُحدد المواعيد'; }
+  setupFromTT(t) { this.setState({ mode: 'create', ttPreset: { ttId: t.id, name: t.name, sem: 'S3', branch: t.branch, prof: t.prof, sched: this.schedText(t) } }); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+  ttVals() {
+    const st = this.state; const tt = st.tt; const L = window.TALIB_LAW;
+    if (!tt) return { noTT: true, hasTT: false, daySlots: [], pendingTT: [] };
+    const now = new Date(); const today = now.getDay(); const mins = now.getHours() * 60 + now.getMinutes();
+    const toM = (h) => { const [a, b] = h.split(':').map(Number); return a * 60 + b; };
+    let day = today; let slots = [];
+    for (let k = 0; k < 7; k++) { const d = (today + k) % 7; slots = tt.flatMap(t => t.slots.filter(x => x.d === d).map(x => ({ t, x }))); if (slots.length) { day = d; break; } }
+    slots.sort((a, b) => toM(a.x.from) - toM(b.x.from));
+    const isToday = day === today;
+    const linked = (t) => t.subjectId && st.subjects.find(x => x.id === t.subjectId);
+    return { noTT: false, hasTT: true,
+      dayTitle: isToday ? 'اليوم · ' + this.DAYS[day] : 'الحصة القادمة · ' + this.DAYS[day], daySub: isToday ? slots.length + ' حصص' : 'لا حصص اليوم',
+      daySlots: slots.map(({ t, x }) => { const sub = linked(t); const a = toM(x.from), b = toM(x.to);
+        const live = isToday && mins >= a && mins < b, past = isToday && mins >= b;
+        const status = live ? '● جارية الآن' : past ? 'انتهت · راجعها' : isToday ? 'بعد ' + (a - mins >= 60 ? Math.floor((a - mins) / 60) + ' س ' : '') + ((a - mins) % 60) + ' د' : this.DAYS[day];
+        return { from: x.from, to: x.to, name: t.name, kind: x.kind, room: x.room, prof: t.prof, color: this.COLORS[sub ? sub.color : t.color] || this.COLORS[0], status,
+          stBg: live ? 'var(--law-gold)' : past ? 'var(--law-accent-tint)' : 'var(--law-surface)', stFg: live ? '#1a1405' : past ? 'var(--law-accent-light)' : 'var(--law-muted)',
+          label: sub ? (past ? 'راجع الحصة ←' : 'حضّر قبل الحصة ←') : 'أعدّ المادة ←',
+          ...(sub ? { border: 'none', bg: 'var(--law-accent)', fg: '#ffffff', edge: 'var(--law-accent-deep)' } : { border: '1.5px solid var(--law-line-strong)', bg: 'var(--law-surface)', fg: 'var(--law-text)', edge: 'var(--law-line-strong)' }),
+          go: () => sub ? this.open(sub.id) : this.setupFromTT(t) }; }),
+      pendingTT: tt.filter(t => !linked(t)).map(t => ({ name: t.name, prof: t.prof, sched: this.schedText(t), branch: L ? L.get(t.branch).icon + ' ' + L.get(t.branch).label : '', color: this.COLORS[t.color] || this.COLORS[0], setup: () => this.setupFromTT(t) })) };
+  }
+  componentDidMount() { this.save(); }
+  componentDidUpdate(pp, ps) {
+    if (ps.subjects !== this.state.subjects || ps.lastId !== this.state.lastId || ps.tt !== this.state.tt) this.save();
+    if (ps.chats !== this.state.chats || ps.busy !== this.state.busy) { const el = this.chatRef.current; if (el) setTimeout(() => { el.scrollTop = el.scrollHeight; }, 20); }
+  }
+  componentWillUnmount() { clearTimeout(this.tt); }
+  save() {
+    const subjects = this.state.subjects.map(s => ({ ...s, unitCount: this.unitsOf(s).length, unitsLite: this.unitsOf(s).filter(u => !u.pending && u.branches && u.branches.length).map(u => ({ id: u.id, title: u.title, branches: u.branches })) }));
+    try { localStorage.setItem('talib.studio.v2', JSON.stringify({ subjects, lastId: this.state.lastId, tt: this.state.tt })); } catch (e) {}
+  }
+  flash(t) { this.setState({ toast: t }); clearTimeout(this.tt); this.tt = setTimeout(() => this.setState({ toast: '' }), 2400); }
+  F(k) { return this.FORMATS.find(f => f[0] === k) || this.FORMATS[0]; }
+  sName(k) { return (this.STRUCTS.find(f => f[0] === k) || [])[2]; }
+  unitsOf(s) { const ov = s.overrides || {}; return [...((s.src && this.SRC[s.src]) || []).map(u => ov[u.id] || u), ...(s.units || [])]; }
+  saveUnit(sid, nu) { this.upd(sid, x => (x.units || []).some(y => y.id === nu.id) ? { units: x.units.map(y => y.id === nu.id ? nu : y) } : { overrides: { ...(x.overrides || {}), [nu.id]: nu } }); }
+  edVals(s, u) {
+    const e = this.state.edit;
+    if (!e || !u || e.uid !== u.id) return { active: false, items: [] };
+    const set = (patch) => this.setState(x => ({ edit: { ...x.edit, ...patch } }));
+    const setB = (i, k, v) => this.setState(x => ({ edit: { ...x.edit, branches: x.edit.branches.map((b, j) => j === i ? { ...b, [k]: v } : b) } }));
+    const move = (i, d) => this.setState(x => { const a = [...x.edit.branches]; const t = a[i]; a[i] = a[i + d]; a[i + d] = t; return { edit: { ...x.edit, branches: a } }; });
+    const n = e.branches.length;
+    const isSrc = !!(s.src && (this.SRC[s.src] || []).some(y => y.id === u.id));
+    return { active: true, title: e.title, ref: e.ref, intro: e.intro,
+      onTitle: (ev) => set({ title: ev.target.value }), onRef: (ev) => set({ ref: ev.target.value }), onIntro: (ev) => set({ intro: ev.target.value }),
+      items: e.branches.map((b, i) => ({ n: i + 1, ...b, first: i === 0, last: i === n - 1, upOp: i === 0 ? 0.35 : 1, downOp: i === n - 1 ? 0.35 : 1,
+        onT: (ev) => setB(i, 't', ev.target.value), onS: (ev) => setB(i, 's', ev.target.value), onD: (ev) => setB(i, 'd', ev.target.value), onRef: (ev) => setB(i, 'ref', ev.target.value), onEx: (ev) => setB(i, 'ex', ev.target.value),
+        up: () => i > 0 && move(i, -1), down: () => i < n - 1 && move(i, 1), remove: () => this.setState(x => ({ edit: { ...x.edit, branches: x.edit.branches.filter((_, j) => j !== i) } })) })),
+      add: () => this.setState(x => ({ edit: { ...x.edit, branches: [...x.edit.branches, { t: '', s: '', d: '', ref: '', ex: '' }] } })),
+      cancel: () => this.setState({ edit: null }),
+      canRestore: isSrc && !!(s.overrides && s.overrides[u.id]),
+      restore: () => { this.upd(s.id, x => { const o = { ...(x.overrides || {}) }; delete o[u.id]; return { overrides: o }; }); this.setState({ edit: null }); this.note('↺ استرجعت النسخة الأصلية لـ«' + u.short + '»'); },
+      save: () => { const br = e.branches.filter(b => (b.t || '').trim()); if (!e.title.trim() || !br.length) { this.flash('أضف عنواناً وعنصراً واحداً على الأقل'); return; } this.saveUnit(s.id, { ...u, title: e.title.trim(), ref: e.ref.trim(), intro: e.intro.trim(), branches: br.map(b => ({ t: b.t.trim(), s: (b.s || '').trim() || b.t.trim(), d: (b.d || '').trim(), ref: (b.ref || '').trim(), ex: (b.ex || '').trim() })), edited: true }); this.setState({ edit: null, mastery: null }); this.note('✎ عدّلت «' + e.title.trim() + '» بيدك'); this.flash('✓ حُفظت تعديلاتك'); } };
+  }
+  cur() { return this.state.subjects.find(s => s.id === this.state.openId); }
+  upd(id, patch) { this.setState(st => ({ subjects: st.subjects.map(x => x.id === id ? { ...x, ...(typeof patch === 'function' ? patch(x) : patch) } : x) })); }
+  ordered(fmts) { return [...fmts.filter(k => k !== 'cards' && k !== 'qa'), ...fmts.filter(k => k === 'cards' || k === 'qa')]; }
+  fmtJoin(fmts) { return fmts.map(k => '«' + this.F(k)[2] + '»').join(' ثم '); }
+  greeting(s) {
+    return `مرحباً يوسف! هذه مادة «${s.name}». سأعرض كل حصة على شكل ${this.fmtJoin(this.ordered(s.formats))}، ومقسمة «${this.sName(s.structure)}».\nهذه طريقتك وسألتزم بها. اطلب أي تغيير متى شئت.` + (s.note ? `\n\nسجلت ملاحظتك: «${s.note}».` : '');
+  }
+  pushMsg(id, m) { this.setState(st => ({ chats: { ...st.chats, [id]: [...(st.chats[id] || []), m] } })); }
+  note(text) { const s = this.cur(); if (s) this.pushMsg(s.id, { role: 'note', text }); }
+  open(id) {
+    const s = this.state.subjects.find(x => x.id === id);
+    const chats = this.state.chats[id] ? this.state.chats : { ...this.state.chats, [id]: [{ role: 'agent', text: this.greeting(s) }] };
+    this.setState({ mode: 'work', openId: id, lastId: id, chats, viewTab: 'all', tab: 'learn', compose: this.unitsOf(s).length === 0 });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  setPublic(id, val) {
+    const s = this.state.subjects.find(x => x.id === id);
+    this.upd(id, { isPublic: val, pubXp: s.pubXp || val });
+    if (val && !s.pubXp) this.props.onXp && this.props.onXp(50, 'نشرت مادة عمومية');
+    this.flash(val ? '🌐 «' + s.name + '» أصبحت عمومية وتظهر في ملفك' : '🔒 «' + s.name + '» أصبحت خاصة');
+  }
+  unitTool(sid, done, replaceId) {
+    return { name: 'create_unit', description: 'Create one new lesson unit (session) for the current subject, legally accurate for Moroccan law.', input_schema: { type: 'object', properties: { title: { type: 'string' }, short: { type: 'string', description: '1-3 word label' }, ref: { type: 'string', description: 'main legal references, e.g. م.6 م.ش' }, intro: { type: 'string' }, branches: { type: 'array', minItems: 3, maxItems: 4, items: { type: 'object', properties: { t: { type: 'string', description: 'element title' }, s: { type: 'string', description: 'very short summary' }, d: { type: 'string', description: '1-2 sentence explanation' }, ref: { type: 'string' }, ex: { type: 'string', description: 'concrete Moroccan example' } }, required: ['t', 's', 'd', 'ref', 'ex'] } } }, required: ['title', 'short', 'ref', 'intro', 'branches'] },
+      run: async (u) => { if (!u || !Array.isArray(u.branches) || !u.branches.length) return 'invalid'; const nu = { ai: true, id: replaceId || ('u' + Date.now()), title: u.title, short: u.short || u.title, ref: u.ref || '', intro: u.intro || '', branches: u.branches.slice(0, 4) }; this.upd(sid, x => ({ units: replaceId ? (x.units || []).map(y => y.id === replaceId ? { ...nu, title: y.title, short: y.short } : y) : [...(x.units || []), nu], unitId: nu.id })); done && done(nu); return 'created'; } };
+  }
+  async generate(topic) {
+    topic = (topic || '').trim();
+    const s = this.cur();
+    if (!topic || !s || this.state.genBusy) return;
+    this.setState({ genBusy: true });
+    let made = null;
+    const tool = this.unitTool(s.id, (u) => { made = u; });
+    try {
+      await window.claude.complete({ system: `You create study units for Moroccan law students (FSJES). Subject: ${s.name} (${s.sem}). ${this.srcText(s)} Write in Modern Standard Arabic, legally accurate under Moroccan law, citing articles. Always call create_unit exactly once.`, messages: [{ role: 'user', content: 'أنشئ حصة عن: ' + topic }], tools: [tool], max_tokens: 1600 });
+    } catch (e) {}
+    this.setState({ genBusy: false, genTopic: '', compose: made ? false : this.state.compose });
+    if (made) { this.note('✦ أنشأ المساعد حصة: «' + made.title + '»'); this.flash('✦ حصة جديدة: ' + made.short); }
+    else this.flash('المساعد غير متاح حالياً، حاول مرة أخرى');
+  }
+  async send(text) {
+    text = (text || '').trim();
+    const s = this.cur();
+    if (!text || !s || this.state.busy) return;
+    const history = [...(this.state.chats[s.id] || []), { role: 'user', text }];
+    this.setState(st => ({ chats: { ...st.chats, [s.id]: history }, input: '', busy: true }));
+    const units = this.unitsOf(s);
+    const u = units.find(x => x.id === s.unitId) || units[0];
+    const system = `You are "مساعد طالب", an AI study agent inside Talib, an app for Moroccan law students (FSJES Ain Chock). Student: يوسف الإدريسي, S3 قانون خاص.
+Subject: ${s.name} (${s.sem}). The student chose these learning formats, in this order: ${s.formats.join(', ')}. Structure: ${s.structure}. Student's note: ${s.note || 'none'}. ${this.srcText(s)}
+Available formats: ${this.FORMATS.map(f => f[0] + '=' + f[2]).join(', ')}.
+${u ? `Open unit: ${u.id} — ${u.title} (${u.ref}). Content: ${u.branches.map(b => b.t + ': ' + b.d).join(' | ')}` : 'The subject has no units yet.'}
+Units: ${units.map(x => x.id + '=' + x.title).join(', ') || 'none'}.
+Rules: the student's way of learning comes first. You may suggest, never override. When they ask to add/remove/reorder formats or change structure, call the tools immediately. When they ask for a new session/lesson on a topic, call create_unit. When they ask to change the OPEN unit (add, remove, rewrite, reorder elements, add examples, simplify, correct an article), call edit_unit with the complete updated unit. The student has full freedom over their content: apply exactly what they ask, but warn them briefly if a change contradicts the legal nature of the branch or cites a wrong article. Reply in the student's language (Darija, Arabic or French), warm and concise (under 120 words), plain text, legally accurate, citing Moroccan articles.`;
+    const tools = [
+      { name: 'set_formats', description: 'Replace the list of learning formats for this subject (ordered).', input_schema: { type: 'object', properties: { formats: { type: 'array', items: { type: 'string', enum: this.FORMATS.map(f => f[0]) }, minItems: 1 } }, required: ['formats'] }, run: async ({ formats }) => { const f = [...new Set(formats)].filter(k => this.FORMATS.some(x => x[0] === k)); if (!f.length) return 'invalid'; this.upd(s.id, { formats: f }); this.setState({ viewTab: 'all' }); this.note('✓ طريقة العرض: ' + f.map(k => this.F(k)[4]).join(' + ')); return 'done'; } },
+      { name: 'set_structure', description: 'Change how the subject is split.', input_schema: { type: 'object', properties: { structure: { type: 'string', enum: ['sessions', 'axes'] } }, required: ['structure'] }, run: async ({ structure }) => { this.upd(s.id, { structure }); this.note('✓ التقسيم: ' + this.sName(structure)); return 'done'; } },
+      { name: 'open_unit', description: 'Open a unit.', input_schema: { type: 'object', properties: { unit_id: { type: 'string' } }, required: ['unit_id'] }, run: async ({ unit_id }) => { if (!units.some(x => x.id === unit_id)) return 'not found'; this.upd(s.id, { unitId: unit_id }); this.setState({ compose: false }); return 'done'; } },
+      { name: 'remember_preference', description: 'Save a lasting preference about how the student learns this subject.', input_schema: { type: 'object', properties: { preference: { type: 'string' } }, required: ['preference'] }, run: async ({ preference }) => { this.upd(s.id, x => ({ note: x.note ? x.note + ' · ' + preference : preference })); this.note('✓ حفظت تفضيلك'); return 'saved'; } },
+      { name: 'edit_unit', description: 'Replace the content of the currently open unit with an updated version (full unit).', input_schema: { type: 'object', properties: { title: { type: 'string' }, ref: { type: 'string' }, intro: { type: 'string' }, branches: { type: 'array', minItems: 1, items: { type: 'object', properties: { t: { type: 'string' }, s: { type: 'string' }, d: { type: 'string' }, ref: { type: 'string' }, ex: { type: 'string' } }, required: ['t', 's', 'd', 'ref'] } } }, required: ['branches'] },
+        run: async (x) => { if (!u) return 'no open unit'; if (!x || !Array.isArray(x.branches) || !x.branches.length) return 'invalid'; this.saveUnit(s.id, { ...u, title: x.title || u.title, ref: x.ref ?? u.ref, intro: x.intro ?? u.intro, branches: x.branches.map(b => ({ ex: '', ...b })), ai: true, edited: false }); this.setState({ mastery: null, edit: null }); this.note('✦ عدّل المساعد «' + (x.title || u.title) + '»'); return 'updated'; } },
+      this.unitTool(s.id, (nu) => { this.setState({ compose: false }); this.note('✦ حصة جديدة: «' + nu.title + '»'); })
+    ];
+    const msgs = history.filter(m => m.role !== 'note').slice(-10).map(m => ({ role: m.role === 'user' ? 'user' : 'assistant', content: m.text }));
+    while (msgs.length && msgs[0].role !== 'user') msgs.shift();
+    let reply;
+    try { reply = await window.claude.complete({ system, messages: msgs, tools, max_tokens: 1600 }); }
+    catch (e) { reply = this.fallback(text, s); }
+    this.setState(st => ({ busy: false, chats: { ...st.chats, [s.id]: [...(st.chats[s.id] || []), { role: 'agent', text: (reply || '').trim() || 'تم.' }] } }));
+  }
+  fallback(text, s) {
+    const map = [['جدول', 'table'], ['خطاط', 'tree'], ['شجر', 'tree'], ['موجز', 'brief'], ['شامل', 'full'], ['مثال', 'detailed'], ['أمثلة', 'detailed'], ['مفصل', 'detailed'], ['بطاق', 'cards'], ['سؤال', 'qa'], ['أسئلة', 'qa']];
+    const hit = map.find(([k]) => text.includes(k));
+    if (hit && !s.formats.includes(hit[1])) { this.upd(s.id, { formats: [...s.formats, hit[1]] }); this.note('✓ أضفت: ' + this.F(hit[1])[2]); return 'حاضر، زدت «' + this.F(hit[1])[2] + '» لطريقة العرض ديال هاد المادة.'; }
+    if (text.includes('محاور') || text.includes('مباحث')) { this.upd(s.id, { structure: 'axes' }); return 'حاضر، قسمت المادة حسب المحاور والمباحث.'; }
+    if (text.includes('حصص')) { this.upd(s.id, { structure: 'sessions' }); return 'حاضر، رجعنا للتقسيم حسب الحصص.'; }
+    return 'المساعد غير متاح حالياً، لكن يمكنك تعديل طريقة التعلم من زر «⚙ طريقة التعلم».';
+  }
+  markDone(s, u) { this.upd(s.id, x => ({ done: { ...x.done, [u.id]: true } })); this.note('🎯 +15 XP · أتقنت «' + u.short + '»'); this.props.onXp && this.props.onXp(15, 'أتقنت حصة'); }
+  masteryVals(s, u) {
+    const ms = this.state.mastery;
+    const none = { active: false, options: [], q: '', count: '', answered: false };
+    if (!ms || !u || ms.uid !== u.id) return none;
+    const qs = u.branches.slice(0, 2).map((b, qi) => { const n = u.branches.length; const opts = u.branches.map((_, j) => u.branches[(j + qi + 1) % n].s); return { q: 'أي وصف ينطبق على «' + b.t + '»؟', opts, c: opts.indexOf(b.s), why: b.t + ': ' + b.d + ' (' + b.ref + ')' }; });
+    const q = qs[ms.i];
+    const answered = ms.picked !== null;
+    const good = answered && ms.picked === q.c;
+    const last = ms.i === qs.length - 1;
+    const allOk = last && answered && (ms.ok + (good ? 1 : 0)) === qs.length;
+    return { active: true, count: (ms.i + 1) + ' / ' + qs.length, q: q.q, answered,
+      options: q.opts.map((text, j) => { let o = { border: 'var(--law-line-strong)', bg: 'var(--law-surface)', edge: 'var(--law-line-strong)' }; if (answered && j === q.c) o = { border: 'var(--law-accent-light)', bg: 'var(--law-accent-tint)', edge: 'var(--law-accent-deep)' }; else if (answered && j === ms.picked) o = { border: 'var(--law-danger)', bg: 'color-mix(in oklch, var(--law-danger) 12%, transparent)', edge: 'color-mix(in oklch, var(--law-danger) 60%, black)' }; return { text, ...o, locked: answered, pick: () => this.setState(x => ({ mastery: { ...x.mastery, picked: j } })) }; }),
+      verdict: good ? '✓ صحيح.' : '✕ ليس هذا.', why: q.why, fbBg: good ? 'var(--law-accent-tint)' : 'color-mix(in oklch, var(--law-danger) 10%, transparent)', fbFg: good ? 'var(--law-accent-light)' : 'var(--law-danger)',
+      nextLabel: !last ? 'السؤال التالي' : allOk ? 'أتقنت الحصة +15 XP' : 'راجع الحصة وعاود', nextBg: allOk || (!last) ? 'var(--law-accent)' : 'var(--law-danger)', nextEdge: allOk || (!last) ? 'var(--law-accent-deep)' : 'color-mix(in oklch, var(--law-danger) 60%, black)',
+      next: () => { if (!last) return this.setState({ mastery: { ...ms, i: ms.i + 1, picked: null, ok: ms.ok + (good ? 1 : 0) } }); this.setState({ mastery: null }); if (allOk) this.markDone(s, u); else { this.note('↺ راجع «' + u.short + '» ثم عاود التحقق'); window.scrollTo({ top: 0, behavior: 'smooth' }); } },
+      cancel: () => this.setState({ mastery: null }) };
+  }
+  branchOf(s) { return s.branch || (window.TALIB_LAW ? window.TALIB_LAW.detect(s.name) : 'civil'); }
+  guardOf(s) { return window.TALIB_LAW ? ' ' + window.TALIB_LAW.guard(this.branchOf(s)) : ''; }
+  srcText(s) {
+    const K = { poly: 'مطبوع', book: 'كتاب مرجع', notes: 'ملاحظات يدوية', audio: 'تسجيل صوتي', summary: 'ملخص' };
+    const R = { strict: 'stick strictly to the student sources, add nothing beyond them (exam-focused)', plus: 'rely on the sources and enrich with case law, examples and doctrine', wide: 'use the sources as a starting point and explain broadly' };
+    return this.guardOf(s) + ' ' + (s.sources && s.sources.length ? 'Student sources: ' + s.sources.map(x => x.name + ' (' + K[x.kind] + ')').join(', ') + '. Reliance: ' + (R[s.reliance] || R.plus) + '.' : 'No uploaded sources; the student writes the course by hand.') + ' Goal: ' + (s.goal === 'deep' ? 'deep understanding' : 'exam preparation') + '.';
+  }
+  async fillUnit(u) {
+    const s = this.cur();
+    if (!s || !u || this.state.genBusy) return;
+    this.setState({ genBusy: true });
+    let made = null;
+    const tool = this.unitTool(s.id, (nu) => { made = nu; }, u.id);
+    try { await window.claude.complete({ system: `You write study units for Moroccan law students (FSJES). Subject: ${s.name} (${s.sem}). ${this.srcText(s)} Modern Standard Arabic, legally accurate under Moroccan law, citing articles. Always call create_unit exactly once.`, messages: [{ role: 'user', content: 'صُغ الحصة: ' + u.title }], tools: [tool], max_tokens: 1600 }); } catch (e) {}
+    this.setState({ genBusy: false });
+    if (made) this.note('✦ صاغ المساعد «' + u.title + '»'); else this.flash('المساعد غير متاح حالياً، حاول مرة أخرى');
+  }
+  setD(patch) { this.setState(st => ({ draft: { ...st.draft, ...patch } })); }
+
+  renderVals() {
+    const st = this.state;
+    const on = { bg: 'var(--law-accent-tint)', border: 'var(--law-accent)', edge: 'var(--law-accent-deep)' };
+    const off = { bg: 'var(--law-surface)', border: 'var(--law-line-strong)', edge: 'var(--law-line-strong)' };
+    const segOn = { bg: 'var(--law-surface)', fg: 'var(--law-text)', shadow: '0 1px 3px rgba(0,0,0,0.18)' };
+    const segOff = { bg: 'transparent', fg: 'var(--law-muted)', shadow: 'none' };
+    const stat = (s) => { const us = this.unitsOf(s); const n = us.filter(u => s.done[u.id]).length; return { us, n, pct: us.length ? n / us.length : 0 }; };
+    const visStyle = (pub) => pub ? { visLabel: '🌐 عمومي', visBg: 'var(--law-accent-tint)', visFg: 'var(--law-accent-light)' } : { visLabel: '🔒 خاص', visBg: 'var(--law-surface-2)', visFg: 'var(--law-muted)' };
+    const mode = st.mode;
+    const base = { isHome: mode === 'home', isForm: mode === 'edit', isCreate: mode === 'create', isWork: mode === 'work',
+      onboardCancel: () => this.setState({ mode: 'home', ttPreset: null }),
+      onboardPreset: st.ttPreset,
+      ...this.ttVals(),
+      ttFileRef: this.ttFileRef, ttBusy: st.ttBusy, ttUploadLabel: st.ttBusy ? 'كنقرا استعمال الزمن…' : '📎 ارفع استعمال الزمن',
+      pickTT: () => this.ttFileRef.current && this.ttFileRef.current.click(),
+      onTTFile: (e) => { const f = e.target.files && e.target.files[0]; e.target.value = ''; if (!f) return; this.setState({ ttBusy: true }); setTimeout(() => { this.setState({ ttBusy: false, tt: this.buildTT(this.DEMO_TT) }); this.flash('📅 استخرجت 7 مواد من «' + f.name + '»'); }, 1600); },
+      loadDemoTT: () => { this.setState({ tt: this.buildTT(this.DEMO_TT) }); this.flash('📅 أضفت استعمال زمن نموذجي فيه 7 مواد'); },
+      ttManual: st.ttManual, toggleTTManual: () => this.setState(x => ({ ttManual: !x.ttManual })),
+      ttText: st.ttText, onTTText: (e) => this.setState({ ttText: e.target.value }),
+      saveTTManual: () => { const rows = st.ttText.split('\n').map(x => x.trim()).filter(Boolean).map(n => [n, '', []]); if (!rows.length) return; this.setState({ tt: this.buildTT(rows), ttManual: false, ttText: '' }); this.flash('أضفت ' + rows.length + ' مواد'); },
+      resetTT: () => this.setState({ tt: null }),
+      onboardDone: (o) => {
+        const id = 's' + Date.now();
+        const units = []; const axes = [];
+        (o.outline || []).forEach((g, gi) => { const ids = []; g.units.forEach((t, ui) => { const uid = id + '_' + gi + '_' + ui; ids.push(uid); units.push({ id: uid, title: t, short: t.replace(/^المحاضرة \d+: /, '').split(' ').slice(0, 3).join(' '), pending: true, ref: '', intro: '', branches: [] }); }); axes.push([g.h, ids]); });
+        const ns = { id, src: null, branch: o.branch, name: o.name, sem: o.sem, color: o.color, formats: o.formats, structure: o.structure, note: o.note, isPublic: false, pubXp: false, done: {}, unitId: units[0] ? units[0].id : null, units, axes, sources: o.sources, reliance: o.reliance, goal: o.goal };
+        const ttId = this.state.ttPreset && this.state.ttPreset.ttId;
+        this.setState(x => ({ subjects: [...x.subjects, ns], tt: ttId && x.tt ? x.tt.map(t => t.id === ttId ? { ...t, subjectId: id } : t) : x.tt, ttPreset: null }), () => { if (o.isPublic) this.setPublic(id, true); this.open(id); this.pushMsg(id, { role: 'note', text: o.sources.length ? '📎 ' + o.sources.length + ' مصادر · ' + units.length + ' حصص مستخرجة' : '✍️ مادة يدوية · ' + units.length + ' حصص' }); });
+      }, hasToast: !!st.toast, toast: st.toast,
+      startCreate: () => { this.setState({ mode: 'create', ttPreset: null, draft: { name: '', sem: 'S3', color: st.subjects.length % this.COLORS.length, formats: [], structure: 'sessions', isPublic: false, note: '' } }); window.scrollTo({ top: 0, behavior: 'smooth' }); } };
+
+    const last = st.subjects.find(s => s.id === st.lastId) || st.subjects[0];
+    let cont = { open: () => {}, name: '', sub: '', icon: '', color: '', offset: 263.9 };
+    if (last) { const x = stat(last); const nu = x.us.find(u => !last.done[u.id]); cont = { open: () => this.open(last.id), name: last.name, sub: x.us.length ? (nu ? 'التالي: ' + nu.title + ' · ' + x.n + '/' + x.us.length + ' حصص' : 'أكملت كل الحصص 🎉') : 'المادة جاهزة، أنشئ أول حصة مع المساعد', icon: this.F(last.formats[0])[1], color: this.COLORS[last.color] || this.COLORS[0], offset: 263.9 * (1 - x.pct) }; }
+    const home = {
+      hasContinue: !!last, cont, subjectCount: st.subjects.length,
+      subjectsList: st.subjects.map(s => { const x = stat(s); const c = this.COLORS[s.color] || this.COLORS[0]; const tte = st.tt && st.tt.find(t => t.subjectId === s.id); return { hasSched: !!tte, sched: tte ? this.schedText(tte) + (tte.prof ? ' · ' + tte.prof : '') : '', name: s.name, sem: s.sem, structLabel: this.sName(s.structure), color: c, tint: `color-mix(in oklch, ${c} 18%, transparent)`, icon: this.F(s.formats[0])[1], fmts: s.formats.map(k => ({ icon: this.F(k)[1], label: this.F(k)[4] })), progText: x.us.length ? x.n + ' / ' + x.us.length + ' حصص' : 'لا حصص بعد', pct: Math.round(x.pct * 100) + '%', pctLabel: Math.round(x.pct * 100) + '%', ...visStyle(s.isPublic), open: () => this.open(s.id), toggleVis: (e) => { e.stopPropagation(); this.setPublic(s.id, !s.isPublic); } }; })
+    };
+
+    const d = st.draft || { name: '', formats: [], note: '' };
+    const lines = [];
+    if (!d.name.trim()) lines.push('ابدأ باسم المادة، مثلاً «قانون الشغل». المواد ليست مفروضة عليك، أضف ما تحتاجه أنت.');
+    if (!d.formats.length) lines.push('اختر طريقة واحدة على الأقل. يمكنك الجمع بين عدة طرق، مثلاً خطاطة شجرية ثم شرح مفصل ثم جداول.');
+    else lines.push('في كل حصة سأعرض ' + this.fmtJoin(this.ordered(d.formats)) + '.');
+    if (d.formats.includes('brief') && d.formats.includes('full')) lines.push('الموجز مع الشامل اختيار جيد: الموجز للمراجعة السريعة قبل الامتحان.');
+    if (d.formats.includes('cards') || d.formats.includes('qa')) lines.push('البطاقات والأسئلة أضعها دائماً في آخر الحصة لتختبر نفسك.');
+    if (d.formats.length >= 4) lines.push('اخترت طرقاً كثيرة. يمكنك عرض طريقة واحدة فقط من الشريط العلوي متى شئت.');
+    if (d.formats.length) lines.push(d.structure === 'axes' ? 'سأتبع التقسيم الأكاديمي: محاور ومباحث كما في المطبوع.' : 'سأقسم المادة إلى حصص على شكل مسار، مع +10 XP لكل حصة تكملها.');
+    if (d.formats.length) lines.push(d.isPublic ? 'المادة عمومية: تظهر في ملفك وفي الملتقى، ويمكن لزملائك اقتراح تعديلات.' : 'المادة خاصة: لا يراها غيرك، ويمكنك نشرها لاحقاً بضغطة واحدة.');
+    if (d.note && d.note.trim()) lines.push('سألتزم بملاحظتك: «' + d.note.trim() + '».');
+    const invalid = !d.name.trim() || !d.formats.length;
+    const form = {
+      d, formKicker: mode === 'edit' ? 'تعديل طريقة التعلم' : 'مادة جديدة', formTitle: mode === 'edit' ? d.name || 'المادة' : 'أنشئ مادتك بطريقتك',
+      onName: (e) => this.setD({ name: e.target.value }), onNote: (e) => this.setD({ note: e.target.value }),
+      semOpts: this.SEMS.map(x => ({ label: x, ...(d.sem === x ? on : off), pick: () => this.setD({ sem: x }) })),
+      colorOpts: this.COLORS.map((c, i) => ({ c, ring: d.color === i ? 'var(--law-surface)' : 'transparent', outer: d.color === i ? c : 'transparent', pick: () => this.setD({ color: i }) })),
+      formatOpts: this.FORMATS.map(([k, icon, label, desc]) => { const idx = this.ordered(d.formats).indexOf(k); return { icon, label, desc, on: idx >= 0, order: idx + 1, ...(idx >= 0 ? on : off), pick: () => this.setD({ formats: d.formats.includes(k) ? d.formats.filter(x => x !== k) : [...d.formats, k] }) }; }),
+      structOpts: this.STRUCTS.map(([k, icon, label, desc]) => ({ icon, label, desc, ...(d.structure === k ? on : off), pick: () => this.setD({ structure: k }) })),
+      visOpts: [[false, '🔒', 'خاصة', 'تظهر لك وحدك'], [true, '🌐', 'عمومية', 'في ملفك وفي الملتقى']].map(([v, icon, label, desc]) => ({ icon, label, desc, ...(d.isPublic === v ? on : off), pick: () => this.setD({ isPublic: v }) })),
+      planLines: lines, hasOrder: d.formats.length > 0,
+      orderList: this.ordered(d.formats).map((k, i) => ({ n: i + 1, icon: this.F(k)[1], label: this.F(k)[2] })),
+      formInvalid: invalid, formHint: !d.name.trim() ? 'أدخل اسم المادة' : 'اختر طريقة واحدة على الأقل', submitOpacity: invalid ? 0.5 : 1,
+      submitLabel: mode === 'edit' ? 'حفظ التغييرات' : 'إنشاء المادة ✦',
+      cancelForm: () => this.setState({ mode: st.openId && mode === 'edit' ? 'work' : 'home', draft: null }),
+      submitForm: () => {
+        if (invalid) return;
+        const clean = { name: d.name.trim(), sem: d.sem, color: d.color, formats: d.formats, structure: d.structure, note: (d.note || '').trim() };
+        if (mode === 'edit') {
+          const s = this.cur();
+          this.upd(s.id, clean);
+          if (d.isPublic !== s.isPublic) this.setPublic(s.id, d.isPublic);
+          this.pushMsg(s.id, { role: 'note', text: '✓ حدّثت طريقة التعلم: ' + d.formats.map(k => this.F(k)[4]).join(' + ') });
+          this.setState({ mode: 'work', draft: null, viewTab: 'all' });
+        } else {
+          const id = 's' + Date.now();
+          const ns = { id, src: null, ...clean, isPublic: false, pubXp: false, done: {}, unitId: null, units: [] };
+          this.setState(x => ({ subjects: [...x.subjects, ns] }), () => { if (d.isPublic) this.setPublic(id, true); this.open(id); });
+          this.setState({ draft: null });
+        }
+      }
+    };
+
+    const s = this.cur();
+    let work = { m: { active: false, options: [] }, ed: { active: false, items: [] }, canEditUnit: false, cur: { id: '', name: '', sem: '', isPublic: false }, workTabs: [], isLearnTab: true, isExamTab: false };
+    if (s) {
+      const units = this.unitsOf(s);
+      const uIdx = Math.max(0, units.findIndex(u => u.id === s.unitId));
+      const u = units[uIdx];
+      const showCompose = st.compose || !u;
+      const vt = st.viewTab !== 'all' && s.formats.includes(st.viewTab) ? st.viewTab : 'all';
+      const keys = vt === 'all' ? this.ordered(s.formats) : [vt];
+      const axesSrc = s.src && this.AXES_SRC[s.src];
+      const axes = s.axes ? [...s.axes, ...((s.units || []).filter(x => !s.axes.some(a => a[1].includes(x.id))).length ? [['حصص أضفتها', s.units.filter(x => !s.axes.some(a => a[1].includes(x.id))).map(x => x.id)]] : [])] : axesSrc ? [...axesSrc.map(([h, ids]) => [h, ids]), ...((s.units || []).length ? [['حصص أضفتها', s.units.map(x => x.id)]] : [])] : [['محاور المادة', units.map(x => x.id)]];
+      const axisOf = u && axes.find(a => a[1].includes(u.id));
+      const isDone = u && !!s.done[u.id];
+      const nextUnit = units[uIdx + 1];
+      const offsets = ['0px', '44px', '64px', '44px', '0px', '-12px'];
+      const n = u ? u.branches.length : 3;
+      const ck = (i) => s.id + ':' + (u ? u.id : '') + ':' + i;
+      work = {
+        cur: { id: s.id, name: s.name, sem: s.sem, isPublic: s.isPublic, branch: this.branchOf(s) },
+        workTabs: [['learn', '📖', 'التعلم'], ['exam', '🎯', 'التدريب والامتحان']].map(([k, icon, label]) => ({ icon, label, ...(st.tab === k ? segOn : segOff), pick: () => this.setState({ tab: k }) })),
+        isLearnTab: true, isExamTab: false,
+        examUnits: units.filter(x => !x.pending && x.branches && x.branches.length).map(x => ({ id: x.id, title: x.title, branches: x.branches })),
+        onXp: (n, l) => this.props.onXp && this.props.onXp(n, l), onToast: (t) => this.flash(t),
+        fillAnim: st.genBusy ? 'talibFlame 1s ease-in-out infinite' : 'none',
+        fillTitle: st.genBusy ? 'المساعد يصوغ الحصة…' : 'هذه الحصة لم تُصغ بعد',
+        fillText: (s.sources && s.sources.length ? 'سأصوغها من مصادرك (' + s.sources.length + ') ' : 'سأصوغها ') + 'بطريقتك: ' + this.ordered(s.formats).map(k => this.F(k)[2]).join('، ') + '.',
+        fillLabel: st.genBusy ? 'لحظات…' : 'صُغ هذه الحصة ✦', fillUnit: () => this.fillUnit(u),
+        goHome: () => this.setState({ mode: 'home', compose: false }),
+        multiFmt: s.formats.length > 1,
+        viewTabs: [['all', 'الكل'], ...s.formats.map(k => [k, this.F(k)[4]])].map(([k, label]) => ({ label, ...(vt === k ? segOn : segOff), pick: () => this.setState({ viewTab: k }) })),
+        structSeg: this.STRUCTS.map(([k, , , , short]) => ({ label: short, ...(s.structure === k ? segOn : segOff), pick: () => this.upd(s.id, { structure: k }) })),
+        ...visStyle(s.isPublic), visLabel: s.isPublic ? 'عمومي' : 'خاص',
+        visBg: s.isPublic ? 'var(--law-accent)' : 'var(--law-line-strong)', visKnob: s.isPublic ? 'translateX(-18px)' : 'translateX(0)',
+        togglePublic: () => this.setPublic(s.id, !s.isPublic),
+        pubAction: s.src === 'civil' ? { label: 'صفحة المشروع ←', run: () => this.props.onNavigate && this.props.onNavigate('project') } : { label: 'عرض في ملفي ←', run: () => this.props.onNavigate && this.props.onNavigate('profile') },
+        startEdit: () => this.setState({ mode: 'edit', draft: { name: s.name, sem: s.sem, color: s.color, formats: [...s.formats], structure: s.structure, isPublic: s.isPublic, note: s.note || '' } }),
+        isSessions: s.structure === 'sessions', isAxes: s.structure === 'axes',
+        pathNodes: [...units.map((x, i) => {
+          const sel = x.id === (u && u.id) && !showCompose, dn = !!s.done[x.id];
+          const c = dn ? { bg: 'var(--law-accent)', fg: '#ffffff', edge: 'var(--law-accent-deep)' } : sel ? { bg: 'var(--law-gold)', fg: '#1a1405', edge: 'color-mix(in oklch, var(--law-gold) 60%, black)' } : { bg: 'var(--law-surface-2)', fg: 'var(--law-muted)', edge: 'var(--law-line-strong)' };
+          return { ...c, offset: offsets[i % offsets.length], glyph: dn ? '✓' : String(i + 1), ring: sel ? '6px' : '0px', short: x.short, title: x.title, labelFg: sel ? 'var(--law-text)' : 'var(--law-muted)', pick: () => { this.upd(s.id, { unitId: x.id }); this.setState({ compose: false }); } };
+        }), { bg: 'transparent', fg: 'var(--law-muted)', edge: 'var(--law-line-strong)', offset: offsets[units.length % offsets.length], glyph: '+', ring: showCompose ? '6px' : '0px', short: 'حصة جديدة', title: 'أنشئ حصة جديدة مع المساعد', labelFg: 'var(--law-muted)', pick: () => this.setState({ compose: true }) }],
+        axesTree: axes.map(([h, ids]) => ({ h, items: ids.map(id => units.find(x => x.id === id)).filter(Boolean).map(x => ({ label: x.title, mark: s.done[x.id] ? '✓' : '•', bg: u && x.id === u.id && !showCompose ? 'var(--law-accent-tint)' : 'transparent', fg: u && x.id === u.id && !showCompose ? 'var(--law-accent-light)' : 'var(--law-text)', pick: () => { this.upd(s.id, { unitId: x.id }); this.setState({ compose: false }); } })) })).filter(g => g.items.length),
+        openCompose: () => this.setState({ compose: true }), closeCompose: () => this.setState({ compose: false }),
+        showCompose, showUnit: !showCompose, canCancelCompose: !!u,
+        composeTitle: u ? 'حصة جديدة في «' + s.name + '»' : 'المادة جاهزة. لنبدأ أول حصة',
+        fmtList: this.ordered(s.formats).map(k => this.F(k)[2]).join('، '),
+        genTopic: st.genTopic, onGenTopic: (e) => this.setState({ genTopic: e.target.value }),
+        onGenKey: (e) => { if (e.key === 'Enter') { e.preventDefault(); this.generate(this.state.genTopic); } },
+        generate: () => this.generate(st.genTopic), genBusy: st.genBusy, genLabel: st.genBusy ? 'المساعد يكتب…' : 'صُغها مع المساعد ✦',
+        unit: u ? { ...u, pending: !!u.pending, origin: u.edited ? '✎ عدّلته أنت' : u.ai ? '✦ صاغه المساعد' : 'ⓘ محتوى للمراجعة', originTip: u.edited ? 'نسختك الخاصة من هذه الحصة. التعديلات محفوظة لك.' : u.ai ? 'صاغه المساعد من مصادرك. قارنه دائماً بالمطبوع ونص الفصل قبل الحفظ.' : 'كتبه فريق طالب ولم يُراجع بعد من أستاذ. تحقق من الفصول في الخزانة.', originBg: u.ai ? 'var(--law-accent-tint)' : 'var(--law-gold-tint)', originFg: u.ai ? 'var(--law-accent-light)' : 'var(--law-gold)', kicker: s.structure === 'sessions' ? `الحصة ${uIdx + 1} من ${units.length}` : (axisOf ? axisOf[0] : '') } : { title: '', ref: '', intro: '', kicker: '', branches: [] },
+        treeCols: `repeat(${n}, minmax(0,1fr))`, treeInset: (50 / n).toFixed(2) + '%',
+        blocks: (u && (u.pending || (st.edit && st.edit.uid === u.id)) ? [] : keys).map(k => ({ key: k, icon: this.F(k)[1], label: this.F(k)[2], showHead: keys.length > 1,
+          isTree: k === 'tree', isTable: k === 'table', isFull: k === 'full', isBrief: k === 'brief', isDetailed: k === 'detailed', isCards: k === 'cards', isQa: k === 'qa',
+          cards: k === 'cards' && u ? u.branches.map((b, i) => ({ front: b.t, back: b.s, ref: b.ref, rot: st.flipped[ck(i)] ? 'rotateY(180deg)' : 'rotateY(0deg)', flip: () => this.setState(x => ({ flipped: { ...x.flipped, [ck(i)]: !x.flipped[ck(i)] } })) })) : [],
+          qa: k === 'qa' && u ? u.branches.map((b, i) => { const o = !!st.qaOpen[ck(i)]; return { q: 'ما المقصود بـ«' + b.t + '»؟', a: b.d, ref: b.ref, open: o, chev: o ? 'rotate(180deg)' : 'rotate(0deg)', toggle: () => this.setState(x => ({ qaOpen: { ...x.qaOpen, [ck(i)]: !x.qaOpen[ck(i)] } })) }; }) : [] })),
+        doneBtn: isDone ? { label: nextUnit ? 'التالي: ' + nextUnit.short + ' ←' : 'أكملت المادة 🎉', bg: 'var(--law-surface-2)', fg: 'var(--law-text)', edge: 'var(--law-line-strong)' } : { label: 'تحقق من فهمك ✓', bg: 'var(--law-accent)', fg: '#ffffff', edge: 'var(--law-accent-deep)' },
+        completeUnit: () => {
+          if (!u || u.pending) return;
+          if (!isDone) { if (u.branches.length >= 2) this.setState({ mastery: { uid: u.id, i: 0, picked: null, ok: 0 } }); else this.markDone(s, u); }
+          else if (nextUnit) this.upd(s.id, { unitId: nextUnit.id });
+        },
+        m: this.masteryVals(s, u),
+        ed: this.edVals(s, u), canEditUnit: !!u && !u.pending && !(st.edit && st.edit.uid === u.id),
+        startUnitEdit: () => u && this.setState({ mastery: null, edit: { uid: u.id, title: u.title, ref: u.ref || '', intro: u.intro || '', branches: u.branches.map(b => ({ t: b.t, s: b.s, d: b.d, ref: b.ref, ex: b.ex || '' })) } }),
+        reportError: () => { if (!u) return; let reps = []; try { reps = JSON.parse(localStorage.getItem('talib.reports.v1') || '[]'); } catch (e) {} reps.push({ subject: s.name, unit: u.title, at: new Date().toISOString() }); try { localStorage.setItem('talib.reports.v1', JSON.stringify(reps)); } catch (e) {} this.note('⚑ بلّغت عن خطأ في «' + u.short + '»'); this.flash('شكراً، أُرسل التبليغ للمراجعة ✓'); },
+        askQuiz: () => u && this.send('دير لي كويز صغير على «' + u.title + '»'),
+        agentSub: (s.sources && s.sources.length ? '📎 ' + s.sources.length + ' مصادر · ' : '') + 'يلتزم بطريقتك: ' + s.formats.map(k => this.F(k)[4]).join(' + '),
+        messages: (st.chats[s.id] || []).map(m => ({ ...m, isAgent: m.role === 'agent', isUser: m.role === 'user', isNote: m.role === 'note' })),
+        suggestions: (u ? ['زيد أمثلة من الواقع المغربي', 'زيد بطاقات مراجعة', 'بسّط ليا هاد الحصة'] : ['اقترح عليا تقسيم المادة', 'صاوب ليا أول حصة']).map(label => ({ label, send: () => this.send(label) })),
+        input: st.input, onInput: (e) => this.setState({ input: e.target.value }),
+        onKeyDown: (e) => { if (e.key === 'Enter') { e.preventDefault(); this.send(this.state.input); } },
+        sendInput: () => this.send(st.input)
+      };
+    }
+    return { ...base, ...home, ...form, ...work, chatRef: this.chatRef, busy: st.busy };
+  }
+}
+</script>
+</body>
+</html>

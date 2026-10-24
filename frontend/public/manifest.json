@@ -1,0 +1,23 @@
+{
+  "name": "طالب | المنصة الشاملة لطالب الحقوق بالمغرب",
+  "short_name": "طالب",
+  "display": "standalone",
+  "orientation": "portrait",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/lawos/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/lawos/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "lang": "ar",
+  "dir": "rtl",
+  "theme_color": "#0b5d3b",
+  "background_color": "#0b5d3b"
+}

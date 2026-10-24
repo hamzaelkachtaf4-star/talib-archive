@@ -1,0 +1,33 @@
+{
+  "overflow": [],
+  "consoleErrors": [],
+  "redirects": {
+    "/law/subjects": "ok",
+    "/law/method": "ok",
+    "/law/schedule": "ok",
+    "/law/squad": "ok",
+    "/law/hub": "ok",
+    "/law/corpus": "ok"
+  },
+  "idb": {
+    "version": 4,
+    "stores": [
+      "batches",
+      "captures",
+      "cards",
+      "legalTexts",
+      "meta",
+      "reviewQueue",
+      "ttQueue"
+    ],
+    "sentinel": "kept"
+  },
+  "offline": {
+    "/law/today": "renders",
+    "/law/review": "renders",
+    "/law/library": "renders",
+    "/law/today/timetable": "renders",
+    "/law/path": "renders"
+  },
+  "shots": 96
+}

@@ -1,0 +1,10 @@
+[Unit]
+Description=Run LAW-OS backup nightly at 03:30 (Africa/Casablanca host time)
+
+[Timer]
+OnCalendar=*-*-* 03:30:00
+Persistent=true
+RandomizedDelaySec=10m
+
+[Install]
+WantedBy=timers.target

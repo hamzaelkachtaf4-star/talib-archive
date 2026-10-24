@@ -1,0 +1,2403 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Uncomment the following lines and comment out the SQLite datasource block above to use PostgreSQL
+// Make sure to set the correct DATABASE_URL in your .env file
+// After swapping run `yarn prisma:setup` from the root directory to migrate the database
+//
+// datasource db {
+//   provider = "postgresql"
+//   url      = env("DATABASE_URL")
+// }
+datasource db {
+  provider = "sqlite"
+  url      = "file:../storage/anythingllm.db"
+}
+
+model api_keys {
+  id            Int      @id @default(autoincrement())
+  name          String?
+  secret        String?  @unique
+  createdBy     Int?
+  createdAt     DateTime @default(now())
+  lastUpdatedAt DateTime @default(now())
+}
+
+model workspace_documents {
+  id                   Int                   @id @default(autoincrement())
+  docId                String                @unique
+  filename             String
+  docpath              String
+  workspaceId          Int
+  metadata             String?
+  pinned               Boolean?              @default(false)
+  watched              Boolean?              @default(false)
+  createdAt            DateTime              @default(now())
+  lastUpdatedAt        DateTime              @default(now())
+  workspace            workspaces            @relation(fields: [workspaceId], references: [id])
+  document_sync_queues document_sync_queues?
+}
+
+model invites {
+  id            Int      @id @default(autoincrement())
+  code          String   @unique
+  status        String   @default("pending")
+  claimedBy     Int?
+  workspaceIds  String?
+  createdAt     DateTime @default(now())
+  createdBy     Int
+  lastUpdatedAt DateTime @default(now())
+}
+
+model system_settings {
+  id            Int      @id @default(autoincrement())
+  label         String   @unique
+  value         String?
+  createdAt     DateTime @default(now())
+  lastUpdatedAt DateTime @default(now())
+}
+
+model users {
+  lawArticleBookmarks LawArticleBookmark[]
+  lawModuleArticles   LawModuleArticle[]
+  id                           Int                           @id @default(autoincrement())
+  username                     String?                       @unique
+  password                     String
+  pfpFilename                  String?
+  role                         String                        @default("default")
+  suspended                    Int                           @default(0)
+  seen_recovery_codes          Boolean?                      @default(false)
+  createdAt                    DateTime                      @default(now())
+  lastUpdatedAt                DateTime                      @default(now())
+  dailyMessageLimit            Int?
+  bio                          String?                       @default("")
+  web_push_subscription_config String?
+  workspace_chats              workspace_chats[]
+  workspace_users              workspace_users[]
+  embed_configs                embed_configs[]
+  embed_chats                  embed_chats[]
+  threads                      workspace_threads[]
+  recovery_codes               recovery_codes[]
+  password_reset_tokens        password_reset_tokens[]
+  workspace_agent_invocations  workspace_agent_invocations[]
+  slash_command_presets        slash_command_presets[]
+  browser_extension_api_keys   browser_extension_api_keys[]
+  temporary_auth_tokens        temporary_auth_tokens[]
+  system_prompt_variables      system_prompt_variables[]
+  prompt_history               prompt_history[]
+  desktop_mobile_devices       desktop_mobile_devices[]
+  workspace_parsed_files       workspace_parsed_files[]
+  memories                     memories[]
+  // LAW-OS / Qanouni back-relations (docs/UPSTREAM_TOUCHPOINTS.md)
+  law_profile                  LawUserProfile?
+  law_devices                  LawDevice[]
+  law_ai_calls                 LawAiCall[]
+  law_subjects                 LawSubject[]
+  law_timetable_slots          LawTimetableSlot[]
+  law_class_sessions           LawClassSession[]
+  law_flashcards               LawFlashcard[]
+  law_review_logs              LawReviewLog[]
+  law_study_days               LawStudyDay[]
+  law_streak                   LawStreak?
+  law_assets                   LawAsset[]
+  law_capture_batches          LawCaptureBatch[]
+  law_uploads                  LawUpload[]
+  law_jobs                     LawJob[]
+  law_derivatives              LawDerivative[]
+  law_decisions                LawDecision[]
+  law_doctrine_refs            LawDoctrineRef[]
+  law_links                    LawLink[]
+  law_note_atoms               LawNoteAtom[]
+  law_case_exercises           LawCaseExercise[]
+  law_case_attempts            LawCaseAttempt[]
+  law_dissertations            LawDissertation[]
+  law_weekly_recaps            LawWeeklyRecap[]
+  law_push_subscriptions       LawPushSubscription[]
+  law_friends_requested        LawFriendship[]         @relation("LawFriendRequester")
+  law_friends_received         LawFriendship[]         @relation("LawFriendAddressee")
+  law_consent                  LawUserConsent?
+  law_preferences              LawUserPreferences?
+  law_tt_subscription          LawTimetableSubscription?
+  law_chat_threads             LawChatThread[]
+  law_node_progress            LawNodeProgress[]
+  law_learner_memories         LawLearnerMemory[]
+  law_ai_corrections           LawAiCorrection[]
+  law_blocks_out               LawBlock[]         @relation("LawBlocker")
+  law_blocks_in                LawBlock[]         @relation("LawBlocked")
+  law_note_reports             LawNoteReport[]
+  law_change_requests          LawChangeRequest[]
+  law_coauthored               LawNoteCoAuthor[]
+  law_concept_mastery          LawConceptMastery[]
+  law_student_courses          LawStudentCourse[]
+  law_course_topics            LawCourseTopic[]
+  law_knowledge_gaps           LawKnowledgeGap[]
+  law_todos                    LawTodo[]
+  law_owned_modules            LawCourseModule[]       @relation("LawModuleOwner")
+  law_curriculum_seeds         LawCurriculumSeed[]
+  law_module_profiles          LawModuleProfile[]
+  law_campus_posts             LawCampusPost[]
+  law_campus_reports           LawCampusReport[]
+  law_shared_exams             LawSharedExam[]
+  law_shared_exam_votes        LawSharedExamVote[]
+  law_node_reports             LawNodeReport[]
+  law_mentor_memories          LawMentorMemory[]
+  law_professor_cards          LawProfessorCard[]
+  law_lecture_sources          LawLectureSource[]
+  law_module_nodes             LawModuleNode[]
+  law_module_proposals         LawModuleProposal[]
+  law_exam_dates               LawExamDate[]
+  law_reminder_pref            LawReminderPref?
+  law_drill_attempts           LawDrillAttempt[]
+  law_path_pins                LawPathPin[]
+  law_ai_usage                 LawAiUsage[]
+  law_chat_attachments         LawChatAttachment[]
+  law_follows_out              LawFollow[]        @relation("LawFollower")
+  law_follows_in               LawFollow[]        @relation("LawFollowee")
+  law_phone_hash               LawPhoneHash?
+  law_notifications            LawNotification[]
+  law_tt_overrides             LawTimetableOverride[]
+  law_squad_membership         LawSquadMember?
+  law_endorsements             LawEndorsement[]
+  law_referrals_made           LawReferral[]           @relation("LawReferrer")
+  law_referred_by              LawReferral?            @relation("LawReferred")
+  law_session_sources          LawSessionSource[]
+}
+
+model recovery_codes {
+  id        Int      @id @default(autoincrement())
+  user_id   Int
+  code_hash String
+  createdAt DateTime @default(now())
+  user      users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
+model password_reset_tokens {
+  id        Int      @id @default(autoincrement())
+  user_id   Int
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      users    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
+model document_vectors {
+  id            Int      @id @default(autoincrement())
+  docId         String
+  vectorId      String
+  createdAt     DateTime @default(now())
+  lastUpdatedAt DateTime @default(now())
+}
+
+model workspaces {
+  id                           Int                            @id @default(autoincrement())
+  name                         String
+  slug                         String                         @unique
+  vectorTag                    String?
+  createdAt                    DateTime                       @default(now())
+  openAiTemp                   Float?
+  openAiHistory                Int                            @default(20)
+  lastUpdatedAt                DateTime                       @default(now())
+  // THIS IS THE SYSTEM PROMPT FOR THE WORKSPACE
+  openAiPrompt                 String?
+  similarityThreshold          Float?                         @default(0.25)
+  chatProvider                 String?
+  chatModel                    String?
+  topN                         Int?                           @default(4)
+  chatMode                     String?                        @default("chat")
+  pfpFilename                  String?
+  agentProvider                String?
+  agentModel                   String?
+  queryRefusalResponse         String?
+  vectorSearchMode             String?                        @default("default")
+  router_id                    Int? // No relation to prevent whole table migration (SQLite limitation)
+  workspace_users              workspace_users[]
+  documents                    workspace_documents[]
+  workspace_suggested_messages workspace_suggested_messages[]
+  embed_configs                embed_configs[]
+  threads                      workspace_threads[]
+  workspace_agent_invocations  workspace_agent_invocations[]
+  prompt_history               prompt_history[]
+  workspace_parsed_files       workspace_parsed_files[]
+  memories                     memories[]
+}
+
+model workspace_threads {
+  id                     Int                      @id @default(autoincrement())
+  name                   String
+  slug                   String                   @unique
+  workspace_id           Int
+  user_id                Int?
+  createdAt              DateTime                 @default(now())
+  lastUpdatedAt          DateTime                 @default(now())
+  workspace              workspaces               @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+  user                   users?                   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  workspace_parsed_files workspace_parsed_files[]
+
+  @@index([workspace_id])
+  @@index([user_id])
+}
+
+model workspace_suggested_messages {
+  id            Int        @id @default(autoincrement())
+  workspaceId   Int
+  heading       String
+  message       String
+  createdAt     DateTime   @default(now())
+  lastUpdatedAt DateTime   @default(now())
+  workspace     workspaces @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+}
+
+model workspace_chats {
+  id             Int      @id @default(autoincrement())
+  workspaceId    Int
+  prompt         String
+  response       String
+  include        Boolean  @default(true)
+  user_id        Int?
+  thread_id      Int? // No relation to prevent whole table migration
+  api_session_id String? // String identifier for only the dev API to partition chats in any mode.
+  createdAt      DateTime @default(now())
+  lastUpdatedAt  DateTime @default(now())
+  feedbackScore   Boolean?
+  memoryProcessed Boolean? @map("memory_processed")
+  users           users?   @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model workspace_agent_invocations {
+  id            Int        @id @default(autoincrement())
+  uuid          String     @unique
+  prompt        String // Contains agent invocation to parse + option additional text for seed.
+  closed        Boolean    @default(false)
+  user_id       Int?
+  thread_id     Int? // No relation to prevent whole table migration
+  workspace_id  Int
+  createdAt     DateTime   @default(now())
+  lastUpdatedAt DateTime   @default(now())
+  user          users?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  workspace     workspaces @relation(fields: [workspace_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@index([uuid])
+}
+
+model workspace_users {
+  id            Int        @id @default(autoincrement())
+  user_id       Int
+  workspace_id  Int
+  createdAt     DateTime   @default(now())
+  lastUpdatedAt DateTime   @default(now())
+  workspaces    workspaces @relation(fields: [workspace_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  users         users      @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model cache_data {
+  id            Int       @id @default(autoincrement())
+  name          String
+  data          String
+  belongsTo     String?
+  byId          Int?
+  expiresAt     DateTime?
+  createdAt     DateTime  @default(now())
+  lastUpdatedAt DateTime  @default(now())
+}
+
+model embed_configs {
+  id                         Int           @id @default(autoincrement())
+  uuid                       String        @unique
+  enabled                    Boolean       @default(false)
+  chat_mode                  String        @default("query")
+  allowlist_domains          String?
+  allow_model_override       Boolean       @default(false)
+  allow_temperature_override Boolean       @default(false)
+  allow_prompt_override      Boolean       @default(false)
+  max_chats_per_day          Int?
+  max_chats_per_session      Int?
+  message_limit              Int?          @default(20)
+  workspace_id               Int
+  createdBy                  Int?
+  usersId                    Int?
+  createdAt                  DateTime      @default(now())
+  workspace                  workspaces    @relation(fields: [workspace_id], references: [id], onDelete: Cascade)
+  embed_chats                embed_chats[]
+  users                      users?        @relation(fields: [usersId], references: [id])
+}
+
+model embed_chats {
+  id                     Int           @id @default(autoincrement())
+  prompt                 String
+  response               String
+  session_id             String
+  include                Boolean       @default(true)
+  connection_information String?
+  embed_id               Int
+  usersId                Int?
+  createdAt              DateTime      @default(now())
+  embed_config           embed_configs @relation(fields: [embed_id], references: [id], onDelete: Cascade)
+  users                  users?        @relation(fields: [usersId], references: [id])
+}
+
+model event_logs {
+  id         Int      @id @default(autoincrement())
+  event      String
+  metadata   String?
+  userId     Int?
+  occurredAt DateTime @default(now())
+
+  @@index([event])
+}
+
+model slash_command_presets {
+  id            Int      @id @default(autoincrement())
+  command       String
+  prompt        String
+  description   String
+  uid           Int      @default(0) // 0 is null user
+  userId        Int?
+  createdAt     DateTime @default(now())
+  lastUpdatedAt DateTime @default(now())
+  user          users?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([uid, command])
+}
+
+model document_sync_queues {
+  id             Int                        @id @default(autoincrement())
+  staleAfterMs   Int                        @default(604800000) // 7 days
+  nextSyncAt     DateTime
+  createdAt      DateTime                   @default(now())
+  lastSyncedAt   DateTime                   @default(now())
+  workspaceDocId Int                        @unique
+  workspaceDoc   workspace_documents?       @relation(fields: [workspaceDocId], references: [id], onDelete: Cascade)
+  runs           document_sync_executions[]
+}
+
+model document_sync_executions {
+  id        Int                  @id @default(autoincrement())
+  queueId   Int
+  status    String               @default("unknown")
+  result    String?
+  createdAt DateTime             @default(now())
+  queue     document_sync_queues @relation(fields: [queueId], references: [id], onDelete: Cascade)
+}
+
+model browser_extension_api_keys {
+  id            Int      @id @default(autoincrement())
+  key           String   @unique
+  user_id       Int?
+  createdAt     DateTime @default(now())
+  lastUpdatedAt DateTime @updatedAt
+  user          users?   @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@index([user_id])
+}
+
+model temporary_auth_tokens {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  user      users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@index([userId])
+}
+
+model system_prompt_variables {
+  id          Int      @id @default(autoincrement())
+  key         String   @unique
+  value       String?
+  description String?
+  type        String   @default("system") // system, user, dynamic
+  userId      Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        users?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model prompt_history {
+  id          Int        @id @default(autoincrement())
+  workspace   workspaces @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId Int
+  prompt      String
+  modifiedBy  Int?
+  modifiedAt  DateTime   @default(now())
+  user        users?     @relation(fields: [modifiedBy], references: [id])
+
+  @@index([workspaceId])
+}
+
+// Schema specific to mobile app <> Desktop app connection
+model desktop_mobile_devices {
+  id         Int      @id @default(autoincrement())
+  deviceOs   String
+  deviceName String
+  token      String   @unique
+  approved   Boolean  @default(false)
+  userId     Int?
+  createdAt  DateTime @default(now())
+  user       users?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model workspace_parsed_files {
+  id                 Int                @id @default(autoincrement())
+  filename           String             @unique
+  workspaceId        Int
+  userId             Int?
+  threadId           Int?
+  metadata           String?
+  tokenCountEstimate Int?               @default(0)
+  createdAt          DateTime           @default(now())
+  workspace          workspaces         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user               users?             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  thread             workspace_threads? @relation(fields: [threadId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId])
+  @@index([userId])
+}
+
+model external_communication_connectors {
+  id            Int      @id @default(autoincrement())
+  type          String   @unique
+  config        String   @default("{}")
+  active        Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  lastUpdatedAt DateTime @default(now())
+}
+
+model scheduled_jobs {
+  id        Int                  @id @default(autoincrement())
+  name      String
+  prompt    String
+  tools     String? // JSON array of tool identifiers (null = use all enabled agent skills)
+  schedule  String // Cron expression
+  enabled   Boolean              @default(true)
+  lastRunAt DateTime?
+  nextRunAt DateTime?
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @default(now())
+  runs      scheduled_job_runs[]
+}
+
+model scheduled_job_runs {
+  id          Int            @id @default(autoincrement())
+  jobId       Int
+  status      String         @default("queued") // queued | running | completed | failed | timed_out — model always sets explicitly
+  result      String? // JSON execution trace
+  error       String?
+  startedAt   DateTime       @default(now())
+  completedAt DateTime?
+  readAt      DateTime? // null = unread
+  job         scheduled_jobs @relation(fields: [jobId], references: [id], onDelete: Cascade)
+
+  @@index([jobId])
+}
+
+model memories {
+  id          Int       @id @default(autoincrement())
+  userId      Int?      @map("user_id")
+  workspaceId Int?      @map("workspace_id")
+  scope       String    @default("workspace")
+  content     String
+  lastUsedAt  DateTime? @map("last_used_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @map("updated_at")
+
+  user      users?      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workspace workspaces? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@index([userId, workspaceId])
+  @@index([userId, scope])
+}
+
+model model_routers {
+  id                Int                  @id @default(autoincrement())
+  name              String               @unique
+  description       String?
+  fallback_provider String
+  fallback_model    String
+  cooldown_seconds  Int                  @default(30)
+  created_by        Int?
+  createdAt         DateTime             @default(now())
+  lastUpdatedAt     DateTime             @default(now())
+  rules             model_router_rules[]
+}
+
+model model_router_rules {
+  id               Int           @id @default(autoincrement())
+  router_id        Int
+  enabled          Boolean       @default(true)
+  priority         Int
+  type             String        @default("calculated")
+  title            String
+  description      String?
+  // For `calculated` rules: the boolean operator joining `conditions` — "AND"
+  // (all must match) or "OR" (any must match). Null for `llm` rules.
+  condition_logic  String?
+  // For `calculated` rules: JSON-stringified array of condition objects, each
+  // shaped as { property: string, comparator: string, value: string } where
+  // `property` ∈ VALID_PROPERTIES and `comparator` ∈ VALID_COMPARATORS (see
+  // server/models/modelRouterRule.js). `value` is always stored as a string;
+  // numeric comparators parse it at evaluation time. Null for `llm` rules.
+  conditions       String?
+  route_provider   String
+  route_model      String
+  created_by       Int?
+  createdAt        DateTime      @default(now())
+  lastUpdatedAt    DateTime      @default(now())
+  router           model_routers @relation(fields: [router_id], references: [id], onDelete: Cascade)
+
+  @@unique([router_id, title])
+  @@index([router_id])
+  @@index([router_id, enabled, priority])
+}
+// ───────────────────────── LAW-OS (namespaced, see docs/UPSTREAM_TOUCHPOINTS.md) ─────────────────────────
+
+model LawSetting {
+  key       String   @id
+  value     String // JSON-encoded
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model LawDevice {
+  id         String   @id @default(cuid())
+  name       String
+  userAgent  String?
+  lastSeenAt DateTime @default(now())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userId     Int // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user       users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model LawAiCall {
+  id               String   @id @default(cuid())
+  provider         String
+  model            String
+  purpose          String
+  promptHash       String?
+  tokensIn         Int      @default(0)
+  tokensOut        Int      @default(0)
+  estimatedCostUsd Float    @default(0)
+  latencyMs        Int?
+  status           String
+  validation       String? // JSON: citation validation result
+  jobId            String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  userId Int? // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user   users? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([provider, createdAt])
+  @@index([jobId])
+  @@index([userId])
+}
+
+// ── LAW-OS Phase 1: academic structure, flashcards, habits ──
+
+model LawSubject {
+  id                     String             @id @default(cuid())
+  name                   String // Arabic
+  nameFr                 String?
+  code                   String?
+  semester               String             @default("S3")
+  professorName          String?
+  professorNotes         String?
+  examDate               DateTime?
+  examFormat             String?
+  dissertationRules      String? // JSON, defaults in spec §8.3
+  coursePlan             String? // JSON tree
+  color                  String             @default("#0f2a3f")
+  archived               Boolean            @default(false)
+  anythingllmWorkspaceId Int?
+  createdAt              DateTime           @default(now())
+  updatedAt              DateTime           @updatedAt
+  slots                  LawTimetableSlot[]
+  sessions               LawClassSession[]
+  flashcards             LawFlashcard[]
+  userId                 Int // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user                   users              @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model LawTimetableSlot {
+  id          String            @id @default(cuid())
+  subjectId   String?
+  weekday     Int // 1 = Monday … 7 = Sunday
+  startTime   String // "HH:MM" local
+  endTime     String
+  kind        String            @default("amphi") // amphi | TD
+  room        String?
+  placeholder Boolean           @default(false)
+  activeFrom  String? // YYYY-MM-DD
+  activeTo    String?
+  professor   String? // RC3 Phase 5
+  groupLabel  String? // TD / TP group
+  moduleId    String? // the student's LawCourseModule this session belongs to (validated on write; may outlive the module)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  subject     LawSubject?       @relation(fields: [subjectId], references: [id], onDelete: SetNull)
+  sessions    LawClassSession[]
+
+  userId Int // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user   users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([weekday])
+  @@index([userId])
+}
+
+model LawClassSession {
+  id        String            @id @default(cuid())
+  subjectId String
+  slotId    String?
+  date      String // YYYY-MM-DD local
+  title     String?
+  status    String            @default("captured") // captured | processing | needs_review | reviewed
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+  subject   LawSubject        @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  slot      LawTimetableSlot? @relation(fields: [slotId], references: [id], onDelete: SetNull)
+
+  userId Int // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user   users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([subjectId, date])
+  @@index([userId])
+}
+
+model LawFlashcard {
+  id            String         @id @default(cuid())
+  subjectId     String
+  origin        String // failed_retrieval | prof_emphasis | definition | elements_list | deadline | manual
+  type          String         @default("basic") // basic | cloze | qualification
+  front         String
+  back          String
+  noteAtomId    String?
+  canonicalIds  String         @default("[]") // JSON array
+  conceptIds    String         @default("[]") // JSON array of LawConcept ids (Phase 10)
+  suspended     Boolean        @default(false)
+  deletedAt     DateTime?
+  // FSRS state (ts-fsrs field set), always derived from LawReviewLog by replay
+  due           DateTime       @default(now())
+  stability     Float          @default(0)
+  difficulty    Float          @default(0)
+  elapsedDays   Int            @default(0)
+  scheduledDays Int            @default(0)
+  learningSteps Int            @default(0)
+  reps          Int            @default(0)
+  lapses        Int            @default(0)
+  state         String         @default("new") // new | learning | review | relearning
+  lastReview    DateTime?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  subject       LawSubject     @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  reviews       LawReviewLog[]
+  // Qanouni Collab: this card is the member's own copy of a squad card (content synced, schedule personal)
+  squadCardId   String?
+  squadCard     LawSquadCard?  @relation(fields: [squadCardId], references: [id], onDelete: SetNull)
+
+  userId Int // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user   users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([subjectId, due])
+  @@index([due])
+  @@index([userId])
+  @@index([squadCardId])
+}
+
+model LawReviewLog {
+  id             String       @id @default(cuid())
+  cardId         String
+  rating         Int // 1 Again | 2 Hard | 3 Good | 4 Easy
+  reviewedAt     DateTime // client time
+  durationMs     Int          @default(0)
+  stateBefore    String // JSON
+  deviceId       String?
+  clientReviewId String       @unique
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  card           LawFlashcard @relation(fields: [cardId], references: [id], onDelete: Cascade)
+
+  userId Int // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user   users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([cardId, reviewedAt])
+  @@index([reviewedAt])
+  @@index([userId])
+}
+
+model LawStudyDay {
+  id                  String   @id @default(cuid())
+  date                String // YYYY-MM-DD local
+  retrievalMinutes    Float    @default(0)
+  reviewsDone         Int      @default(0)
+  newCardsLearned     Int      @default(0)
+  casesSolved         Int      @default(0)
+  dissertationsWorked Int      @default(0)
+  goalMet             Boolean  @default(false)
+  freezeUsed          Boolean  @default(false)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  userId              Int // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user                users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+  @@index([userId])
+}
+
+model LawStreak {
+  id                  String   @id @default(cuid())
+  current             Int      @default(0)
+  longest             Int      @default(0)
+  freezesAvailable    Int      @default(0)
+  freezesEarnedTotal  Int      @default(0)
+  weeklyTargetMinutes Int      @default(140)
+  lastComputedDate    String?
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+  userId              Int      @unique // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user                users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ── LAW-OS Phase 2: capture, uploads, jobs, derivatives ──
+
+model LawAsset {
+  id               String           @id @default(cuid())
+  sha256           String
+  kind             String // photo | audio | pdf | other
+  mime             String
+  bytes            Int
+  durationSec      Float?
+  widthPx          Int?
+  heightPx         Int?
+  storagePath      String // relative to STORAGE_DIR/law/assets
+  originalFilename String?
+  sessionId        String?
+  subjectId        String?
+  batchId          String?
+  orderInBatch     Int              @default(0)
+  capturedAt       DateTime?
+  uploadedAt       DateTime         @default(now())
+  clientCaptureId  String
+  deviceId         String?
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  batch            LawCaptureBatch? @relation(fields: [batchId], references: [id], onDelete: SetNull)
+  derivatives      LawDerivative[]
+
+  userId Int // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user   users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, sha256])
+  @@unique([userId, clientCaptureId])
+  @@index([batchId, orderInBatch])
+  @@index([sessionId])
+  @@index([userId])
+}
+
+model LawCaptureBatch {
+  id            String          @id @default(cuid())
+  clientBatchId String
+  sessionId     String?
+  subjectId     String?
+  kind          String // photo_batch | audio_recording | pdf | import
+  status        String          @default("uploading") // uploading | complete | failed
+  expectedParts Int?
+  receivedParts Int             @default(0)
+  capturedAt    DateTime?
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  assets        LawAsset[]
+  derivatives   LawDerivative[]
+
+  userId Int // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user   users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, clientBatchId])
+  @@index([status])
+  @@index([userId])
+}
+
+model LawUpload {
+  id              String   @id @default(cuid())
+  clientCaptureId String
+  sha256          String
+  bytes           Int
+  mime            String
+  kind            String
+  batchId         String?
+  orderInBatch    Int      @default(0)
+  meta            String   @default("{}") // JSON: capturedAt, durationSec, widthPx, heightPx, originalFilename, deviceId
+  chunkSize       Int
+  chunkCount      Int
+  receivedChunks  String   @default("[]") // JSON array of indexes
+  status          String   @default("open") // open | complete | failed
+  expiresAt       DateTime
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  userId Int // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user   users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, clientCaptureId])
+  @@index([expiresAt])
+  @@index([userId])
+}
+
+model LawJob {
+  id               String    @id @default(cuid())
+  type             String
+  payload          String    @default("{}") // JSON
+  status           String    @default("queued") // queued | running | succeeded | failed | needs_review | paused_budget
+  priority         Int       @default(0)
+  attempts         Int       @default(0)
+  maxAttempts      Int       @default(4)
+  runAfter         DateTime  @default(now())
+  lockedAt         DateTime?
+  lockedBy         String?
+  error            String?
+  provider         String?
+  model            String?
+  tokensIn         Int       @default(0)
+  tokensOut        Int       @default(0)
+  estimatedCostUsd Float     @default(0)
+  durationMs       Int?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  userId Int? // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user   users? @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([status, runAfter, priority])
+  @@index([type])
+  @@index([userId])
+}
+
+model LawDerivative {
+  id                 String           @id @default(cuid())
+  assetId            String?
+  batchId            String?
+  kind               String // ocr_text | transcript | segments | polycopie_map | candidate_atoms | summary_candidate
+  content            String // text or JSON
+  language           String?
+  verificationStatus String           @default("unverified") // unverified | verified | edited | rejected
+  provider           String?
+  model              String?
+  jobId              String?
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+  asset              LawAsset?        @relation(fields: [assetId], references: [id], onDelete: Cascade)
+  batch              LawCaptureBatch? @relation(fields: [batchId], references: [id], onDelete: Cascade)
+
+  userId Int // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user   users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([verificationStatus])
+  @@index([batchId])
+  @@index([userId])
+}
+
+// ── LAW-OS Phase 3: legal corpus ──
+
+model LawSourceDocument {
+  id          String              @id @default(cuid())
+  origin      String // adala | sgg_bo | juriscassation | manual_upload | manual_text
+  url         String?
+  retrievedAt DateTime            @default(now())
+  sha256      String?
+  storagePath String?
+  assetId     String?
+  title       String?
+  boNumber    String?
+  boDate      DateTime?
+  parseStatus String              @default("pending") // pending | parsed | failed
+  parseNotes  String?
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  consolidatedAsOf String? // YYYY-MM-DD: the consolidation date of the official source (RC3 Phase 6 provenance)
+  versions    LawArticleVersion[]
+  imports     LawCorpusImport[]
+
+  @@index([sha256])
+}
+
+model LawCode {
+  id             String            @id @default(cuid())
+  slug           String            @unique // DOC, CP, CPC-58.25, CPC-1974, MOUDAWANA, CT, CCOM
+  family         String // CPC groups CPC-1974 and CPC-58.25
+  titleAr        String
+  titleFr        String?
+  lawNumber      String?
+  dahirRef       String?
+  originalBoRef  String?
+  numberingLabel String            @default("المادة") // الفصل | المادة
+  status         String            @default("in_force") // in_force | repealed | partially_in_force
+  inForceFrom    DateTime?
+  inForceTo      DateTime?
+  notes          String?
+  // Spec Phase 6: hierarchy of norms and domain (drives the Library accordion and the tutor's reasoning rules)
+  normLevel      String            @default("ORDINARY") // CONSTITUTION | ORGANIC | FRAMEWORK | ORDINARY | REGULATORY
+  domain         String? // CIVIL | COMMERCIAL | CRIMINAL | PROCEDURE_CIVIL | PROCEDURE_PENAL | FAMILY | LABOUR | ADMIN
+  reviewed       Boolean           @default(true) // false for freshly ingested texts until an admin spot-checks them
+  sourceUrl      String? // official publication (sgg.gov.ma / Bulletin Officiel)
+  createdAt      DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt
+  articles       LawArticle[]
+  imports        LawCorpusImport[]
+
+  @@index([family])
+}
+
+model LawArticle {
+  id            String              @id @default(cuid())
+  codeId        String
+  articleNumber String // "77", "88-1", "88 مكرر"
+  canonicalId   String              @unique // DOC:77
+  headingPath   String              @default("[]") // JSON array
+  createdAt     DateTime            @default(now())
+  updatedAt     DateTime            @updatedAt
+  code          LawCode             @relation(fields: [codeId], references: [id], onDelete: Cascade)
+  versions      LawArticleVersion[]
+
+  @@index([codeId, articleNumber])
+}
+
+model LawArticleVersion {
+  id               String             @id @default(cuid())
+  articleId        String
+  textAr           String
+  textFr           String?
+  textNormalized   String
+  validFrom        DateTime
+  validTo          DateTime?
+  amendedByLaw     String?
+  amendedByBoRef   String?
+  sourceDocumentId String?
+  importId         String?
+  checksum         String
+  verifiedByUser   Boolean            @default(false)
+  verifiedAt       DateTime?
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  article          LawArticle         @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  sourceDocument   LawSourceDocument? @relation(fields: [sourceDocumentId], references: [id], onDelete: SetNull)
+
+  @@index([articleId, validFrom])
+}
+
+model LawCorpusImport {
+  id               String             @id @default(cuid())
+  codeId           String
+  sourceDocumentId String?
+  validFrom        DateTime
+  amendedByLaw     String?
+  amendedByBoRef   String?
+  status           String             @default("parsing") // parsing | review | committed | failed
+  rawText          String?
+  articles         String             @default("[]") // JSON: [{number, headingPath, text, confirmed, include, warnings}]
+  warnings         String             @default("[]")
+  committedAt      DateTime?
+  summary          String? // JSON: { created, versioned, unchanged, verified }
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  code             LawCode            @relation(fields: [codeId], references: [id], onDelete: Cascade)
+  sourceDocument   LawSourceDocument? @relation(fields: [sourceDocumentId], references: [id], onDelete: SetNull)
+
+  @@index([status])
+}
+
+model LawDecision {
+  id             String    @id @default(cuid())
+  court          String    @default("محكمة النقض")
+  decisionNumber String
+  decisionDate   DateTime
+  chamber        String?
+  fileNumber     String?
+  subjectMatter  String?
+  principle      String? // the student's own summary of the rule
+  fullTextAr     String?
+  sourceUrl      String?
+  verified       Boolean   @default(false)
+  verifiedAt     DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  userId Int // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user   users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, court, decisionNumber, decisionDate])
+  @@index([userId])
+}
+
+model LawDoctrineRef {
+  id         String   @id @default(cuid())
+  author     String
+  work       String
+  edition    String?
+  year       Int?
+  page       String?
+  paraphrase String // the student's own words
+  shortQuote String? // ≤ 300 chars (copyright, spec §12)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  userId     Int // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user       users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model LawLink {
+  id        String   @id @default(cuid())
+  fromType  String // article | articleVersion | decision | doctrine | noteAtom | flashcard | caseAttempt
+  fromId    String
+  toType    String
+  toId      String
+  relation  String // references | applies | interprets | confirms | reverses | contradicts | cites | divergesFrom
+  note      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId Int // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user   users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, fromType, fromId, toType, toId, relation])
+  @@index([toType, toId])
+  @@index([userId])
+}
+
+// ── LAW-OS Phase 4: notes ──
+
+model LawNoteAtom {
+  id                 String    @id @default(cuid())
+  subjectId          String
+  sessionId          String?
+  provenance         String // PROF | TEXT | JURIS | DOCTRINE | MINE
+  body               String
+  headingPath        String    @default("[]") // JSON array: position in the professor's plan
+  sourceAssetId      String?
+  sourceTimestampSec Float?
+  sourcePage         Int?
+  articleVersionId   String?
+  decisionId         String?
+  doctrineRefId      String?
+  examRelevant       Boolean   @default(true)
+  profEmphasis       Boolean   @default(false)
+  profDivergent      Boolean   @default(false)
+  mentionBridge      Boolean   @default(false)
+  verificationStatus String    @default("unverified") // unverified | verified | edited | rejected
+  tags               String    @default("[]") // JSON array
+  fromDerivativeId   String?
+  deletedAt          DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  userId Int // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user   users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([subjectId, provenance])
+  @@index([sessionId])
+  @@index([userId])
+}
+
+// ── LAW-OS Phase 5: methodology ──
+
+model LawCaseExercise {
+  id                   String           @id @default(cuid())
+  subjectId            String?
+  title                String
+  factsAr              String
+  source               String           @default("self_written") // prof_td | past_exam | self_written | ai_scenario
+  difficulty           Int              @default(2) // 1-5
+  targetQualifications String           @default("[]") // JSON canonicalIds, hidden until an attempt is submitted
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+  attempts             LawCaseAttempt[]
+  userId               Int // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user                 users            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model LawCaseAttempt {
+  id             String          @id @default(cuid())
+  exerciseId     String
+  timed          Boolean         @default(false)
+  timeLimitSec   Int?
+  startedAt      DateTime        @default(now())
+  durationSec    Int?
+  phases         String          @default("{}") // JSON {1..5: {text, citedIds}}
+  submittedAt    DateTime?
+  critique       String? // JSON
+  rubricScores   String? // JSON
+  citationCheck  String? // JSON {resolved, unresolved, quoteMismatches, banner}
+  suggestedCards String? // JSON [{front, back, canonicalIds, acceptedCardId}]
+  modelAnswer    String? // JSON, only on explicit request after the critique
+  status         String          @default("draft") // draft | submitted | critiqued | critique_failed
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  exercise       LawCaseExercise @relation(fields: [exerciseId], references: [id], onDelete: Cascade)
+
+  userId Int // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user   users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([exerciseId])
+  @@index([userId])
+}
+
+model LawDissertation {
+  id             String   @id @default(cuid())
+  subjectId      String?
+  topic          String
+  intro          String   @default("{\"steps\":[]}") // JSON {steps: [6 strings]}
+  plan           String   @default("{\"sections\":[]}") // JSON {sections: [{title, subsections: [{title, body}]}]}
+  draftBody      String?
+  critique       String? // JSON
+  ruleViolations String? // JSON checklist
+  citationCheck  String? // JSON
+  status         String   @default("draft") // draft | critiquing | critiqued | critique_failed
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  userId         Int // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user           users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// ── LAW-OS Phase 6: radar and rhythm ──
+
+model LawReformEvent {
+  id                 String    @id @default(cuid())
+  title              String
+  jurisdiction       String    @default("MA") // always Morocco (spec §5.4)
+  status             String // watch | draft | bill_in_parliament | adopted | published | in_force
+  lawNumber          String?
+  boRef              String?
+  publishedAt        DateTime?
+  inForceAt          DateTime?
+  affectedArticleIds String    @default("[]") // JSON canonicalIds
+  summary            String?
+  summaryVerified    Boolean   @default(false)
+  sourceDocumentIds  String    @default("[]") // JSON
+  seedKey            String?   @unique
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+}
+
+model LawWeeklyRecap {
+  id          String    @id @default(cuid())
+  weekStart   String // YYYY-MM-DD (Monday, local)
+  content     String // JSON
+  generatedAt DateTime  @default(now())
+  viewedAt    DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  userId      Int // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user        users     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, weekStart])
+  @@index([userId])
+}
+
+model LawPushSubscription {
+  id            String    @id @default(cuid())
+  endpoint      String    @unique
+  keys          String // JSON {p256dh, auth}
+  deviceId      String?
+  lastSuccessAt DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  userId        Int // owner (Qanouni multi-user); scoped by utils/law/tenant.js
+  user          users     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+// Qanouni accounts: the login identity of an upstream `users` row (email, Google link, study profile).
+// The password hash, role and suspension stay on `users` so upstream auth keeps working.
+model LawUserProfile {
+  id         String   @id @default(cuid())
+  userId     Int      @unique
+  email      String   @unique // lowercased
+  fullName   String
+  university String   @default("FSJES Aïn Chock")
+  section    String   @default("S3 Droit privé G01")
+  googleSub  String?  @unique
+  facebookId String?  @unique
+  friendCode String?  @unique // QAN-NAME-1234, shared to add study buddies
+  shareCode  String?  @unique // RC3 Phase 7: XXXX-XXXX (unambiguous alphabet), the code students share on WhatsApp
+  // Qanouni Collab cohort (FSJES Aïn Chock, S3 Droit privé, Arabic section, TD group G01 by default)
+  faculty         String @default("FSJES Ain Chock")
+  semester        String @default("S3")
+  filiere         String @default("Droit Privé / القانون الخاص")
+  languageSection String @default("Section Arabe / الفوج العربي")
+  tdGroup         String @default("G01")
+  publicProfile   Boolean @default(false) // Phase B: profile page visible to other students
+  referralCode    String? @unique // Phase C: the student's invite code (one per student, reusable)
+  // Spec Phase 3/4: public identity and privacy
+  handle                String?   @unique // @handle, lowercase [a-z0-9_.]{3,20}
+  avatarConfig          String? // JSON: { base, skinTone, hair, headwear, outfit, accessory, bg }
+  isPrivate             Boolean   @default(false) // follow requests need approval
+  discoverable          Boolean   @default(true) // findable by handle / suggestions
+  onboardingCompletedAt DateTime?
+  aiDailyLimitOverride  Int? // admin-set per-student chat quota (null = global default)
+  onboardingDraft       String? // JSON { step, data } so the wizard resumes after a refresh
+  facultyCode           String? // LawFaculty.code
+  track                 String? // PRIVE | PUBLIC
+  studyLang             String? // AR | FR
+  examTrack             String? // AVOCAT | MAGISTRAT | COMMISSAIRE_JUDICIAIRE (optional)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Qanouni one-time email codes: registration (pending sign-up data lives here until the code is verified)
+// and password reset. Only an HMAC of the code is stored.
+model LawEmailCode {
+  id          String    @id @default(cuid())
+  purpose     String // register | reset
+  email       String // lowercased
+  codeHash    String
+  payload     String? // JSON pending registration {fullName, passwordHash, university, section}
+  expiresAt   DateTime
+  attempts    Int       @default(0)
+  lockedUntil DateTime?
+  lastSentAt  DateTime
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@unique([purpose, email])
+}
+
+// Qanouni QR quick login: a signed-out device shows tokenHash's token as a QR; a signed-in device approves
+// it; the waiting device (proving pollSecretHash) receives one session, once.
+model LawQrLogin {
+  id             String    @id @default(cuid())
+  tokenHash      String    @unique
+  pollSecretHash String
+  status         String    @default("pending") // pending | approved | consumed | denied
+  userId         Int?
+  requesterAgent String?
+  expiresAt      DateTime
+  approvedAt     DateTime?
+  createdAt      DateTime  @default(now())
+
+  @@index([expiresAt])
+}
+
+// Qanouni study buddies: a request by friend code, mutual once accepted.
+model LawFriendship {
+  id          String   @id @default(cuid())
+  requesterId Int
+  addresseeId Int
+  status      String   @default("pending") // pending | accepted
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  requester   users    @relation("LawFriendRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  addressee   users    @relation("LawFriendAddressee", fields: [addresseeId], references: [id], onDelete: Cascade)
+
+  @@unique([requesterId, addresseeId])
+  @@index([addresseeId])
+}
+
+
+// ── Qanouni Collab: legal consent, study squads, module workspaces, master notes, squad decks ──
+
+// Acceptance of the academic / copyright / privacy / AI notice (one row per user, latest version accepted).
+model LawUserConsent {
+  id              String   @id @default(cuid())
+  userId          Int      @unique
+  termsAccepted   Boolean  @default(false)
+  academicNotice  Boolean  @default(false)
+  privacyAccepted Boolean  @default(false)
+  version         String   @default("1.0.0")
+  acceptedAt      DateTime @default(now())
+  ipAddress       String?
+  userAgent       String?
+  user            users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// A study squad: at most 6 members (enforced atomically in models/lawSquad.js); one squad per student.
+model LawSquad {
+  id          String               @id @default(cuid())
+  name        String
+  cohortTag   String               @default("FSJES-AinChock-S3-DP-G01")
+  inviteCode  String               @unique
+  createdById Int
+  createdAt   DateTime             @default(now())
+  moduleTitle String? // the module this work group studies (free text, shown to anyone who finds a public group)
+  visibility  String               @default("private") // private (invite code) | public (listed, joinable)
+  publishMode String               @default("members_propose") // admin_only (admins publish) | members_propose (members send change requests)
+  members     LawSquadMember[]
+  workspaces  LawModuleWorkspace[]
+  docs        LawSquadDoc[]
+  exclusions  LawSquadExclusion[]
+}
+
+model LawSquadMember {
+  id       String   @id @default(cuid())
+  squadId  String
+  userId   Int      @unique // one squad per student
+  role     String   @default("contributor") // owner | contributor
+  joinedAt DateTime @default(now())
+  squad    LawSquad @relation(fields: [squadId], references: [id], onDelete: Cascade)
+  user     users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([squadId, userId])
+}
+
+// One module as taught by one professor (same module, different professor = different syllabus).
+model LawModuleWorkspace {
+  id            String          @id @default(cuid())
+  squadId       String
+  moduleName    String
+  professorName String
+  academicYear  String          @default("2026/2027")
+  createdById   Int
+  createdAt     DateTime        @default(now())
+  squad         LawSquad        @relation(fields: [squadId], references: [id], onDelete: Cascade)
+  masterNotes   LawMasterNote[]
+  cards         LawSquadCard[]
+  sources       LawSessionSource[]
+
+  @@index([squadId])
+}
+
+// المحاضرة الجامعة: the squad's shared synthesis of one session (students' own words, never raw recordings).
+model LawMasterNote {
+  id             String             @id @default(cuid())
+  workspaceId    String
+  sessionNumber  Int
+  date           DateTime           @default(now())
+  title          String
+  content        String // Markdown; headings follow المبحث / المطلب / الفقرة; pins cited as [^pin-1]
+  planJson       String? // JSON outline derived from the headings
+  sourcePins     String? // JSON [{id:"pin-1", type:"document"|"ref", ref, label}]
+  contributors   String? // JSON [{userId, percent}]
+  sectionAuthors String? // JSON [{key, heading, userId}] (Law Blame)
+  docType        String? // full_course | session | summary | reference | case (forum tabs); null = untyped
+  version        Int                @default(1) // optimistic concurrency between squad members
+  // Phase B: private (creator only) | squad | public (Faculty Hub); only the creator changes it
+  visibility           String          @default("squad")
+  publishedAt          DateTime?
+  forkedFromId         String?
+  forkedFromAuthorName String? // kept even if the source is later unpublished or deleted
+  forkedFrom           LawMasterNote?  @relation("LawNoteFork", fields: [forkedFromId], references: [id], onDelete: SetNull)
+  forks                LawMasterNote[] @relation("LawNoteFork")
+  endorsements         LawEndorsement[]
+  // Phase 8: revision history, change requests, co-authors, moderation
+  headRevisionId       String?
+  moderationStatus     String             @default("ACTIVE") // ACTIVE | HIDDEN | REMOVED
+  hiddenReason         String?
+  appealedAt           DateTime?
+  revisions            LawNoteRevision[]
+  changeRequests       LawChangeRequest[]
+  coAuthors            LawNoteCoAuthor[]
+  reports              LawNoteReport[]
+  createdById    Int
+  updatedById    Int?
+  createdAt      DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  workspace      LawModuleWorkspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, sessionNumber])
+  @@index([visibility])
+  @@index([forkedFromId])
+}
+
+// Phase B: التوثيق, one student vouching for a public master note (toggle; 5+ = "موثق من الفوج").
+model LawEndorsement {
+  id        String        @id @default(cuid())
+  noteId    String
+  userId    Int
+  createdAt DateTime      @default(now())
+  note      LawMasterNote @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  user      users         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([noteId, userId])
+  @@index([userId])
+}
+
+// Squad deck card: shared content; every member reviews their own LawFlashcard copy on their own schedule.
+model LawSquadCard {
+  id           String             @id @default(cuid())
+  workspaceId  String
+  front        String
+  back         String
+  canonicalIds String             @default("[]")
+  createdById  Int
+  version      Int                @default(1)
+  deletedAt    DateTime?
+  createdAt    DateTime           @default(now())
+  updatedAt    DateTime           @updatedAt
+  workspace    LawModuleWorkspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  copies       LawFlashcard[]
+
+  @@index([workspaceId])
+}
+
+
+// ── Qanouni Collab Phase C: referrals and multi-source synthesis ──
+
+// One row per invited student. Activated only after real study (anti-farming, models/lawReferral.js); an
+// activation gives the referrer +250 XP, the "سفير الفوج" badge and one extra seat in their squad (max 8).
+model LawReferral {
+  id             String    @id @default(cuid())
+  referrerId     Int
+  referredUserId Int       @unique // a student can be referred once
+  code           String // the referrer's code that was used
+  status         String    @default("pending") // pending | activated
+  activatedAt    DateTime?
+  createdAt      DateTime  @default(now())
+  referrer       users     @relation("LawReferrer", fields: [referrerId], references: [id], onDelete: Cascade)
+  referred       users     @relation("LawReferred", fields: [referredUserId], references: [id], onDelete: Cascade)
+
+  @@index([referrerId, status])
+  @@index([code])
+}
+
+// A member's raw input for one session of a squad workspace (their own transcript, board OCR or text).
+// Visible only to its author; squad-mates see its kind, label and size. Only the AI synthesis is shared.
+model LawSessionSource {
+  id            String             @id @default(cuid())
+  workspaceId   String
+  sessionNumber Int
+  userId        Int
+  kind          String // transcript | board_ocr | text
+  label         String
+  content       String
+  createdAt     DateTime           @default(now())
+  workspace     LawModuleWorkspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user          users              @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([workspaceId, sessionNumber])
+  @@index([userId])
+}
+
+// Spec Phase 3: per-student preferences, synced across devices (device-only theme/sound keys remain a cache).
+model LawUserPreferences {
+  userId          Int      @id
+  theme           String   @default("system") // light | dark | system
+  locale          String   @default("ar") // ar | ary | fr | en
+  soundEnabled    Boolean  @default(true)
+  animationsOn    Boolean  @default(true)
+  notifyFriends   Boolean  @default(true)
+  notifyHub       Boolean  @default(true)
+  notifyForum     Boolean  @default(true) // forum replies and reading-group activity
+  notifyReminders Boolean  @default(true)
+  reminderTime    String? // "HH:mm" Africa/Casablanca
+  dailyGoalMin    Int      @default(20)
+  memoryEnabled   Boolean  @default(true) // Phase 10: the learner memory ("ذاكرتي") master switch
+  updatedAt       DateTime @updatedAt
+  user            users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Spec Phase 4: faculties. isLive = an automatic timetable integration exists (Phase 5).
+model LawFaculty {
+  id     String  @id @default(cuid())
+  code   String  @unique // "FSJES_AIN_CHOCK"
+  nameAr String
+  nameFr String
+  city   String
+  isLive Boolean @default(false)
+}
+
+// Spec Phase 5: official faculty timetables. Sources are fetched by an admin/scheduled job (never on a student's
+// request), parsed into staged sessions (published=false) and only shown to students once an admin publishes them.
+model LawTimetableSource {
+  id          String   @id @default(cuid())
+  facultyCode String
+  season      String // AUTOMNE | PRINTEMPS
+  url         String
+  sha256      String
+  fetchedAt   DateTime @default(now())
+  status      String // FETCHED | STAGED | PUBLISHED | FAILED
+  parseLog    String?
+  sessions    LawFdcSession[]
+
+  @@unique([url, sha256])
+}
+
+model LawFdcSession {
+  id          String             @id @default(cuid())
+  sourceId    String
+  source      LawTimetableSource @relation(fields: [sourceId], references: [id], onDelete: Cascade)
+  facultyCode String
+  semester    String // S1..S6
+  track       String // PRIVE | PUBLIC
+  language    String // AR | FR
+  parcours    String             @default("") // e.g. "CARR JURID" (S5 variants); "" = the plain filière
+  groupCode   String // G01..
+  dayOfWeek   Int // 1 = Monday .. 7
+  startTime   String // "08:30"
+  endTime     String
+  subject     String
+  kind        String             @default("COURS") // COURS | TD
+  room        String?
+  professor   String?
+  published   Boolean            @default(false)
+
+  @@index([facultyCode, semester, track, language, groupCode, published])
+  @@index([sourceId])
+}
+
+model LawTimetableSubscription {
+  userId      Int      @id
+  facultyCode String
+  semester    String
+  track       String
+  language    String
+  parcours    String   @default("")
+  groupCode   String
+  createdAt   DateTime @default(now())
+  user        users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model LawTimetableOverride {
+  id        String   @id @default(cuid())
+  userId    Int
+  sessionId String? // null = a session the student added
+  type      String // CANCEL | MOVE | EDIT | ADD
+  date      String? // YYYY-MM-DD for a one-off change; null = recurring
+  data      String // JSON: new time / room / professor / subject / note
+  clientOpId String? // idempotency key from the offline queue (a replayed create never duplicates)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, clientOpId])
+  @@index([userId])
+}
+
+// Spec Phase 6: grounded legal chat + fair-use quota.
+model LawChatThread {
+  id        String           @id @default(cuid())
+  userId    Int
+  title     String?
+  scope     String           @default("{}") // JSON { codeSlugs: [], noteIds: [], includeAttachments: bool }
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  user      users            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  messages  LawChatMessage[]
+
+  @@index([userId, updatedAt])
+}
+
+model LawChatMessage {
+  id            String              @id @default(cuid())
+  threadId      String
+  thread        LawChatThread       @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  role          String // user | assistant
+  content       String
+  citations     String? // JSON { verified: [canonicalId], unverified: [string], quoteMismatches: [] }
+  scopeSnapshot String? // JSON copy of the scope used for this answer
+  createdAt     DateTime            @default(now())
+  attachments   LawChatAttachment[]
+
+  @@index([threadId, createdAt])
+}
+
+model LawChatAttachment {
+  id            String          @id @default(cuid())
+  userId        Int
+  messageId     String?
+  message       LawChatMessage? @relation(fields: [messageId], references: [id], onDelete: SetNull)
+  kind          String // IMAGE | PDF | AUDIO
+  mime          String
+  sizeBytes     Int
+  storagePath   String
+  extractedText String?
+  status        String // UPLOADED | EXTRACTED | UNSUPPORTED | FAILED
+  createdAt     DateTime        @default(now())
+  user          users           @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+}
+
+model LawAiUsage {
+  userId Int
+  day    String // YYYY-MM-DD in Africa/Casablanca
+  count  Int    @default(0)
+  user   users  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, day])
+}
+
+// Spec Phase 7: directed follows (public target = ACCEPTED at once, private = PENDING until approved). "Friends" are
+// mutual ACCEPTED follows. Legacy LawFriendship rows are migrated into both directions (scripts/migrateFriendships).
+model LawFollow {
+  id         String    @id @default(cuid())
+  followerId Int
+  followeeId Int
+  status     String // PENDING | ACCEPTED | REJECTED
+  createdAt  DateTime  @default(now())
+  decidedAt  DateTime?
+  follower   users     @relation("LawFollower", fields: [followerId], references: [id], onDelete: Cascade)
+  followee   users     @relation("LawFollowee", fields: [followeeId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followeeId])
+  @@index([followeeId, status])
+}
+
+model LawBlock {
+  blockerId Int
+  blockedId Int
+  createdAt DateTime @default(now())
+  blocker   users    @relation("LawBlocker", fields: [blockerId], references: [id], onDelete: Cascade)
+  blocked   users    @relation("LawBlocked", fields: [blockedId], references: [id], onDelete: Cascade)
+
+  @@id([blockerId, blockedId])
+  @@index([blockedId])
+}
+
+// HMAC-SHA256(E.164, PHONE_HASH_PEPPER): the number itself is never stored. Opt-in only.
+model LawPhoneHash {
+  userId    Int      @id
+  hash      String   @unique
+  consentAt DateTime
+  user      users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model LawNotification {
+  id        String    @id @default(cuid())
+  userId    Int
+  type      String // FOLLOW_REQUEST | FOLLOW_ACCEPTED | NEW_FOLLOWER | HUB_CHANGE_REQUEST | HUB_MERGED | ...
+  payload   String    @default("{}") // JSON
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+  user      users     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt])
+}
+
+// Spec Phase 8: the Hub as "GitHub for law students". Revisions are snapshots of a master note's Markdown; a change
+// request proposes a detached revision against a base revision; merging is a block-level three-way merge.
+model LawNoteRevision {
+  id          String        @id @default(cuid())
+  noteId      String
+  note        LawMasterNote @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  parentId    String?
+  authorId    Int
+  content     String
+  contentHash String
+  message     String?
+  createdAt   DateTime      @default(now())
+
+  @@index([noteId, createdAt])
+}
+
+model LawChangeRequest {
+  id                 String        @id @default(cuid())
+  noteId             String
+  note               LawMasterNote @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  baseRevisionId     String
+  proposedRevisionId String
+  authorId           Int
+  title              String
+  description        String?
+  status             String        @default("OPEN") // OPEN | MERGED | REJECTED | CONFLICT | WITHDRAWN
+  reviewerId         Int?
+  reviewNote         String?
+  createdAt          DateTime      @default(now())
+  decidedAt          DateTime?
+  author             users         @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([noteId, status])
+  @@index([authorId])
+}
+
+model LawNoteCoAuthor {
+  noteId             String
+  note               LawMasterNote @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  userId             Int
+  viaChangeRequestId String?
+  addedAt            DateTime      @default(now())
+  user               users         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([noteId, userId])
+}
+
+model LawNoteReport {
+  id         String        @id @default(cuid())
+  noteId     String
+  note       LawMasterNote @relation(fields: [noteId], references: [id], onDelete: Cascade)
+  reporterId Int
+  reason     String // INAPPROPRIATE | VULGARITY | SPAM_ADS | MISLEADING_LEGAL | COPYRIGHT | OTHER
+  detail     String?
+  status     String        @default("OPEN") // OPEN | UPHELD | DISMISSED
+  createdAt  DateTime      @default(now())
+  reporter   users         @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+
+  @@unique([noteId, reporterId])
+  @@index([noteId, status])
+}
+
+// Spec Phase 9: the course path. Modules are derived from the published official timetable (never invented): one module
+// per distinct subject of a (faculty, semester, track, language, parcours). Nodes are a structural scaffold an admin can edit.
+model LawCourseModule {
+  articleLinks LawModuleArticle[]
+  id          String        @id @default(cuid())
+  facultyCode String
+  semester    String
+  track       String
+  language    String
+  parcours    String        @default("")
+  ordinal     Int
+  title       String
+  nodes       LawPathNode[]
+  // RC3 Phase 3: a student's own module (default list from a curriculum seed, or added by hand). ownerId null = shared.
+  // Owned modules use parcours "u<ownerId>" so the scope unique key stays free of collisions.
+  ownerId     Int?
+  owner       users?        @relation("LawModuleOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  source      String        @default("timetable") // timetable | seed | custom
+  verified    Boolean       @default(true) // false: from a default list the student has not confirmed yet
+  profiles    LawModuleProfile[]
+  contentNodes LawModuleNode[]
+  professorCards LawProfessorCard[]
+  lectureSources LawLectureSource[]
+  proposals   LawModuleProposal[]
+  examDates   LawExamDate[]
+  drills      LawDrillAttempt[]
+
+  @@unique([facultyCode, semester, track, language, parcours, ordinal])
+  @@index([ownerId])
+}
+
+model LawPathNode {
+  id        String          @id @default(cuid())
+  moduleId  String
+  module    LawCourseModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  kind      String // LESSON | PRACTICE | METHOD | CHECKPOINT | BOSS
+  title     String
+  section   String // chapter label shown as a divider
+  ordinal   Int
+  legalRefs String          @default("[]") // JSON [{slug, number}], resolved against the corpus
+  conceptIds String         @default("[]") // JSON LawConcept ids taught here (Phase 10)
+  prereqIds String          @default("[]") // JSON node ids that must be COMPLETED first
+  progress  LawNodeProgress[]
+  pins      LawPathPin[]
+
+  @@index([moduleId, ordinal])
+}
+
+model LawNodeProgress {
+  userId    Int
+  nodeId    String
+  state     String      @default("IN_PROGRESS") // IN_PROGRESS | COMPLETED (LOCKED / AVAILABLE are computed)
+  xpAwarded Boolean     @default(false) // only current-semester completions inside the daily cap earn XP
+  updatedAt DateTime    @updatedAt
+  user      users       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  node      LawPathNode @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+
+  @@id([userId, nodeId])
+}
+
+// A community note a student pulled into their own path.
+model LawPathPin {
+  userId    Int
+  nodeId    String
+  noteId    String
+  createdAt DateTime    @default(now())
+  user      users       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  node      LawPathNode @relation(fields: [nodeId], references: [id], onDelete: Cascade)
+
+  @@id([userId, nodeId, noteId])
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// Spec Phase 10: the Brain. Two layers kept apart on purpose:
+//  - Learner Brain: per student, private (LawLearnerMemory / Evidence / ConceptMastery): academic misconceptions only.
+//  - Tutor Brain: admin-verified corrections to the AI's answers (LawAiCorrection), the runtime twin of brain/memories.
+// ---------------------------------------------------------------------------------------------------------------
+model LawConcept {
+  id        String  @id @default(cuid())
+  slug      String  @unique // "nullite-absolue"
+  titleAr   String
+  titleFr   String?
+  domain    String // CIVIL | CRIMINAL | PROCEDURE_PENAL | ADMIN | ...
+  moduleIds String  @default("[]") // JSON LawCourseModule ids where it is taught
+  legalRefs String  @default("[]") // JSON [{slug, number}]: must exist in the corpus
+  reviewed  Boolean @default(false)
+}
+
+model LawConfusionPair {
+  id         String  @id @default(cuid())
+  conceptAId String
+  conceptBId String
+  labelAr    String // "البطلان ↔ الإبطال"
+  contrastMd String? // reviewed contrast table (criteria × A × B), corpus-cited
+  reviewed   Boolean @default(false)
+
+  @@unique([conceptAId, conceptBId])
+}
+
+model LawDrillItem {
+  id         String   @id @default(cuid())
+  pairId     String
+  kind       String // WHICH_APPLIES | CRITERIA | TRUE_FALSE
+  prompt     String
+  options    String // JSON [{ text, correct, distractorPairId? }]
+  explanation String?
+  citedIds   String   @default("[]") // JSON canonicalIds (must be in the corpus)
+  source     String   @default("BANK") // BANK | AI
+  reviewed   Boolean  @default(false)
+  ownerUserId Int? // AI items are private to the student they were generated for until an admin reviews them
+  createdAt  DateTime @default(now())
+
+  @@index([pairId, reviewed])
+}
+
+model LawLearnerMemory {
+  id               String            @id @default(cuid())
+  userId           Int
+  user             users             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind             String // CONFUSION | GAP | MISAPPLICATION
+  conceptId        String            @default("") // "" = not concept-level (pair-level confusion)
+  confusionPairId  String            @default("")
+  status           String            @default("SUSPECTED") // SUSPECTED | ACTIVE | IMPROVING | RESOLVED | DISMISSED
+  strength         Float             @default(0)
+  evidenceCount    Int               @default(0)
+  summaryAr        String
+  lastSeenAt       DateTime
+  lastRemediatedAt DateTime?
+  dismissedAt      DateTime?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  evidence         LawLearnerEvidence[]
+
+  @@unique([userId, kind, conceptId, confusionPairId])
+  @@index([userId, status])
+}
+
+model LawLearnerEvidence {
+  id        String           @id @default(cuid())
+  memoryId  String
+  memory    LawLearnerMemory @relation(fields: [memoryId], references: [id], onDelete: Cascade)
+  source    String // QUIZ_DISTRACTOR | FSRS_LAPSE | CHAT | EXERCISE | DIAGNOSTIC | DRILL_CORRECT
+  refId     String
+  excerpt   String? // <= 200 chars, the student's own words only
+  weight    Float
+  createdAt DateTime         @default(now())
+
+  @@index([memoryId, createdAt])
+}
+
+model LawConceptMastery {
+  userId    Int
+  conceptId String
+  level     Int      @default(0) // 0..3
+  updatedAt DateTime @updatedAt
+  user      users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, conceptId])
+}
+
+model LawAiCorrection {
+  id         String    @id @default(cuid())
+  messageId  String
+  reporterId Int
+  claim      String // the wrong statement, quoted from the AI message
+  correction String // proposed correct statement
+  citations  String // JSON [{slug, number}] supporting the correction (required, must exist in the corpus)
+  rootCause  String? // CORPUS_PARSE | RETRIEVAL_MISS | MODEL_ERROR | PROMPT_GAP (set by an admin)
+  scope      String    @default("USER") // USER | GLOBAL
+  status     String    @default("PENDING") // PENDING | VERIFIED | REJECTED
+  topicKeys  String    @default("[]") // JSON: legal ids + concept ids used for matching
+  reviewerId Int?
+  createdAt  DateTime  @default(now())
+  decidedAt  DateTime?
+  reporter   users     @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+
+  @@index([status, scope])
+  @@index([reporterId])
+}
+
+// Atomic fixed-window counters (rate limits that must not race: contact matching, uploads, change requests, lookups).
+model LawRateCounter {
+  key       String   @id // "<scope>:<userId>:<YYYY-MM-DD>"
+  count     Int      @default(0)
+  updatedAt DateTime @updatedAt
+}
+
+// ── LAW-OS student-led courses: a student's own course notebook as an outline of topics ──
+
+model LawStudentCourse {
+  id         String           @id @default(cuid())
+  userId     Int
+  user       users            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subjectId  String? // optional link to the student's LawSubject
+  title      String
+  source     String // ctb | pdf | manual
+  sourceName String? // original file name
+  sourceHash String? // sha256 of the imported subtree: re-importing identical notes is a no-op
+  status     String           @default("READY") // READY | ANALYZED
+  topicCount Int              @default(0)
+  charCount  Int              @default(0)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  topics     LawCourseTopic[]
+  gaps       LawKnowledgeGap[]
+
+  @@unique([userId, sourceHash])
+  @@index([userId])
+}
+
+model LawCourseTopic {
+  id          String           @id @default(cuid())
+  courseId    String
+  course      LawStudentCourse @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  userId      Int // owner; scoped by utils/law/tenant.js
+  user        users            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parentId    String? // null = a top-level topic of the course
+  ord         Int // position among siblings, also the document order of the outline
+  depth       Int // 0 = top level, computed from the parent edges (never trusted from the source file)
+  title       String
+  headingPath String           @default("[]") // JSON array of ancestor titles ending with this one
+  text        String           @default("") // the notes of this topic only (children have their own rows)
+  emphasis    String           @default("[]") // JSON [{start,end}] spans of the student's bold text, offsets into text
+  charCount   Int              @default(0)
+
+  @@index([courseId, parentId, ord])
+  @@index([userId])
+}
+
+// What a student's course notes miss compared with the statute corpus (rule-based radar, no model involved).
+// canonicalId always names an article that exists in the corpus; the quote is its text at analysis time.
+model LawKnowledgeGap {
+  id              String           @id @default(cuid())
+  courseId        String
+  course          LawStudentCourse @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  userId          Int // owner; scoped by utils/law/tenant.js
+  user            users            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind            String // PRESCRIPTION | SANCTION | CONDITIONS | EXCEPTION | DEFINITION | OTHER | MISSING_SECTION
+  canonicalId     String // DOC:306
+  sectionTitle    String?
+  partial         Boolean          @default(false) // the topic exists but lacks the article's deadline / sanction
+  areaTouched     Boolean          @default(true) // false: a whole section the notes skip
+  topicId         String? // best matching topic of the course
+  conceptId       String           @default("") // admin-reviewed LawConcept that cites this article, "" when none
+  coverage        Float
+  severity        Float
+  signals         String           @default("{}")
+  quote           String
+  explanationAr   String
+  status          String           @default("OPEN") // OPEN | CONFIRMED | DISMISSED | DRILLED | RESOLVED | COVERED (the notes now cover it)
+  analysisVersion Int              @default(1)
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@unique([courseId, canonicalId, kind])
+  @@index([courseId, status, severity])
+  @@index([userId])
+}
+
+// RC3 Phase 2: the student's daily to-do list. Offline-first: a todo is created on the device with a clientId (UUID) and
+// pushed in batches, so a retried push never duplicates. Soft-deleted (deletedAt) so a delete syncs to other devices.
+// Auto-generated items (today's lectures, due cards) are computed on the client and are not stored until edited.
+model LawTodo {
+  id        Int       @id @default(autoincrement())
+  userId    Int // owner; scoped by utils/law/tenant.js
+  user      users     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  clientId  String // UUID generated on the device
+  title     String
+  kind      String    @default("custom") // custom | lecture | reading | review (utils/law/enums.js)
+  refType   String? // module | lecture | deck | session
+  refId     String?
+  dueDate   String? // YYYY-MM-DD in Africa/Casablanca
+  priority  String    @default("normal") // high | medium | normal (utils/law/enums.js)
+  done      Boolean   @default(false)
+  doneAt    DateTime?
+  sortOrder Int       @default(0)
+  deletedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@unique([userId, clientId])
+  @@index([userId, dueDate])
+}
+
+// RC3 Phase 3. Records that a default curriculum list was copied into a student's own modules, so deleting a seeded
+// module never makes it come back.
+model LawCurriculumSeed {
+  id        String   @id @default(cuid())
+  userId    Int
+  user      users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  key       String // curriculum file key, e.g. s3-prive-ar
+  seededAt  DateTime @default(now())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, key])
+}
+
+// How a student studies one module (setup wizard answers). One row per student and module.
+model LawModuleProfile {
+  id           Int             @id @default(autoincrement())
+  userId       Int
+  user         users           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  moduleId     String
+  module       LawCourseModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  hasPolycopie Boolean?
+  strategy     String? // full_course | per_lecture
+  viewStyle    String          @default("reader") // trail | reader | tree | axes
+  depth        String          @default("concise") // concise | detailed | verbatim
+  subjectId    String? // the student's LawSubject linked to this module (cards, notes, exam date)
+  sessionsAttended Int         @default(0) // lectures the student attended (a +/- counter in the module recap)
+  comprehension    Int? // self-rated understanding, 1 (lost) to 5 (solid); the recap also shows what the drills say
+  setupDoneAt  DateTime?
+  examConfig   String? // JSON exam set-up: { types, difficulty, count, caseSource, mode, builtAt }
+  sourceMix    String? // JSON share of each kind of source: { lectures, printed, research, legal }, percentages summing to 100
+  isPublic     Boolean         @default(false) // the subject is listed for the same faculty and semester (forum projects strip)
+  color        String? // palette key (enums.js MODULE_COLORS)
+  formats      String? // JSON array of learning formats in the student's order (enums.js MODULE_FORMATS)
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  @@unique([userId, moduleId])
+}
+
+// What the student has noticed about the professor of a module. Private to that student.
+model LawProfessorCard {
+  id              Int             @id @default(autoincrement())
+  userId          Int
+  user            users           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  moduleId        String
+  module          LawCourseModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  name            String?
+  teachingStyle   String? // reads_polycopie | verbal_detail | mixed
+  attendanceFocus String? // strict | flexible | unknown
+  examTendency    String? // definitions | cases | mixed | unknown
+  examFormat      String? // qcm | case | direct | dissertation | mixed
+  notes           String?
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+
+  @@unique([userId, moduleId])
+}
+
+// Something the student fed into a module: pasted text, or an audio/photo/PDF capture batch being processed.
+model LawLectureSource {
+  id         Int             @id @default(autoincrement())
+  userId     Int
+  user       users           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  moduleId   String
+  module     LawCourseModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  lectureId  String? // LawModuleNode (kind lecture) this source belongs to
+  kind       String // text | audio | image | pdf
+  status     String          @default("pending") // pending | processing | ready | failed
+  batchId    String? // the capture batch doing the OCR / transcription for audio, image and pdf
+  clientBatchId String? // the device's id for that batch, until the upload engine has created it on the server
+  storageKey String?
+  keepRaw    Boolean         @default(false) // raw audio is deleted after transcription unless the student opts in
+  extracted  String?
+  error      String?
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+
+  @@unique([userId, clientBatchId])
+  @@unique([userId, batchId])
+  @@index([userId, moduleId])
+}
+
+// The module's content tree: one set of nodes behind the four views (trail, reader, tree, axes).
+model LawModuleNode {
+  id         String          @id @default(cuid())
+  userId     Int
+  user       users           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  moduleId   String
+  module     LawCourseModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  parentId   String?
+  level      Int // 0 = top level
+  kind       String          @default("section") // lecture | section | point
+  title      String
+  body       String          @default("")
+  ord        Int
+  sourceRefs String          @default("[]") // JSON [sourceId] of the LawLectureSource rows this node was built from
+  aiDraft    Boolean         @default(false) // written by the mentor and accepted by the student; shown with an AI label
+  doneAt     DateTime? // the student marked this session understood (workspace rail)
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+
+  @@index([userId, moduleId, parentId, ord])
+}
+
+// A change the module mentor proposes to the content tree. Nothing is applied until the student accepts it.
+model LawModuleProposal {
+  id         String          @id @default(cuid())
+  userId     Int
+  user       users           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  moduleId   String
+  module     LawCourseModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  op         String // add | edit
+  nodeId     String? // edit: the node to change
+  parentId   String? // add: where to put it
+  title      String
+  body       String
+  baseBody   String? // edit: the node's body when the change was proposed; a different body later means the proposal is stale
+  baseTitle  String? // edit: likewise for the title (a rename after the proposal also makes it stale)
+  sourceRefs String          @default("[]")
+  status     String          @default("pending") // pending | accepted | rejected
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
+
+  @@index([userId, moduleId, status])
+}
+
+// RC3 Phase 4. An exam on the student's calendar. Dates read from a photo or PDF arrive with confirmed = false and count
+// nowhere (countdown, Today) until the student has reviewed and confirmed them.
+model LawExamDate {
+  id        Int              @id @default(autoincrement())
+  userId    Int
+  user      users            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  moduleId  String?
+  module    LawCourseModule? @relation(fields: [moduleId], references: [id], onDelete: SetNull)
+  title     String
+  startsAt  DateTime
+  room      String?
+  source    String           @default("manual") // manual | photo | pdf
+  confirmed Boolean          @default(true)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  hasTime   Boolean          @default(true) // false: only the day is known (startsAt is local midnight); never a guessed hour
+
+  @@index([userId, startsAt])
+}
+
+// One drill the student was given for a module ("what did I understand?"). promptJson holds the whole item including the
+// hidden answer key and its citations; the API only ever sends the question part until the attempt is submitted.
+model LawDrillAttempt {
+  id           Int             @id @default(autoincrement())
+  userId       Int
+  user         users           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  moduleId     String
+  module       LawCourseModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  type         String // qcm | case | direct | dissertation
+  promptJson   String
+  answerJson   String?
+  feedbackJson String?
+  score        Float? // 0-100
+  status       String          @default("open") // open | submitted
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  @@index([userId, moduleId, type])
+}
+
+// RC3 Phase 5. When a student wants to hear about their classes: the evening before, and/or N minutes ahead. lastEveningFor
+// is the class day the evening reminder was last built for, which is what keeps a repeated tick from sending it twice.
+model LawReminderPref {
+  id             Int      @id @default(autoincrement())
+  userId         Int      @unique
+  user           users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  enabled        Boolean  @default(true)
+  eveningBefore  Boolean  @default(true)
+  minutesBefore  Int?
+  eveningTime    String   @default("20:00") // HH:MM Africa/Casablanca: from this time the evening-before reminder may be sent
+  lastEveningFor String? // YYYY-MM-DD
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+// RC3 Phase 7: squad work artifacts (never chat). Same revision / change-request model as the Faculty Hub notes, with the role
+// table in utils/law/permissions.js deciding who edits in place and who must propose.
+model LawSquadDoc {
+  id             String                  @id @default(cuid())
+  squadId        String
+  squad          LawSquad                @relation(fields: [squadId], references: [id], onDelete: Cascade)
+  type           String // summary | case_brief | mock_exam | question | resource_link
+  title          String
+  content        String
+  url            String? // resource_link only
+  headRevisionId String?
+  createdById    Int // no relation to users: a squad's shared work outlives one member's account (as LawMasterNote does)
+  createdAt      DateTime                @default(now())
+  updatedAt      DateTime                @updatedAt
+  revisions      LawSquadDocRevision[]
+  changeRequests LawSquadChangeRequest[]
+
+  @@index([squadId, createdAt])
+}
+
+model LawSquadDocRevision {
+  id          String      @id @default(cuid())
+  docId       String
+  doc         LawSquadDoc @relation(fields: [docId], references: [id], onDelete: Cascade)
+  parentId    String?
+  authorId    Int
+  content     String
+  contentHash String
+  message     String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([docId, createdAt])
+}
+
+model LawSquadChangeRequest {
+  id                 String      @id @default(cuid())
+  docId              String
+  doc                LawSquadDoc @relation(fields: [docId], references: [id], onDelete: Cascade)
+  baseRevisionId     String
+  proposedRevisionId String
+  authorId           Int
+  title              String
+  description        String?
+  status             String      @default("OPEN") // OPEN | MERGED | REJECTED | CONFLICT | WITHDRAWN
+  reviewerId         Int?
+  reviewNote         String?
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+  decidedAt          DateTime?
+
+  @@index([docId, status])
+  @@index([authorId])
+}
+
+// RC3 Phase 7: the faculty wall. Announcements (admin) and TD threads (students of the same faculty); replies point at their thread.
+model LawCampusPost {
+  id          String          @id @default(cuid())
+  facultyCode String
+  kind        String // announcement | td_thread | legal_discussion | inquiry | reply
+  parentId    String?
+  parent      LawCampusPost?  @relation("LawCampusReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies     LawCampusPost[] @relation("LawCampusReplies")
+  authorId    Int
+  author      users           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  title       String?
+  body        String
+  status      String          @default("ACTIVE") // ACTIVE | HIDDEN
+  hiddenReason String?
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  reports     LawCampusReport[]
+
+  @@index([facultyCode, kind, createdAt])
+  @@index([parentId])
+}
+
+model LawCampusReport {
+  id         String        @id @default(cuid())
+  postId     String
+  post       LawCampusPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  reporterId Int
+  reporter   users         @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+  reason     String // INAPPROPRIATE | VULGARITY | SPAM_ADS | MISLEADING_LEGAL | OTHER
+  status     String        @default("OPEN") // OPEN | UPHELD | DISMISSED
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+
+  @@unique([postId, reporterId])
+  @@index([postId, status])
+}
+
+// RC4 Phase 7. An article the student saved to read again (private to them).
+model LawArticleBookmark {
+  id          Int      @id @default(autoincrement())
+  userId      Int
+  user        users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  canonicalId String
+  createdAt   DateTime @default(now())
+
+  @@unique([userId, canonicalId])
+  @@index([userId, createdAt])
+}
+
+// RC4 Phase 7. An article linked to one of the student's modules: the module mentor and the drills read it as module material.
+model LawModuleArticle {
+  id          Int             @id @default(autoincrement())
+  userId      Int
+  user        users           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  moduleId    String
+  module      LawCourseModule @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  canonicalId String
+  createdAt   DateTime        @default(now())
+
+  @@unique([userId, moduleId, canonicalId])
+  @@index([userId, moduleId])
+}
+
+// RC4. Someone removed from a group (or a viewer who left) may not walk back in through the public listing.
+model LawSquadExclusion {
+  id        Int      @id @default(autoincrement())
+  squadId   String
+  squad     LawSquad @relation(fields: [squadId], references: [id], onDelete: Cascade)
+  userId    Int
+  createdAt DateTime @default(now())
+
+  @@unique([squadId, userId])
+}
+
+// Talib v3: a QCM drill a student shares with the faculty. Only the questions travel (never the notes they were built from).
+model LawSharedExam {
+  id            String   @id @default(cuid())
+  authorId      Int
+  author        users    @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  sourceDrillId Int?
+  facultyCode   String
+  moduleTitle   String
+  semester      String?
+  title         String
+  type          String   @default("qcm")
+  questionCount Int
+  promptJson    String // { items: [{ prompt/options/correct/explanation/cite }] } without the source context
+  tries         Int      @default(0)
+  helpful       Int      @default(0)
+  status        String   @default("ACTIVE") // ACTIVE | REMOVED
+  createdAt     DateTime @default(now())
+  votes         LawSharedExamVote[]
+
+  @@index([facultyCode, status, createdAt])
+  @@index([authorId])
+}
+
+model LawSharedExamVote {
+  id        Int           @id @default(autoincrement())
+  examId    String
+  exam      LawSharedExam @relation(fields: [examId], references: [id], onDelete: Cascade)
+  userId    Int
+  user      users         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind      String // tried | helpful
+  createdAt DateTime      @default(now())
+
+  @@unique([examId, userId, kind])
+}
+
+// A student's note that a piece of their own course content is wrong (kept for review).
+model LawNodeReport {
+  id        String   @id @default(cuid())
+  userId    Int
+  user      users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  moduleId  String
+  nodeId    String
+  note      String
+  createdAt DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+// A short note the module mentor keeps about how this student learns (kept only when they write or accept it; they can delete it).
+model LawMentorMemory {
+  id        String   @id @default(cuid())
+  userId    Int
+  user      users    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  moduleId  String? // null = applies to every subject
+  content   String
+  source    String   @default("student") // student | mentor (a suggestion the student accepted)
+  createdAt DateTime @default(now())
+
+  @@index([userId, moduleId])
+}

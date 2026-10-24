@@ -1,0 +1,146 @@
+[
+ [
+  "اليوم renders at 1440px light without horizontal scroll",
+  "ok"
+ ],
+ [
+  "المسار الدراسي renders at 1440px light without horizontal scroll",
+  "ok"
+ ],
+ [
+  "مركز الامتحانات renders at 1440px light without horizontal scroll",
+  "ok"
+ ],
+ [
+  "استعمال الزمن renders at 1440px light without horizontal scroll",
+  "ok"
+ ],
+ [
+  "قوانين ومراجع renders at 1440px light without horizontal scroll",
+  "ok"
+ ],
+ [
+  "المجتمع renders at 1440px light without horizontal scroll",
+  "ok"
+ ],
+ [
+  "اليوم renders at 1440px dark without horizontal scroll",
+  "ok"
+ ],
+ [
+  "المسار الدراسي renders at 1440px dark without horizontal scroll",
+  "ok"
+ ],
+ [
+  "مركز الامتحانات renders at 1440px dark without horizontal scroll",
+  "ok"
+ ],
+ [
+  "استعمال الزمن renders at 1440px dark without horizontal scroll",
+  "ok"
+ ],
+ [
+  "قوانين ومراجع renders at 1440px dark without horizontal scroll",
+  "ok"
+ ],
+ [
+  "المجتمع renders at 1440px dark without horizontal scroll",
+  "ok"
+ ],
+ [
+  "اليوم renders at 390px light without horizontal scroll",
+  "ok"
+ ],
+ [
+  "المسار الدراسي renders at 390px light without horizontal scroll",
+  "ok"
+ ],
+ [
+  "مركز الامتحانات renders at 390px light without horizontal scroll",
+  "ok"
+ ],
+ [
+  "استعمال الزمن renders at 390px light without horizontal scroll",
+  "ok"
+ ],
+ [
+  "قوانين ومراجع renders at 390px light without horizontal scroll",
+  "ok"
+ ],
+ [
+  "المجتمع renders at 390px light without horizontal scroll",
+  "ok"
+ ],
+ [
+  "اليوم renders at 390px dark without horizontal scroll",
+  "ok"
+ ],
+ [
+  "المسار الدراسي renders at 390px dark without horizontal scroll",
+  "ok"
+ ],
+ [
+  "مركز الامتحانات renders at 390px dark without horizontal scroll",
+  "ok"
+ ],
+ [
+  "استعمال الزمن renders at 390px dark without horizontal scroll",
+  "ok"
+ ],
+ [
+  "قوانين ومراجع renders at 390px dark without horizontal scroll",
+  "ok"
+ ],
+ [
+  "المجتمع renders at 390px dark without horizontal scroll",
+  "ok"
+ ],
+ [
+  "todo: add with a priority, complete it, delete it",
+  "ok"
+ ],
+ [
+  "QR on desktop opens the card with the share code and never asks for the camera",
+  "ok"
+ ],
+ [
+  "bell: a friend request can be accepted in the popover",
+  "ok"
+ ],
+ [
+  "S3 lists the six seeded modules",
+  "ok"
+ ],
+ [
+  "module workspace: questionnaire, the four views, a pasted lecture, the mentor builds notes",
+  "ok"
+ ],
+ [
+  "exam center: QCM with instant feedback, then case, theory and essay drills",
+  "ok"
+ ],
+ [
+  "an exam added by hand shows its countdown on Today",
+  "ok"
+ ],
+ [
+  "timetable: add a session on the grid and import the CSV template",
+  "ok"
+ ],
+ [
+  "legal texts: outline of a code, a search by article number, the reader with save and link",
+  "ok"
+ ],
+ [
+  "community: a second student adds the first by code in the Friends tab",
+  "ok"
+ ],
+ [
+  "work group: the member proposes a change; the admin accepts it from the diff on the document page",
+  "ok"
+ ],
+ [
+  "avatar studio: the five legal outfits each save and come back",
+  "ok"
+ ]
+]

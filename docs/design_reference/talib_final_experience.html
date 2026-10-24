@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>طالب | Talib - المنظومة الذكية لطلبة القانون بالمغرب</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    :root {
+      --primary: #057a44;
+      --primary-dark: #034d2b;
+      --primary-light: #e8f5e9;
+      --gold: #d97706;
+      --gold-light: #fef3c7;
+      --surface: #ffffff;
+      --canvas: #f8fafc;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #64748b;
+    }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Cairo", "Amiri", sans-serif;
+      background-color: #f1f5f9;
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+    }
+    /* Duolingo 3D Tactile Buttons */
+    .btn-3d {
+      transition: all 0.12s ease-in-out;
+      transform: translateY(0);
+      user-select: none;
+      cursor: pointer;
+    }
+    .btn-3d:active {
+      transform: translateY(3px) !important;
+    }
+    .btn-3d-primary {
+      background-color: #057a44;
+      color: #ffffff;
+      border-bottom: 4px solid #034d2b;
+    }
+    .btn-3d-primary:hover {
+      background-color: #068f50;
+    }
+    .btn-3d-primary:active {
+      border-bottom-width: 1px !important;
+    }
+    .btn-3d-secondary {
+      background-color: #ffffff;
+      color: #057a44;
+      border: 2px solid #e2e8f0;
+      border-bottom: 4px solid #cbd5e1;
+    }
+    .btn-3d-secondary:hover {
+      background-color: #f8fafc;
+    }
+    .btn-3d-secondary:active {
+      border-bottom-width: 2px !important;
+    }
+    .btn-3d-gold {
+      background-color: #d97706;
+      color: #ffffff;
+      border-bottom: 4px solid #92400e;
+    }
+    .btn-3d-gold:active {
+      border-bottom-width: 1px !important;
+    }
+    /* Custom Card Shadows */
+    .card-3d {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-bottom: 3px solid #cbd5e1;
+      border-radius: 1rem;
+    }
+    /* Phone Mockup Frame */
+    .phone-mockup {
+      width: 380px;
+      height: 760px;
+      background: #ffffff;
+      border: 12px solid #1e293b;
+      border-radius: 46px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .phone-notch {
+      width: 150px;
+      height: 24px;
+      background: #1e293b;
+      border-bottom-left-radius: 14px;
+      border-bottom-right-radius: 14px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      z-index: 50;
+    }
+    .camera-lens {
+      width: 8px;
+      height: 8px;
+      background: #0f172a;
+      border-radius: 50%;
+    }
+    .speaker-slot {
+      width: 40px;
+      height: 4px;
+      background: #334155;
+      border-radius: 2px;
+    }
+    /* Tab Transitions */
+    .view-panel {
+      display: none;
+    }
+    .view-panel.active {
+      display: block;
+      animation: fadeIn 0.25s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="p-3 md:p-6">
+
+  <!-- Top Sticky Master Navigation (Design Switcher) -->
+  <header class="max-w-7xl mx-auto mb-6 bg-white border border-slate-200 rounded-2xl p-3 shadow-sm sticky top-2 z-50">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-black text-xl shadow-inner">
+          ⚖️
+        </div>
+        <div>
+          <h1 class="text-lg font-black text-slate-800 leading-tight">منصة طالب | Talib App</h1>
+          <p class="text-xs text-slate-500 font-medium">النموذج التفاعلي النهائي: البوابة، الترحيب (حاسوب + هاتف)، والبروفايل</p>
+        </div>
+      </div>
+
+      <!-- Mode Switcher Buttons -->
+      <nav class="flex items-center flex-wrap gap-2" aria-label="أقسام النموذج">
+        <button onclick="switchView('landing')" id="tab-landing" class="view-btn px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-emerald-700 text-white shadow-sm transition">
+          🌐 1. الواجهة الأولى (البوابة)
+        </button>
+        <button onclick="switchView('welcome-desktop')" id="tab-welcome-desktop" class="view-btn px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+          💻 2. ترحيب الحاسوب (Wizard)
+        </button>
+        <button onclick="switchView('welcome-mobile')" id="tab-welcome-mobile" class="view-btn px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+          📱 3. ترحيب الهاتف (Mobile)
+        </button>
+        <button onclick="switchView('profile-full')" id="tab-profile-full" class="view-btn px-4 py-2 rounded-xl text-xs md:text-sm font-bold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+          👤 4. البروفايل والأقسام الـ 3
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto">
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 1: الواجهة الأولى (Landing Page / Duolingo-Grade Portal)             -->
+    <!-- ========================================================================= -->
+    <section id="view-landing" class="view-panel active">
+      <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
+        
+        <!-- Header -->
+        <div class="border-b border-slate-100 px-6 py-4 flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">🏛️</span>
+            <span class="text-xl font-black text-emerald-800">طالب</span>
+            <span class="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] px-2 py-0.5 rounded-full font-bold">قانون مغربي</span>
+          </div>
+          <div class="hidden md:flex items-center gap-6 text-sm font-bold text-slate-600">
+            <a href="#features" class="hover:text-emerald-700 transition">المسارات والمواد</a>
+            <a href="#method" class="hover:text-emerald-700 transition">منهجية النوازل</a>
+            <a href="#install" class="hover:text-emerald-700 transition">تثبيت التطبيق (PWA / APK)</a>
+            <a href="#faq" class="hover:text-emerald-700 transition">الأسئلة الشائعة</a>
+          </div>
+          <div class="flex items-center gap-3">
+            <button onclick="switchView('welcome-desktop')" class="btn-3d btn-3d-secondary px-4 py-2 rounded-xl text-xs font-bold">
+              تسجيل الدخول
+            </button>
+            <button onclick="switchView('welcome-desktop')" class="btn-3d btn-3d-primary px-5 py-2 rounded-xl text-xs font-bold">
+              ابدأ الآن مجاناً
+            </button>
+          </div>
+        </div>
+
+        <!-- Hero Section (Duolingo Style: Friendly Mascot + Two Action Buttons) -->
+        <div class="px-6 py-12 md:py-20 max-w-5xl mx-auto">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+            
+            <!-- Column 1: Animated Legal Mascot -->
+            <div class="md:col-span-5 flex flex-col items-center justify-center">
+              <div class="relative w-64 h-64 md:w-72 md:h-72 bg-emerald-50 rounded-full flex items-center justify-center border-4 border-dashed border-emerald-200 shadow-inner">
+                <!-- Mascot Illustration -->
+                <div class="text-center">
+                  <div class="text-8xl mb-2 animate-bounce">⚖️</div>
+                  <div class="bg-white border-2 border-emerald-600 text-emerald-900 font-black text-xs px-3 py-1.5 rounded-full shadow-md inline-block">
+                    رفيق · مساعدك القانوني 🎓
+                  </div>
+                </div>
+                <!-- Floating Badges -->
+                <div class="absolute -top-2 -start-2 bg-amber-500 text-white font-black text-xs px-3 py-1 rounded-xl shadow-md border-b-2 border-amber-700 flex items-center gap-1">
+                  🔥 سلسلة 14 يوماً
+                </div>
+                <div class="absolute bottom-2 -end-2 bg-white text-slate-800 font-bold text-xs px-3 py-1 rounded-xl shadow-md border border-slate-200 flex items-center gap-1">
+                  📚 ق.ل.ع + الجنائي
+                </div>
+              </div>
+            </div>
+
+            <!-- Column 2: Value Proposition & 3D CTAs -->
+            <div class="md:col-span-7 text-center md:text-start">
+              <span class="inline-block bg-emerald-100 text-emerald-800 text-xs font-black px-3.5 py-1.5 rounded-full mb-3">
+                🇲🇦 منصة الامتياز لطلبة كليات الحقوق بالمغرب
+              </span>
+              <h1 class="text-3xl md:text-5xl font-black text-slate-900 leading-tight mb-4">
+                الطريقة الأمتع والأذكى للتفوق في دراسة القانون
+              </h1>
+              <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-8 font-medium">
+                محاضرات ملخصة وفق برنامج كليتك، ضبط منهجية حل النوازل، ونظام تكرار متباعد (<bdi>FSRS</bdi>) يضمن لك تذكر المواد والفصول القانونية حتى يوم الامتحان، ويعمل <span class="text-emerald-700 font-bold">100% بدون إنترنت</span>.
+              </p>
+
+              <!-- Two-Button Action Cluster -->
+              <div class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto md:mx-0">
+                <button onclick="switchView('welcome-desktop')" class="btn-3d btn-3d-primary flex-1 py-4 px-6 rounded-2xl font-black text-base flex items-center justify-center gap-2 shadow-lg">
+                  <span>ابدأ الآن مجاناً</span>
+                  <span>←</span>
+                </button>
+                <button onclick="switchView('welcome-desktop')" class="btn-3d btn-3d-secondary flex-1 py-4 px-6 rounded-2xl font-black text-base flex items-center justify-center gap-2">
+                  <span>لدي حساب بالفعل</span>
+                </button>
+              </div>
+
+              <!-- Social Proof / Offline Stamp -->
+              <div class="mt-6 flex items-center justify-center md:justify-start gap-4 text-xs text-slate-500 font-medium">
+                <span class="flex items-center gap-1 text-emerald-700 font-bold">✓ بدون اشتراك مدفوع</span>
+                <span>•</span>
+                <span class="flex items-center gap-1">📱 PWA + APK مباشر</span>
+                <span>•</span>
+                <span class="flex items-center gap-1">⚡ خفيف وسريع</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- 3 Feature Pillars -->
+        <div class="bg-slate-50 border-t border-slate-200 px-6 py-12">
+          <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <div class="card-3d p-6">
+              <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-800 flex items-center justify-center text-2xl mb-4 font-black">
+                📖
+              </div>
+              <h3 class="font-black text-slate-900 text-base mb-2">النصوص والقوانين المحينة</h3>
+              <p class="text-slate-600 text-xs leading-relaxed">
+                قانون الالتزامات والعقود، المسطرة المدنية 58.25، والقانون الجنائي مع ربط تلقائي بين الفصول والإحالات والشروح.
+              </p>
+            </div>
+
+            <div class="card-3d p-6">
+              <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-800 flex items-center justify-center text-2xl mb-4 font-black">
+                🧠
+              </div>
+              <h3 class="font-black text-slate-900 text-base mb-2">منهجية النوازل خطوة بخطوة</h3>
+              <p class="text-slate-600 text-xs leading-relaxed">
+                تدريب تفاعلي على معالجة النوازل: استخراج الوقائع، طرح المشكل القانوني، استحضار القاعدة القانونية، وتطبيقها للوصول للحل.
+              </p>
+            </div>
+
+            <div class="card-3d p-6">
+              <div class="w-12 h-12 rounded-2xl bg-indigo-100 text-indigo-800 flex items-center justify-center text-2xl mb-4 font-black">
+                ⚡
+              </div>
+              <h3 class="font-black text-slate-900 text-base mb-2">مراجعة Offline بذكاء FSRS</h3>
+              <p class="text-slate-600 text-xs leading-relaxed">
+                بطاقات استذكار ذكية تركز على نقاط ضعفك وأزواج المفاهيم المتشابهة (البطلان ↔ الإبطال) لتحقيق أعلى النقط.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Direct Web-First Store Section (No Google Play / Apple Store required) -->
+        <div id="install" class="px-6 py-12 border-t border-slate-200 bg-white text-center">
+          <span class="text-xs font-black text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+            تثبيت فوري على جهازك
+          </span>
+          <h2 class="text-2xl md:text-3xl font-black text-slate-900 mt-2 mb-3">تطبيق واحد، متاح أينما كنت</h2>
+          <p class="text-slate-500 text-xs md:text-sm max-w-xl mx-auto mb-8 font-medium">
+            لا داعي للبحث في المتاجر؛ حمّل التطبيق مباشرة أو ثبته بنقرة واحدة ليعمل حتى في قاعات المحاضرات دون شبكة.
+          </p>
+
+          <div class="flex flex-wrap items-center justify-center gap-4">
+            <!-- Android APK Download Badge -->
+            <button class="btn-3d btn-3d-secondary px-6 py-3 rounded-2xl flex items-center gap-3 text-start">
+              <span class="text-3xl">🤖</span>
+              <div>
+                <p class="text-[11px] text-slate-400 font-bold leading-none">تثبيت فوري لأندرويد</p>
+                <p class="text-sm font-black text-slate-800 leading-tight">تحميل APK مباشر (v3.2)</p>
+              </div>
+            </button>
+
+            <!-- iOS PWA Guide Badge -->
+            <button class="btn-3d btn-3d-secondary px-6 py-3 rounded-2xl flex items-center gap-3 text-start">
+              <span class="text-3xl">🍏</span>
+              <div>
+                <p class="text-[11px] text-slate-400 font-bold leading-none">مستخدمو آيفون (Safari)</p>
+                <p class="text-sm font-black text-slate-800 leading-tight">إضافة إلى الشاشة الرئيسية (PWA)</p>
+              </div>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 2: واجهة الترحيب للحاسوب (Welcome Onboarding Wizard - Desktop)       -->
+    <!-- ========================================================================= -->
+    <section id="view-welcome-desktop" class="view-panel">
+      <div class="bg-white rounded-3xl border border-slate-200 p-6 md:p-10 max-w-2xl mx-auto shadow-sm">
+        
+        <!-- Header & Progress Bar -->
+        <div class="mb-6">
+          <div class="flex items-center justify-between text-xs font-bold text-slate-500 mb-2">
+            <span id="step-label">الخطوة 1 من 4: مرحباً بك</span>
+            <span id="step-pct" class="text-emerald-700 font-black">25%</span>
+          </div>
+          <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+            <div id="progress-bar-fill" class="bg-emerald-600 h-full rounded-full transition-all duration-300" style="width: 25%;"></div>
+          </div>
+        </div>
+
+        <!-- Wizard Step 1: Welcome & Mission -->
+        <div id="wizard-step-1" class="wizard-step">
+          <div class="text-center mb-8">
+            <div class="w-16 h-16 bg-emerald-100 rounded-3xl flex items-center justify-center text-3xl mx-auto mb-3 shadow-inner">
+              👋
+            </div>
+            <h2 class="text-2xl font-black text-slate-900 mb-1">مرحباً بك في طالب!</h2>
+            <p class="text-xs md:text-sm text-slate-500 font-medium">خطوات بسيطة لنخصص لك المواد، التلاخيص، وجداول الامتحانات الخاصة بكليتك.</p>
+          </div>
+
+          <div class="grid gap-3 mb-8">
+            <div class="card-3d p-4 flex items-center gap-4">
+              <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-lg">📚</div>
+              <div>
+                <h4 class="font-bold text-slate-800 text-sm">المسار الدراسي الموحد</h4>
+                <p class="text-xs text-slate-500">مواد الفصل ومنهجية المذاكرة في مكان منظم واحد.</p>
+              </div>
+            </div>
+            <div class="card-3d p-4 flex items-center gap-4">
+              <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold text-lg">📝</div>
+              <div>
+                <h4 class="font-bold text-slate-800 text-sm">مركز الامتحانات والنوازل</h4>
+                <p class="text-xs text-slate-500">أسئلة متعددة الخيارات، استشارات، ومواضيع مقالية مصححة.</p>
+              </div>
+            </div>
+            <div class="card-3d p-4 flex items-center gap-4">
+              <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center font-bold text-lg">🤝</div>
+              <div>
+                <h4 class="font-bold text-slate-800 text-sm">مجتمع الطلبة والمجموعات</h4>
+                <p class="text-xs text-slate-500">تبادل التلاخيص المنقحة وجلسات مراجعة جماعية أسبوعية.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wizard Step 2: Choose Avatar -->
+        <div id="wizard-step-2" class="wizard-step hidden">
+          <div class="text-center mb-6">
+            <h2 class="text-xl font-black text-slate-900 mb-1">اختر مظهر شخصيتك الدراسية</h2>
+            <p class="text-xs text-slate-500 font-medium">يمكنك تغيير هذه الشخصية في أي وقت من إعدادات البروفايل.</p>
+          </div>
+
+          <div class="flex flex-col items-center mb-8">
+            <!-- Avatar Preview Box -->
+            <div id="avatar-preview-box" class="w-28 h-28 rounded-3xl bg-emerald-100 border-4 border-emerald-500 flex items-center justify-center text-6xl shadow-md mb-4 transition transform hover:scale-105">
+              ⚖️
+            </div>
+            <!-- Selection of Avatars -->
+            <div class="flex items-center gap-3">
+              <button onclick="pickAvatar('⚖️', 'bg-emerald-100', 'border-emerald-500')" class="w-12 h-12 rounded-2xl bg-emerald-50 border-2 border-emerald-500 text-2xl flex items-center justify-center shadow-sm hover:scale-110 transition">⚖️</button>
+              <button onclick="pickAvatar('👨‍⚖️', 'bg-blue-100', 'border-blue-500')" class="w-12 h-12 rounded-2xl bg-blue-50 border-2 border-slate-200 text-2xl flex items-center justify-center shadow-sm hover:scale-110 transition">👨‍⚖️</button>
+              <button onclick="pickAvatar('👩‍⚖️', 'bg-purple-100', 'border-purple-500')" class="w-12 h-12 rounded-2xl bg-purple-50 border-2 border-slate-200 text-2xl flex items-center justify-center shadow-sm hover:scale-110 transition">👩‍⚖️</button>
+              <button onclick="pickAvatar('📜', 'bg-amber-100', 'border-amber-500')" class="w-12 h-12 rounded-2xl bg-amber-50 border-2 border-slate-200 text-2xl flex items-center justify-center shadow-sm hover:scale-110 transition">📜</button>
+              <button onclick="pickAvatar('🦁', 'bg-red-100', 'border-red-500')" class="w-12 h-12 rounded-2xl bg-red-50 border-2 border-slate-200 text-2xl flex items-center justify-center shadow-sm hover:scale-110 transition">🦁</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wizard Step 3: Choose Faculty -->
+        <div id="wizard-step-3" class="wizard-step hidden">
+          <div class="text-center mb-6">
+            <h2 class="text-xl font-black text-slate-900 mb-1">حدد كليتك الجامعية بالمغرب</h2>
+            <p class="text-xs text-slate-500 font-medium">لتفعيل التلاخيص والأساتذة وجداول الحصص الخاصة بكليتك.</p>
+          </div>
+
+          <div class="mb-4">
+            <input type="text" id="faculty-search" oninput="filterFaculties()" placeholder="ابحث عن كليتك (مثلاً: عين الشق، السويسي، مراكش...)" class="w-full px-4 py-3 rounded-2xl border border-slate-200 text-sm focus:outline-none focus:border-emerald-600 font-medium">
+          </div>
+
+          <div id="faculty-list" class="grid gap-2 max-h-56 overflow-y-auto pe-1 mb-8">
+            <div onclick="selectFaculty(this, 'FSJESAC')" class="faculty-card p-3 rounded-2xl border-2 border-emerald-600 bg-emerald-50 cursor-pointer flex items-center justify-between">
+              <div>
+                <p class="font-bold text-slate-900 text-xs md:text-sm">كلية الحقوق عين الشق (FSJES Ain Chock)</p>
+                <p class="text-[11px] text-slate-500">جامعة الحسن الثاني · الدار البيضاء</p>
+              </div>
+              <span class="text-emerald-700 font-black text-sm">✓</span>
+            </div>
+            <div onclick="selectFaculty(this, 'FSJESS')" class="faculty-card p-3 rounded-2xl border border-slate-200 hover:border-emerald-400 bg-white cursor-pointer flex items-center justify-between">
+              <div>
+                <p class="font-bold text-slate-900 text-xs md:text-sm">كلية العلوم القانونية والاقتصادية السويسي</p>
+                <p class="text-[11px] text-slate-500">جامعة محمد الخامس · الرباط</p>
+              </div>
+            </div>
+            <div onclick="selectFaculty(this, 'FSJESA')" class="faculty-card p-3 rounded-2xl border border-slate-200 hover:border-emerald-400 bg-white cursor-pointer flex items-center justify-between">
+              <div>
+                <p class="font-bold text-slate-900 text-xs md:text-sm">كلية العلوم القانونية أكدال</p>
+                <p class="text-[11px] text-slate-500">جامعة محمد الخامس · الرباط</p>
+              </div>
+            </div>
+            <div onclick="selectFaculty(this, 'FSJESM')" class="faculty-card p-3 rounded-2xl border border-slate-200 hover:border-emerald-400 bg-white cursor-pointer flex items-center justify-between">
+              <div>
+                <p class="font-bold text-slate-900 text-xs md:text-sm">كلية الحقوق القاضي عياض</p>
+                <p class="text-[11px] text-slate-500">جامعة القاضي عياض · مراكش</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wizard Step 4: Academic Track & Semester -->
+        <div id="wizard-step-4" class="wizard-step hidden">
+          <div class="text-center mb-6">
+            <h2 class="text-xl font-black text-slate-900 mb-1">مسارك الدراسي الحالي</h2>
+            <p class="text-xs text-slate-500 font-medium">سيكون بإمكانك تتبع مواد هذا الفصل وتعديلها متى شئت.</p>
+          </div>
+
+          <div class="space-y-4 mb-8 text-xs md:text-sm">
+            <!-- Track Selection -->
+            <div>
+              <label class="block font-black text-slate-800 mb-1.5">الشعبة:</label>
+              <div class="flex gap-2">
+                <button type="button" class="flex-1 py-2 rounded-xl font-bold border-2 border-emerald-600 bg-emerald-50 text-emerald-800">القانون الخاص (Droit Privé)</button>
+                <button type="button" class="flex-1 py-2 rounded-xl font-bold border border-slate-200 text-slate-600 hover:bg-slate-50">القانون العام (Droit Public)</button>
+              </div>
+            </div>
+
+            <!-- Language & Semester -->
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block font-black text-slate-800 mb-1.5">لغة التدريس:</label>
+                <div class="flex gap-2">
+                  <button type="button" class="flex-1 py-2 rounded-xl font-bold border-2 border-emerald-600 bg-emerald-50 text-emerald-800">عربية</button>
+                  <button type="button" class="flex-1 py-2 rounded-xl font-bold border border-slate-200 text-slate-600 hover:bg-slate-50">فرنسية</button>
+                </div>
+              </div>
+              <div>
+                <label class="block font-black text-slate-800 mb-1.5">الفصل الدراسي:</label>
+                <select class="w-full py-2 px-3 rounded-xl border border-slate-200 font-bold bg-white text-slate-800 focus:outline-none focus:border-emerald-600">
+                  <option value="S1">الفصل الأول (S1)</option>
+                  <option value="S2">الفصل الثاني (S2)</option>
+                  <option value="S3" selected>الفصل الثالث (S3)</option>
+                  <option value="S4">الفصل الرابع (S4)</option>
+                  <option value="S5">الفصل الخامس (S5)</option>
+                  <option value="S6">الفصل السادس (S6)</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Group & Exam Goal -->
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block font-black text-slate-800 mb-1.5">الفوج (Groupe):</label>
+                <input type="text" value="G01" dir="ltr" class="w-full py-2 px-3 rounded-xl border border-slate-200 font-bold text-center focus:outline-none focus:border-emerald-600">
+              </div>
+              <div>
+                <label class="block font-black text-slate-800 mb-1.5">هدف مهني (اختياري):</label>
+                <select class="w-full py-2 px-3 rounded-xl border border-slate-200 font-bold bg-white text-slate-800 focus:outline-none focus:border-emerald-600">
+                  <option value="none">-- اختر هدفاً --</option>
+                  <option value="avocat" selected>مباراة المحاماة</option>
+                  <option value="magistrat">الملحقون القضائيون (القضاء)</option>
+                  <option value="commissaire">المفوضون القضائيون</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Wizard Navigation Footer -->
+        <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+          <button id="btn-wizard-back" onclick="wizardPrev()" disabled class="btn-3d btn-3d-secondary px-5 py-2.5 rounded-xl font-bold text-xs disabled:opacity-40 disabled:cursor-not-allowed">
+            السابق
+          </button>
+          <button id="btn-wizard-next" onclick="wizardNext()" class="btn-3d btn-3d-primary px-7 py-2.5 rounded-xl font-bold text-xs">
+            متابعة ←
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 3: واجهة الترحيب للهاتف (Welcome Mobile Mockup)                      -->
+    <!-- ========================================================================= -->
+    <section id="view-welcome-mobile" class="view-panel">
+      <div class="flex flex-col items-center justify-center py-4">
+        
+        <p class="text-xs text-slate-500 font-bold mb-4 bg-white px-4 py-1.5 rounded-full border border-slate-200">
+          📱 تجربة الترحيب لشاشات الهواتف الذكية (Touch-Optimized PWA)
+        </p>
+
+        <!-- Smartphone Frame -->
+        <div class="phone-mockup">
+          
+          <!-- Top Notch & Speaker -->
+          <div class="phone-notch">
+            <div class="speaker-slot"></div>
+            <div class="camera-lens"></div>
+          </div>
+
+          <!-- Phone Inner Content -->
+          <div class="flex-1 overflow-y-auto px-5 py-4 flex flex-col justify-between">
+            
+            <!-- Top Mobile Bar -->
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <span class="text-xs font-bold text-slate-400">09:41</span>
+                <div class="flex items-center gap-1.5 text-xs text-slate-700">
+                  <span>📶</span>
+                  <span>🔋</span>
+                </div>
+              </div>
+
+              <!-- Mini Progress Dots -->
+              <div class="flex items-center justify-center gap-1.5 mb-6">
+                <div class="w-8 h-2 rounded-full bg-emerald-600"></div>
+                <div class="w-2 h-2 rounded-full bg-slate-200"></div>
+                <div class="w-2 h-2 rounded-full bg-slate-200"></div>
+                <div class="w-2 h-2 rounded-full bg-slate-200"></div>
+              </div>
+
+              <!-- Content Area -->
+              <div class="text-center">
+                <div class="w-20 h-20 bg-emerald-50 border-2 border-dashed border-emerald-300 rounded-full flex items-center justify-center text-4xl mx-auto mb-3 shadow-inner">
+                  ⚖️
+                </div>
+                <h3 class="text-xl font-black text-slate-900 mb-1">مرحباً بك في طالب!</h3>
+                <p class="text-xs text-slate-500 mb-6 font-medium">كل ما تحتاجه للنجاح في كلية الحقوق في جيبك، بدون إنترنت.</p>
+
+                <!-- Compact Feature List -->
+                <div class="space-y-2 text-start mb-6">
+                  <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-3">
+                    <span class="text-emerald-700 font-black text-base">✓</span>
+                    <span class="text-xs font-bold text-slate-800">محاضرات وملخصات منقحة لكليتك</span>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-3">
+                    <span class="text-emerald-700 font-black text-base">✓</span>
+                    <span class="text-xs font-bold text-slate-800">منهجية حل النوازل والاستشارات</span>
+                  </div>
+                  <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-3">
+                    <span class="text-emerald-700 font-black text-base">✓</span>
+                    <span class="text-xs font-bold text-slate-800">تكرار متباعد FSRS لحفظ الفصول</span>
+                  </div>
+                </div>
+
+                <!-- One-Touch Faculty Quick Pick -->
+                <div class="text-start mb-4">
+                  <label class="block text-[11px] font-black text-slate-500 mb-1">اختر كليتك بضغطة زر:</label>
+                  <select class="w-full py-2.5 px-3 rounded-xl border border-slate-200 bg-white text-xs font-bold text-slate-800 focus:outline-none focus:border-emerald-600">
+                    <option>كلية الحقوق عين الشق (الدار البيضاء)</option>
+                    <option>كلية الحقوق السويسي (الرباط)</option>
+                    <option>كلية الحقوق أكدال (الرباط)</option>
+                    <option>كلية الحقوق القاضي عياض (مراكش)</option>
+                    <option>كلية الحقوق ظهر المهراز (فاس)</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mobile Sticky Bottom CTA -->
+            <div class="pt-2 pb-4">
+              <button onclick="switchView('profile-full')" class="btn-3d btn-3d-primary w-full py-3.5 rounded-2xl font-black text-sm flex items-center justify-center gap-2 shadow-md">
+                <span>تأكيد والبدء فوراً</span>
+                <span>←</span>
+              </button>
+              <p class="text-center text-[10px] text-slate-400 mt-2 font-medium">بياناتك تحفظ محلياً على هاتفك دون حاجة للشبكة</p>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- VIEW 4: البروفايل والأقسام الـ 3 (Profile with Requested 3 Tabs & Google Auth) -->
+    <!-- ========================================================================= -->
+    <section id="view-profile-full" class="view-panel">
+      <div class="max-w-4xl mx-auto space-y-6">
+
+        <!-- User Profile Header Card -->
+        <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm">
+          <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5">
+            
+            <!-- Real Google Avatar or Customized Character -->
+            <div class="relative">
+              <div class="w-24 h-24 rounded-3xl overflow-hidden border-4 border-emerald-600 shadow-md bg-emerald-50 flex items-center justify-center">
+                <img id="profile-avatar-img" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&auto=format&fit=crop&q=80" alt="Avatar" class="w-full h-full object-cover">
+              </div>
+              <span class="absolute -bottom-2 -end-2 bg-amber-500 text-white font-black text-[10px] px-2 py-0.5 rounded-full border border-white shadow">
+                المستوى 3 🔥
+              </span>
+            </div>
+
+            <!-- User Info & Auth Badge -->
+            <div class="flex-1 text-center sm:text-start">
+              <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2 mb-1">
+                <h2 id="profile-user-name" class="text-xl font-black text-slate-900">ياسين الإدريسي</h2>
+                <!-- talib.auth.v1 Connection Badge -->
+                <span id="profile-auth-badge" class="bg-blue-50 text-blue-700 border border-blue-200 text-xs px-2.5 py-0.5 rounded-full font-bold flex items-center gap-1">
+                  <span>G</span>
+                  <span>Google · y.idrissi@gmail.com</span>
+                </span>
+              </div>
+              
+              <p class="text-xs text-slate-500 font-medium mb-3">
+                طالب قانون خاص · الفصل الثالث (S3) · كلية الحقوق عين الشق الدار البيضاء
+              </p>
+
+              <!-- 4 Academic Counters -->
+              <div class="grid grid-cols-4 gap-2 max-w-md mx-auto sm:mx-0">
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-2 text-center">
+                  <p class="text-xs text-slate-400 font-bold">المشاريع</p>
+                  <p class="text-sm font-black text-slate-800">12</p>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-2 text-center">
+                  <p class="text-xs text-slate-400 font-bold">التلاخيص</p>
+                  <p class="text-sm font-black text-slate-800">28</p>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-2 text-center">
+                  <p class="text-xs text-slate-400 font-bold">المجموعات</p>
+                  <p class="text-sm font-black text-slate-800">4</p>
+                </div>
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-2 text-center">
+                  <p class="text-xs text-slate-400 font-bold">الأصدقاء</p>
+                  <p class="text-sm font-black text-slate-800">142</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex sm:flex-col gap-2">
+              <button class="btn-3d btn-3d-secondary px-4 py-2 rounded-xl text-xs font-bold">
+                تعديل الملف
+              </button>
+              <button class="btn-3d btn-3d-primary px-4 py-2 rounded-xl text-xs font-bold">
+                صمم شخصيتك
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- The 3 Requested Tabs Section (الأعمال والمشاريع / المساهمات والملخصات / مجموعاتي ولقاءات المراجعة) -->
+        <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
+          
+          <!-- Tab Bar -->
+          <div class="border-b border-slate-200 px-6 pt-4 flex gap-4 overflow-x-auto">
+            <button onclick="switchProfileTab('works')" id="ptab-works" class="profile-tab pb-3 text-xs md:text-sm font-black text-emerald-700 border-b-2 border-emerald-700 transition">
+              📂 الأعمال والمشاريع
+            </button>
+            <button onclick="switchProfileTab('contributions')" id="ptab-contributions" class="profile-tab pb-3 text-xs md:text-sm font-bold text-slate-400 border-b-2 border-transparent hover:text-slate-600 transition">
+              📝 المساهمات والملخصات
+            </button>
+            <button onclick="switchProfileTab('groups')" id="ptab-groups" class="profile-tab pb-3 text-xs md:text-sm font-bold text-slate-400 border-b-2 border-transparent hover:text-slate-600 transition">
+              👥 مجموعاتي ولقاءات المراجعة
+            </button>
+          </div>
+
+          <!-- Tab Content 1: الأعمال والمشاريع (With Sort Filter) -->
+          <div id="pcontent-works" class="p-6">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-bold text-slate-500">عرض كافة الأعمال والمشاريع المنجزة</span>
+              <!-- Sorting Filter: الأحدث / الأكثر تفاعلاً -->
+              <div class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs font-bold">
+                <button class="px-3 py-1 rounded-lg bg-white shadow-xs text-emerald-800">الأحدث</button>
+                <button class="px-3 py-1 rounded-lg text-slate-500 hover:text-slate-800">الأكثر تفاعلاً</button>
+              </div>
+            </div>
+
+            <!-- Single-line cards with non-wrapping badges & counters ♥ / 👁 -->
+            <div class="space-y-3">
+              <!-- Item 1 -->
+              <div class="card-3d p-4 flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center font-bold text-lg">
+                    🎙️
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-slate-900 text-sm">تسجيل صوتي: شرح أركان المسؤولية التقصيرية</h4>
+                    <p class="text-xs text-slate-500">الفصل 77 و 78 من ق.ل.ع · أستاذ المادة: ذ. بناني</p>
+                  </div>
+                </div>
+                <!-- Non-wrapping badge + counters on one line -->
+                <div class="flex items-center gap-4 flex-nowrap shrink-0">
+                  <span class="whitespace-nowrap bg-purple-100 text-purple-800 text-[11px] font-bold px-2.5 py-1 rounded-lg">
+                    🎙️ حصة صوتية
+                  </span>
+                  <div class="flex items-center gap-3 text-xs font-bold text-slate-500 whitespace-nowrap">
+                    <span class="flex items-center gap-1 text-rose-600">♥ 48</span>
+                    <span class="flex items-center gap-1 text-slate-600">👁 312</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item 2 -->
+              <div class="card-3d p-4 flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center font-bold text-lg">
+                    📊
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-slate-900 text-sm">خريطة مفاهيم: التمييز بين البطلان والإبطال</h4>
+                    <p class="text-xs text-slate-500">جدول مقارن تفاعلي مدعم بقرارات محكمة النقض</p>
+                  </div>
+                </div>
+                <!-- Non-wrapping badge + counters -->
+                <div class="flex items-center gap-4 flex-nowrap shrink-0">
+                  <span class="whitespace-nowrap bg-emerald-100 text-emerald-800 text-[11px] font-bold px-2.5 py-1 rounded-lg">
+                    📊 خريطة ذهنية
+                  </span>
+                  <div class="flex items-center gap-3 text-xs font-bold text-slate-500 whitespace-nowrap">
+                    <span class="flex items-center gap-1 text-rose-600">♥ 95</span>
+                    <span class="flex items-center gap-1 text-slate-600">👁 740</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item 3 -->
+              <div class="card-3d p-4 flex items-center justify-between gap-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center font-bold text-lg">
+                    ⚖️
+                  </div>
+                  <div>
+                    <h4 class="font-bold text-slate-900 text-sm">حل نازلة امتحان الدورة العادية (2025)</h4>
+                    <p class="text-xs text-slate-500">القانون الجنائي العام: القصد الجنائي والمحاولة</p>
+                  </div>
+                </div>
+                <!-- Non-wrapping badge + counters -->
+                <div class="flex items-center gap-4 flex-nowrap shrink-0">
+                  <span class="whitespace-nowrap bg-amber-100 text-amber-800 text-[11px] font-bold px-2.5 py-1 rounded-lg">
+                    ⚖️ نازلة محلولة
+                  </span>
+                  <div class="flex items-center gap-3 text-xs font-bold text-slate-500 whitespace-nowrap">
+                    <span class="flex items-center gap-1 text-rose-600">♥ 114</span>
+                    <span class="flex items-center gap-1 text-slate-600">👁 1.2k</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab Content 2: المساهمات والملخصات (With Status Badges) -->
+          <div id="pcontent-contributions" class="p-6 hidden">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-bold text-slate-500">الملخصات والمذكرات التي شاركتها مع زملائك</span>
+              <button class="btn-3d btn-3d-primary px-3 py-1.5 rounded-xl text-xs font-bold">
+                + إضافة ملخص جديد
+              </button>
+            </div>
+
+            <div class="space-y-3">
+              <div class="card-3d p-4 flex items-center justify-between">
+                <div>
+                  <h4 class="font-bold text-slate-900 text-sm">ملخص شامل: المسؤولية المدنية (18 صفحة)</h4>
+                  <p class="text-xs text-slate-500">تم التحديث قبل 3 أيام · تم تحميله 420 مرة</p>
+                </div>
+                <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full">
+                  ✓ مقبول ومنشور
+                </span>
+              </div>
+
+              <div class="card-3d p-4 flex items-center justify-between">
+                <div>
+                  <h4 class="font-bold text-slate-900 text-sm">فلاش كاردز: مادة المسطرة المدنية الجديدة 58.25</h4>
+                  <p class="text-xs text-slate-500">مجموعة من 45 بطاقة ذكية للـ FSRS</p>
+                </div>
+                <span class="bg-amber-100 text-amber-800 text-xs font-bold px-3 py-1 rounded-full">
+                  ⏳ قيد مراجعة المشرفين
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab Content 3: مجموعاتي ولقاءات المراجعة (With Direct Join CTA) -->
+          <div id="pcontent-groups" class="p-6 hidden">
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-xs font-bold text-slate-500">مجموعات المذاكرة الميدانية والجلسات المباشرة</span>
+              <button class="btn-3d btn-3d-secondary px-3 py-1.5 rounded-xl text-xs font-bold">
+                + إنشاء فوج مراجعة
+              </button>
+            </div>
+
+            <div class="space-y-3">
+              <!-- Session 1 -->
+              <div class="card-3d p-4 flex items-center justify-between gap-4">
+                <div>
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="bg-red-100 text-red-700 text-[10px] font-black px-2 py-0.5 rounded-full animate-pulse">
+                      ● مباشر الليلة 20:30
+                    </span>
+                    <h4 class="font-bold text-slate-900 text-sm">جلسة مراجعة نازلة المسؤولية عن فعل الغير</h4>
+                  </div>
+                  <p class="text-xs text-slate-500">فوج S3 عين الشق · مع الطالب يوسف وعمر (18 طالباً سيحضر)</p>
+                </div>
+                <button class="btn-3d btn-3d-primary px-4 py-2 rounded-xl text-xs font-black whitespace-nowrap">
+                  انضم / سأحضر ✓
+                </button>
+              </div>
+
+              <!-- Session 2 -->
+              <div class="card-3d p-4 flex items-center justify-between gap-4">
+                <div>
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="bg-slate-100 text-slate-700 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                      السبت 16:00
+                    </span>
+                    <h4 class="font-bold text-slate-900 text-sm">ورشة تفكيك قانون المسطرة المدنية 58.25</h4>
+                  </div>
+                  <p class="text-xs text-slate-500">مجموعة التحضير للمحاماة 2026 · عبر تطبيق طالب المباشر</p>
+                </div>
+                <button class="btn-3d btn-3d-secondary px-4 py-2 rounded-xl text-xs font-bold whitespace-nowrap">
+                  مسجل بالفعل ✓
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Interactive JavaScript Logic -->
+  <script>
+    // Master View Switcher
+    function switchView(viewId) {
+      document.querySelectorAll('.view-panel').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.classList.remove('bg-emerald-700', 'text-white');
+        btn.classList.add('bg-slate-100', 'text-slate-700');
+      });
+
+      const activeView = document.getElementById(`view-${viewId}`);
+      const activeTab = document.getElementById(`tab-${viewId}`);
+      if (activeView) activeView.classList.add('active');
+      if (activeTab) {
+        activeTab.classList.remove('bg-slate-100', 'text-slate-700');
+        activeTab.classList.add('bg-emerald-700', 'text-white');
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Wizard Step Navigation
+    let currentStep = 1;
+    const maxSteps = 4;
+    function updateWizardUI() {
+      for (let i = 1; i <= maxSteps; i++) {
+        const el = document.getElementById(`wizard-step-${i}`);
+        if (el) el.classList.toggle('hidden', i !== currentStep);
+      }
+      const pct = (currentStep / maxSteps) * 100;
+      document.getElementById('progress-bar-fill').style.width = `${pct}%`;
+      document.getElementById('step-pct').innerText = `${pct}%`;
+      
+      const labels = [
+        "الخطوة 1 من 4: مرحباً بك",
+        "الخطوة 2 من 4: تخصيص المظهر",
+        "الخطوة 3 من 4: اختيار الكلية",
+        "الخطوة 4 من 4: المسار الدراسي"
+      ];
+      document.getElementById('step-label').innerText = labels[currentStep - 1];
+
+      document.getElementById('btn-wizard-back').disabled = (currentStep === 1);
+      const nextBtn = document.getElementById('btn-wizard-next');
+      if (currentStep === maxSteps) {
+        nextBtn.innerText = "إنهاء والبدء في الدراسة ✨";
+      } else {
+        nextBtn.innerText = "متابعة ←";
+      }
+    }
+
+    function wizardNext() {
+      if (currentStep < maxSteps) {
+        currentStep++;
+        updateWizardUI();
+      } else {
+        // Complete wizard -> jump to profile
+        switchView('profile-full');
+      }
+    }
+
+    function wizardPrev() {
+      if (currentStep > 1) {
+        currentStep--;
+        updateWizardUI();
+      }
+    }
+
+    // Avatar Picker
+    function pickAvatar(emoji, bgClass, borderClass) {
+      const box = document.getElementById('avatar-preview-box');
+      box.className = `w-28 h-28 rounded-3xl ${bgClass} border-4 ${borderClass} flex items-center justify-center text-6xl shadow-md mb-4 transition transform hover:scale-105`;
+      box.innerText = emoji;
+    }
+
+    // Faculty Selector
+    function selectFaculty(el, code) {
+      document.querySelectorAll('.faculty-card').forEach(c => {
+        c.className = 'faculty-card p-3 rounded-2xl border border-slate-200 hover:border-emerald-400 bg-white cursor-pointer flex items-center justify-between';
+        const check = c.querySelector('span');
+        if (check) check.remove();
+      });
+      el.className = 'faculty-card p-3 rounded-2xl border-2 border-emerald-600 bg-emerald-50 cursor-pointer flex items-center justify-between';
+      const chk = document.createElement('span');
+      chk.className = 'text-emerald-700 font-black text-sm';
+      chk.innerText = '✓';
+      el.appendChild(chk);
+    }
+
+    function filterFaculties() {
+      const q = document.getElementById('faculty-search').value.toLowerCase();
+      document.querySelectorAll('.faculty-card').forEach(card => {
+        const text = card.innerText.toLowerCase();
+        card.style.display = text.includes(q) ? 'flex' : 'none';
+      });
+    }
+
+    // Profile Tab Switcher
+    function switchProfileTab(tabId) {
+      ['works', 'contributions', 'groups'].forEach(id => {
+        document.getElementById(`pcontent-${id}`).classList.add('hidden');
+        const tabBtn = document.getElementById(`ptab-${id}`);
+        tabBtn.classList.remove('text-emerald-700', 'border-emerald-700');
+        tabBtn.classList.add('text-slate-400', 'border-transparent');
+      });
+      document.getElementById(`pcontent-${tabId}`).classList.remove('hidden');
+      const activeBtn = document.getElementById(`ptab-${tabId}`);
+      activeBtn.classList.remove('text-slate-400', 'border-transparent');
+      activeBtn.classList.add('text-emerald-700', 'border-emerald-700');
+    }
+
+    // Check for simulated or local talib.auth.v1
+    window.addEventListener('DOMContentLoaded', () => {
+      try {
+        const stored = localStorage.getItem('talib.auth.v1');
+        if (stored) {
+          const authData = JSON.parse(stored);
+          if (authData.name) document.getElementById('profile-user-name').innerText = authData.name;
+          if (authData.avatar) document.getElementById('profile-avatar-img').src = authData.avatar;
+          if (authData.email) {
+            document.getElementById('profile-auth-badge').innerHTML = `<span>G</span><span>${authData.provider || 'Google'} · ${authData.email}</span>`;
+          }
+        }
+      } catch (e) {
+        console.warn('Auth storage check skipped');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,308 @@
+const { getLinkText } = require("../../processLink");
+
+/**
+ * Returns the protocol of the given baseUrl, falling back to https when the
+ * value is missing or not a valid URL.
+ * @param {string|null} baseUrl
+ * @returns {string} the protocol including its trailing colon, eg "http:"
+ */
+function protocolOf(baseUrl) {
+  try {
+    return new URL(baseUrl).protocol;
+  } catch {
+    return "https:";
+  }
+}
+
+/**
+ * Fetches the content of a raw link. Returns the content as a text string of the link in question.
+ * @param {object} data - metadata from document (eg: link)
+ * @param {import("../../middleware/setDataSigner").ResponseWithSigner} response
+ */
+async function resyncLink({ link }, response) {
+  if (!link) throw new Error("Invalid link provided");
+  try {
+    const { success, content = null, reason } = await getLinkText(link);
+    if (!success) throw new Error(`Failed to sync link content. ${reason}`);
+    response.status(200).json({ success, content });
+  } catch (e) {
+    console.error(e);
+    response.status(200).json({
+      success: false,
+      content: null,
+    });
+  }
+}
+
+/**
+ * Fetches the content of a YouTube link. Returns the content as a text string of the video in question.
+ * We offer this as there may be some videos where a transcription could be manually edited after initial scraping
+ * but in general - transcriptions often never change.
+ * @param {object} data - metadata from document (eg: link)
+ * @param {import("../../middleware/setDataSigner").ResponseWithSigner} response
+ */
+async function resyncYouTube({ link }, response) {
+  if (!link) throw new Error("Invalid link provided");
+  try {
+    const {
+      fetchVideoTranscriptContent,
+    } = require("../../utils/extensions/YoutubeTranscript");
+    const { success, reason, content } = await fetchVideoTranscriptContent({
+      url: link,
+    });
+    if (!success)
+      throw new Error(`Failed to sync YouTube video transcript. ${reason}`);
+    response.status(200).json({ success, content });
+  } catch (e) {
+    console.error(e);
+    response.status(200).json({
+      success: false,
+      content: null,
+    });
+  }
+}
+
+/**
+ * Fetches the content of a specific confluence page via its chunkSource.
+ * Returns the content as a text string of the page in question and only that page.
+ * @param {object} data - metadata from document (eg: chunkSource)
+ * @param {import("../../middleware/setDataSigner").ResponseWithSigner} response
+ */
+async function resyncConfluence({ chunkSource }, response) {
+  if (!chunkSource) throw new Error("Invalid source property provided");
+  try {
+    // Confluence data is `payload` encrypted. So we need to expand its
+    // encrypted payload back into query params so we can reFetch the page with same access token/params.
+    const source = response.locals.encryptionWorker.expandPayload(chunkSource);
+    const {
+      fetchConfluencePage,
+    } = require("../../utils/extensions/Confluence");
+    const baseUrl = source.searchParams.get("baseUrl");
+    const { success, reason, content } = await fetchConfluencePage({
+      // The stored pathname carries no scheme. Use the one from baseUrl so the
+      // page url matches the one the loader builds from the same baseUrl.
+      pageUrl: `${protocolOf(baseUrl)}${source.pathname}`,
+      baseUrl,
+      spaceKey: source.searchParams.get("spaceKey"),
+      accessToken: source.searchParams.get("token"),
+      username: source.searchParams.get("username"),
+      personalAccessToken: source.searchParams.get("personalAccessToken"),
+      cloud: source.searchParams.get("cloud") === "true",
+      bypassSSL: source.searchParams.get("bypassSSL") === "true",
+    });
+
+    if (!success)
+      throw new Error(`Failed to sync Confluence page content. ${reason}`);
+    response.status(200).json({ success, content });
+  } catch (e) {
+    console.error(e);
+    response.status(200).json({
+      success: false,
+      content: null,
+    });
+  }
+}
+
+/**
+ * Fetches the content of a specific confluence page via its chunkSource.
+ * Returns the content as a text string of the page in question and only that page.
+ * @param {object} data - metadata from document (eg: chunkSource)
+ * @param {import("../../middleware/setDataSigner").ResponseWithSigner} response
+ */
+async function resyncGithub({ chunkSource }, response) {
+  if (!chunkSource) throw new Error("Invalid source property provided");
+  try {
+    // Github file data is `payload` encrypted (might contain PAT). So we need to expand its
+    // encrypted payload back into query params so we can reFetch the page with same access token/params.
+    const source = response.locals.encryptionWorker.expandPayload(chunkSource);
+    const {
+      fetchGithubFile,
+    } = require("../../utils/extensions/RepoLoader/GithubRepo");
+    const { success, reason, content } = await fetchGithubFile({
+      // need to add back the real protocol - older chunkSources have none and default to https.
+      repoUrl: `${source.searchParams.get("scheme") || "https"}:${
+        source.pathname
+      }`,
+      branch: source.searchParams.get("branch"),
+      accessToken: source.searchParams.get("pat"),
+      sourceFilePath: source.searchParams.get("path"),
+    });
+
+    if (!success)
+      throw new Error(`Failed to sync GitHub file content. ${reason}`);
+    response.status(200).json({ success, content });
+  } catch (e) {
+    console.error(e);
+    response.status(200).json({
+      success: false,
+      content: null,
+    });
+  }
+}
+
+/**
+ * Fetches the content of a specific GitLab file, issue or wiki page via its chunkSource.
+ * Returns the content as a text string of the document in question and only that document.
+ * @param {object} data - metadata from document (eg: chunkSource)
+ * @param {import("../../middleware/setDataSigner").ResponseWithSigner} response
+ */
+async function resyncGitlab({ chunkSource }, response) {
+  if (!chunkSource) throw new Error("Invalid source property provided");
+  try {
+    const source = response.locals.encryptionWorker.expandPayload(chunkSource);
+    const {
+      fetchGitlabFile,
+      fetchGitlabIssue,
+      fetchGitlabWiki,
+    } = require("../../utils/extensions/RepoLoader/GitlabRepo");
+    const repoArgs = {
+      repoUrl: `${source.searchParams.get("scheme") || "https"}:${
+        source.pathname
+      }`,
+      branch: source.searchParams.get("branch"),
+      accessToken: source.searchParams.get("pat"),
+    };
+    // Missing kind uses the file path for compatibility with legacy file documents.
+    // Legacy issue and wiki payloads remain unsupported until the document is
+    // re-imported and watched again.
+    const kind = source.searchParams.get("kind");
+    let result;
+    if (kind === "issue")
+      result = await fetchGitlabIssue({
+        ...repoArgs,
+        issueId: source.searchParams.get("ref"),
+      });
+    else if (kind === "wiki")
+      result = await fetchGitlabWiki({
+        ...repoArgs,
+        slug: source.searchParams.get("ref"),
+      });
+    else
+      result = await fetchGitlabFile({
+        ...repoArgs,
+        sourceFilePath: source.searchParams.get("path"),
+      });
+    const { success, reason, content } = result;
+
+    if (!success) throw new Error(`Failed to sync GitLab content. ${reason}`);
+    response.status(200).json({ success, content });
+  } catch (e) {
+    console.error(e);
+    response.status(200).json({
+      success: false,
+      content: null,
+    });
+  }
+}
+
+/**
+ * Fetches the content of a specific Gitea file via its chunkSource.
+ * Returns the content as a text string of the file in question and only that file.
+ * @param {object} data - metadata from document (eg: chunkSource)
+ * @param {import("../../middleware/setDataSigner").ResponseWithSigner} response
+ */
+async function resyncGitea({ chunkSource }, response) {
+  if (!chunkSource) throw new Error("Invalid source property provided");
+  try {
+    // Gitea file data is `payload` encrypted (might contain PAT). So we need to expand its
+    // encrypted payload back into query params so we can reFetch the page with same access token/params.
+    const source = response.locals.encryptionWorker.expandPayload(chunkSource);
+    const {
+      fetchGiteaFile,
+    } = require("../../utils/extensions/RepoLoader/GiteaRepo");
+    const { success, reason, content } = await fetchGiteaFile({
+      // Gitea is self-hosted so the protocol was stored with the payload - it cannot be assumed.
+      repoUrl: `${source.searchParams.get("scheme")}:${source.pathname}`,
+      branch: source.searchParams.get("branch"),
+      accessToken: source.searchParams.get("pat"),
+      sourceFilePath: source.searchParams.get("path"),
+    });
+
+    if (!success)
+      throw new Error(`Failed to sync Gitea file content. ${reason}`);
+    response.status(200).json({ success, content });
+  } catch (e) {
+    console.error(e);
+    response.status(200).json({
+      success: false,
+      content: null,
+    });
+  }
+}
+
+/**
+ * Fetches the content of a specific DrupalWiki page via its chunkSource.
+ * Returns the content as a text string of the page in question and only that page.
+ * @param {object} data - metadata from document (eg: chunkSource)
+ * @param {import("../../middleware/setDataSigner").ResponseWithSigner} response
+ */
+async function resyncDrupalWiki({ chunkSource }, response) {
+  if (!chunkSource) throw new Error("Invalid source property provided");
+  try {
+    // DrupalWiki data is `payload` encrypted. So we need to expand its
+    // encrypted payload back into query params so we can reFetch the page with same access token/params.
+    const source = response.locals.encryptionWorker.expandPayload(chunkSource);
+    const { loadPage } = require("../../utils/extensions/DrupalWiki");
+    const { success, reason, content } = await loadPage({
+      baseUrl: source.searchParams.get("baseUrl"),
+      pageId: source.searchParams.get("pageId"),
+      accessToken: source.searchParams.get("accessToken"),
+    });
+
+    if (!success) {
+      console.error(`Failed to sync DrupalWiki page content. ${reason}`);
+      response.status(200).json({
+        success: false,
+        content: null,
+      });
+    } else {
+      response.status(200).json({ success, content });
+    }
+  } catch (e) {
+    console.error(e);
+    response.status(200).json({
+      success: false,
+      content: null,
+    });
+  }
+}
+
+/**
+ * Fetches the content of a specific Paperless-ngx document via its chunkSource.
+ * Returns the content as a text string of the document.
+ * @param {object} data - metadata from document (eg: chunkSource)
+ * @param {import("../../middleware/setDataSigner").ResponseWithSigner} response
+ */
+async function resyncPaperlessNgx({ chunkSource }, response) {
+  if (!chunkSource) throw new Error("Invalid source property provided");
+  try {
+    const source = response.locals.encryptionWorker.expandPayload(chunkSource);
+    const PaperlessNgxLoader = require("../../utils/extensions/PaperlessNgx/PaperlessNgxLoader");
+    const loader = new PaperlessNgxLoader({
+      baseUrl: source.searchParams.get("baseUrl"),
+      apiToken: source.searchParams.get("token"),
+    });
+    const documentId = source.host;
+    const content = await loader.fetchDocumentContent(documentId);
+
+    if (!content) throw new Error("Failed to fetch document content");
+    response.status(200).json({ success: true, content });
+  } catch (e) {
+    console.error(e);
+    response.status(200).json({
+      success: false,
+      content: null,
+    });
+  }
+}
+
+module.exports = {
+  link: resyncLink,
+  youtube: resyncYouTube,
+  confluence: resyncConfluence,
+  github: resyncGithub,
+  gitlab: resyncGitlab,
+  gitea: resyncGitea,
+  drupalwiki: resyncDrupalWiki,
+  "paperless-ngx": resyncPaperlessNgx,
+};

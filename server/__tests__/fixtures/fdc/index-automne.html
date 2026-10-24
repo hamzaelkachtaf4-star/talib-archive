@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Emplois du temps – Automne 2026/2027 | FSJES Aïn Chock</title>
+    <link href="public/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f3f5f9;
+            --surface: #ffffff;
+            --ink: #14213d;
+            --muted: #5f6b7e;
+            --line: #e3e8f0;
+            --primary: #0f3a6b;
+            --primary-2: #1f5fa8;
+            --accent: #2f80ed;
+            --accent-soft: #e8f1fd;
+            --pdf: #d93a3a;
+            --pdf-soft: #fdecec;
+            --xls: #1d8a4e;
+            --xls-soft: #e6f5ec;
+            --doc: #2b5fb8;
+            --doc-soft: #e8effb;
+            --img: #8a4fd1;
+            --img-soft: #f2eafb;
+            --new: #e8910c;
+            --radius: 14px;
+            --shadow: 0 1px 2px rgba(20, 33, 61, .06), 0 4px 14px rgba(20, 33, 61, .06);
+            --shadow-hover: 0 2px 4px rgba(20, 33, 61, .08), 0 12px 28px rgba(20, 33, 61, .12);
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font: 15px/1.5 "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        a { color: inherit; }
+
+        /* ---------- En-tête ---------- */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-2) 100%);
+            color: #fff;
+            padding: 36px 16px 92px;
+        }
+        .wrap { max-width: 1180px; margin: 0 auto; }
+        .hero-top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px; }
+        .eyebrow {
+            font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+            opacity: .75; margin: 0 0 8px;
+        }
+        .hero h1 { margin: 0; font-size: clamp(24px, 4vw, 34px); font-weight: 700; letter-spacing: -.01em; }
+        .hero .session-now {
+            display: inline-flex; align-items: center; gap: 8px;
+            margin-top: 10px; padding: 5px 12px; border-radius: 999px;
+            background: rgba(255, 255, 255, .14); font-size: 14px; font-weight: 600;
+        }
+
+        .session-picker label { display: block; font-size: 12px; opacity: .8; margin-bottom: 6px; }
+        .select {
+            position: relative;
+        }
+        .select select {
+            appearance: none; -webkit-appearance: none;
+            min-width: 250px; padding: 11px 42px 11px 14px;
+            border: 1px solid rgba(255, 255, 255, .3); border-radius: 10px;
+            background: rgba(255, 255, 255, .12); color: #fff;
+            font: inherit; font-weight: 600; cursor: pointer;
+        }
+        .select select:focus { outline: 2px solid #fff; outline-offset: 2px; }
+        .select select option, .select select optgroup { color: var(--ink); background: #fff; }
+        .select .fa { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+
+        /* ---------- Barre de recherche / filtres ---------- */
+        .toolbar {
+            margin: -64px auto 0; max-width: 1180px;
+            background: var(--surface); border-radius: var(--radius);
+            box-shadow: var(--shadow-hover); padding: 18px;
+            position: sticky; top: 12px; z-index: 10;
+        }
+        .search { position: relative; }
+        .search .fa-search {
+            position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+            color: var(--muted); font-size: 16px;
+        }
+        .search input {
+            width: 100%; padding: 14px 44px 14px 46px;
+            border: 1px solid var(--line); border-radius: 10px;
+            font: inherit; font-size: 16px; color: var(--ink); background: #f8fafc;
+            transition: border-color .15s, box-shadow .15s, background .15s;
+        }
+        .search input:focus {
+            outline: none; border-color: var(--accent); background: #fff;
+            box-shadow: 0 0 0 4px var(--accent-soft);
+        }
+        .search .clear {
+            position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+            border: 0; background: transparent; color: var(--muted);
+            width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: none;
+        }
+        .search .clear:hover { background: var(--bg); }
+        .search.has-value .clear { display: block; }
+
+        .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+        .chip {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 7px 14px; border-radius: 999px;
+            border: 1px solid var(--line); background: #fff; color: var(--ink);
+            font: inherit; font-size: 14px; font-weight: 600; cursor: pointer;
+            transition: background .15s, border-color .15s, color .15s;
+        }
+        .chip:hover { border-color: var(--accent); }
+        .chip .n {
+            font-size: 12px; font-weight: 700; min-width: 22px; padding: 1px 7px;
+            border-radius: 999px; background: var(--bg); color: var(--muted); text-align: center;
+        }
+        .chip[aria-pressed="true"] { background: var(--primary); border-color: var(--primary); color: #fff; }
+        .chip[aria-pressed="true"] .n { background: rgba(255, 255, 255, .2); color: #fff; }
+
+        /* ---------- Contenu ---------- */
+        main { padding: 28px 16px 60px; }
+        .result-info { color: var(--muted); font-size: 14px; margin: 0 0 18px; }
+        .result-info strong { color: var(--ink); }
+
+        .group { margin-bottom: 34px; }
+        .group-head {
+            display: flex; align-items: center; gap: 12px; margin: 0 0 14px;
+        }
+        .group-head h2 { margin: 0; font-size: 18px; font-weight: 700; }
+        .group-head .count {
+            font-size: 12px; font-weight: 700; color: var(--accent);
+            background: var(--accent-soft); padding: 2px 9px; border-radius: 999px;
+        }
+        .group-head::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+        .grid {
+            display: grid; gap: 14px;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+        }
+        .card {
+            position: relative; display: flex; flex-direction: column; gap: 12px;
+            background: var(--surface); border: 1px solid var(--line);
+            border-radius: var(--radius); padding: 16px;
+            box-shadow: var(--shadow);
+            transition: transform .15s, box-shadow .15s, border-color .15s;
+        }
+        .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); border-color: #cfd9e8; }
+        .card-top { display: flex; gap: 14px; align-items: flex-start; }
+        .file-ico {
+            flex: none; width: 46px; height: 46px; border-radius: 12px;
+            display: grid; place-items: center; font-size: 22px;
+        }
+        .ext-pdf  { color: var(--pdf); background: var(--pdf-soft); }
+        .ext-xls, .ext-xlsx { color: var(--xls); background: var(--xls-soft); }
+        .ext-doc, .ext-docx { color: var(--doc); background: var(--doc-soft); }
+        .ext-jpg, .ext-jpeg, .ext-png { color: var(--img); background: var(--img-soft); }
+        .card h3 { margin: 0; font-size: 15px; font-weight: 650; line-height: 1.35; overflow-wrap: anywhere; }
+        .card h3 a { text-decoration: none; }
+        .card h3 a::after { content: ""; position: absolute; inset: 0; border-radius: var(--radius); } /* carte entière cliquable */
+        .meta { margin-top: 3px; font-size: 12.5px; color: var(--muted); }
+
+        .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+        .tag {
+            font-size: 12px; font-weight: 600; padding: 3px 9px; border-radius: 6px;
+            background: var(--bg); color: #3b4a61;
+        }
+        .tag.sem    { background: var(--accent-soft); color: var(--primary-2); }
+        .tag.langue { background: #fff4e0; color: #9a5b00; }
+        .tag.type   { background: #eef0f4; color: #3b4a61; }
+        .tag.new    { background: var(--new); color: #fff; }
+
+        .actions { display: flex; gap: 8px; margin-top: auto; }
+        .btn {
+            position: relative; z-index: 1;   /* au-dessus du lien « carte entière » */
+            flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+            padding: 9px 12px; border-radius: 9px; font-size: 13.5px; font-weight: 600;
+            text-decoration: none; border: 1px solid var(--line); background: #fff; color: var(--ink);
+            transition: background .15s, border-color .15s;
+        }
+        .btn:hover { background: var(--bg); }
+        .btn.primary { background: var(--primary); border-color: var(--primary); color: #fff; }
+        .btn.primary:hover { background: var(--primary-2); border-color: var(--primary-2); }
+
+        mark { background: #ffe58a; color: inherit; border-radius: 3px; padding: 0 1px; }
+
+        .empty {
+            text-align: center; padding: 60px 20px; color: var(--muted);
+            background: var(--surface); border: 1px dashed #cfd9e8; border-radius: var(--radius);
+        }
+        .empty .fa { font-size: 40px; color: #b7c3d4; margin-bottom: 12px; }
+        .empty h3 { color: var(--ink); margin: 0 0 6px; }
+        .empty code { background: var(--bg); padding: 2px 6px; border-radius: 5px; }
+
+        footer { text-align: center; color: var(--muted); font-size: 13px; padding: 0 16px 40px; }
+
+        .hidden { display: none !important; }
+
+        @media (max-width: 640px) {
+            .hero { padding: 26px 16px 84px; }
+            .session-picker, .select select { width: 100%; }
+            .toolbar { margin-left: 12px; margin-right: 12px; padding: 14px; top: 8px; }
+            .chips { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
+            .chip { flex: none; }
+            .grid { grid-template-columns: 1fr; }
+        }
+        @media print {
+            .toolbar, .session-picker, .actions { display: none; }
+            .hero { background: none; color: var(--ink); padding: 0 0 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="hero">
+    <div class="wrap hero-top">
+        <div>
+            <p class="eyebrow">Faculté des Sciences Juridiques, Économiques et Sociales – Aïn Chock</p>
+            <h1>Emplois du temps</h1>
+                            <span class="session-now">
+                    <i class="fa fa-leaf"></i>
+                    Session Automne 2026/2027                </span>
+                    </div>
+
+            </div>
+</header>
+
+<div class="toolbar" role="search">
+    <div class="search" id="searchBox">
+        <i class="fa fa-search" aria-hidden="true"></i>
+        <input type="search" id="q" placeholder="Rechercher : droit privé, gestion, arabe, TD, PFE…" autocomplete="off"
+               aria-label="Rechercher un emploi du temps">
+        <button type="button" class="clear" id="clearQ" aria-label="Effacer"><i class="fa fa-times"></i></button>
+    </div>
+    <div class="chips" id="chips" aria-label="Filtrer par semestre">
+        <button type="button" class="chip" data-sem="all" aria-pressed="true">Tous <span class="n">25</span></button>
+                    <button type="button" class="chip" data-sem="1" aria-pressed="false">Semestre 1 <span class="n">8</span></button>
+                    <button type="button" class="chip" data-sem="3" aria-pressed="false">Semestre 3 <span class="n">8</span></button>
+                    <button type="button" class="chip" data-sem="5" aria-pressed="false">Semestre 5 <span class="n">9</span></button>
+                    </div>
+</div>
+
+<main>
+    <div class="wrap">
+                    <p class="result-info" id="resultInfo" aria-live="polite"></p>
+
+                            <section class="group" data-group="1">
+                    <div class="group-head">
+                        <h2>Semestre 1</h2>
+                        <span class="count">8</span>
+                    </div>
+                    <div class="grid">
+                                                    <article class="card"
+                                     data-search="business administration semestre 1 business administration business administration semestre 1 s1"
+                                     data-sem="1">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%201%20BUSINESS%20ADMINISTRATION.pdf" target="_blank" rel="noopener" class="title">Business administration</a></h3>
+                                        <div class="meta">
+                                            PDF · 58 Ko · mis à jour le 25/09/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                                                        <span class="tag sem">S1</span>                                    <span class="tag filiere">Business Administration</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%201%20BUSINESS%20ADMINISTRATION.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%201%20BUSINESS%20ADMINISTRATION.pdf" download="SEMESTRE 1 BUSINESS ADMINISTRATION.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                                    <article class="card"
+                                     data-search="droit prive en arabe semestre 1 droit prive en arabe droit prive arabe semestre 1 s1"
+                                     data-sem="1">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%201%20DROIT%20PRIVE%20EN%20ARABE.pdf" target="_blank" rel="noopener" class="title">Droit privé en arabe</a></h3>
+                                        <div class="meta">
+                                            PDF · 73 Ko · mis à jour le 30/09/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                                                        <span class="tag sem">S1</span>                                    <span class="tag filiere">Droit privé</span><span class="tag langue">Arabe</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%201%20DROIT%20PRIVE%20EN%20ARABE.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%201%20DROIT%20PRIVE%20EN%20ARABE.pdf" download="SEMESTRE 1 DROIT PRIVE EN ARABE.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                                    <article class="card"
+                                     data-search="droit prive en francais semestre 1 droit prive en francais droit prive francais semestre 1 s1"
+                                     data-sem="1">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%201%20DROIT%20PRIVE%20EN%20FRANCAIS.pdf" target="_blank" rel="noopener" class="title">Droit privé en français</a></h3>
+                                        <div class="meta">
+                                            PDF · 60 Ko · mis à jour le 07/10/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                    <span class="tag new">Nouveau</span>                                    <span class="tag sem">S1</span>                                    <span class="tag filiere">Droit privé</span><span class="tag langue">Français</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%201%20DROIT%20PRIVE%20EN%20FRANCAIS.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%201%20DROIT%20PRIVE%20EN%20FRANCAIS.pdf" download="SEMESTRE 1 DROIT PRIVE EN FRANCAIS.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                                    <article class="card"
+                                     data-search="droit public en arabe semestre 1 droit public  en arabe droit public arabe semestre 1 s1"
+                                     data-sem="1">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%201%20DROIT%20PUBLIC%20%20EN%20ARABE.pdf" target="_blank" rel="noopener" class="title">Droit public en arabe</a></h3>
+                                        <div class="meta">
+                                            PDF · 74 Ko · mis à jour le 25/09/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                                                        <span class="tag sem">S1</span>                                    <span class="tag filiere">Droit public</span><span class="tag langue">Arabe</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%201%20DROIT%20PUBLIC%20%20EN%20ARABE.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%201%20DROIT%20PUBLIC%20%20EN%20ARABE.pdf" download="SEMESTRE 1 DROIT PUBLIC  EN ARABE.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                                    <article class="card"
+                                     data-search="droit public en francais semestre 1 droit public en francais droit public francais semestre 1 s1"
+                                     data-sem="1">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%201%20DROIT%20PUBLIC%20EN%20FRANCAIS.pdf" target="_blank" rel="noopener" class="title">Droit public en français</a></h3>
+                                        <div class="meta">
+                                            PDF · 60 Ko · mis à jour le 25/09/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                                                        <span class="tag sem">S1</span>                                    <span class="tag filiere">Droit public</span><span class="tag langue">Français</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%201%20DROIT%20PUBLIC%20EN%20FRANCAIS.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%201%20DROIT%20PUBLIC%20EN%20FRANCAIS.pdf" download="SEMESTRE 1 DROIT PUBLIC EN FRANCAIS.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                                    <article class="card"
+                                     data-search="economie semestre 1 econiomie economie semestre 1 s1"
+                                     data-sem="1">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%201%20ECONIOMIE.pdf" target="_blank" rel="noopener" class="title">Économie</a></h3>
+                                        <div class="meta">
+                                            PDF · 63 Ko · mis à jour le 25/09/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                                                        <span class="tag sem">S1</span>                                    <span class="tag filiere">Économie</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%201%20ECONIOMIE.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%201%20ECONIOMIE.pdf" download="SEMESTRE 1 ECONIOMIE.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                                    <article class="card"
+                                     data-search="gestion semestre 1 gestion gestion semestre 1 s1"
+                                     data-sem="1">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%201%20GESTION.pdf" target="_blank" rel="noopener" class="title">Gestion</a></h3>
+                                        <div class="meta">
+                                            PDF · 66 Ko · mis à jour le 25/09/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                                                        <span class="tag sem">S1</span>                                    <span class="tag filiere">Gestion</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%201%20GESTION.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%201%20GESTION.pdf" download="SEMESTRE 1 GESTION.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                                    <article class="card"
+                                     data-search="methodologie du travail universitaire semestre 1 methodologie du travail universitaire  semestre 1 s1"
+                                     data-sem="1">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%201%20METHODOLOGIE%20DU%20TRAVAIL%20UNIVERSITAIRE.pdf" target="_blank" rel="noopener" class="title">Methodologie du travail universitaire</a></h3>
+                                        <div class="meta">
+                                            PDF · 84 Ko · mis à jour le 07/10/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                    <span class="tag new">Nouveau</span>                                    <span class="tag sem">S1</span>                                                                    </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%201%20METHODOLOGIE%20DU%20TRAVAIL%20UNIVERSITAIRE.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%201%20METHODOLOGIE%20DU%20TRAVAIL%20UNIVERSITAIRE.pdf" download="SEMESTRE 1 METHODOLOGIE DU TRAVAIL UNIVERSITAIRE.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                            </div>
+                </section>
+                            <section class="group" data-group="3">
+                    <div class="group-head">
+                        <h2>Semestre 3</h2>
+                        <span class="count">8</span>
+                    </div>
+                    <div class="grid">
+                                                    <article class="card"
+                                     data-search="business administration semestre 3 business administration business administration semestre 3 s3"
+                                     data-sem="3">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%203%20BUSINESS%20ADMINISTRATION.pdf" target="_blank" rel="noopener" class="title">Business administration</a></h3>
+                                        <div class="meta">
+                                            PDF · 58 Ko · mis à jour le 25/09/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                                                        <span class="tag sem">S3</span>                                    <span class="tag filiere">Business Administration</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%203%20BUSINESS%20ADMINISTRATION.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%203%20BUSINESS%20ADMINISTRATION.pdf" download="SEMESTRE 3 BUSINESS ADMINISTRATION.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                                    <article class="card"
+                                     data-search="droit prive en arabe semestre 3 droit prive  en arabe droit prive arabe semestre 3 s3"
+                                     data-sem="3">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%203%20DROIT%20PRIVE%20%20EN%20ARABE.pdf" target="_blank" rel="noopener" class="title">Droit privé en arabe</a></h3>
+                                        <div class="meta">
+                                            PDF · 76 Ko · mis à jour le 25/09/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                                                        <span class="tag sem">S3</span>                                    <span class="tag filiere">Droit privé</span><span class="tag langue">Arabe</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%203%20DROIT%20PRIVE%20%20EN%20ARABE.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%203%20DROIT%20PRIVE%20%20EN%20ARABE.pdf" download="SEMESTRE 3 DROIT PRIVE  EN ARABE.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                                    <article class="card"
+                                     data-search="droit prive en francais semestre 3 droit prive  en francais droit prive francais semestre 3 s3"
+                                     data-sem="3">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%203%20DROIT%20PRIVE%20%20EN%20FRANCAIS.pdf" target="_blank" rel="noopener" class="title">Droit privé en français</a></h3>
+                                        <div class="meta">
+                                            PDF · 61 Ko · mis à jour le 25/09/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                                                        <span class="tag sem">S3</span>                                    <span class="tag filiere">Droit privé</span><span class="tag langue">Français</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%203%20DROIT%20PRIVE%20%20EN%20FRANCAIS.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%203%20DROIT%20PRIVE%20%20EN%20FRANCAIS.pdf" download="SEMESTRE 3 DROIT PRIVE  EN FRANCAIS.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                                    <article class="card"
+                                     data-search="droit public en arabe semestre 3 droit public  en arabe droit public arabe semestre 3 s3"
+                                     data-sem="3">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%203%20DROIT%20PUBLIC%20%20EN%20ARABE.pdf" target="_blank" rel="noopener" class="title">Droit public en arabe</a></h3>
+                                        <div class="meta">
+                                            PDF · 72 Ko · mis à jour le 25/09/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                                                        <span class="tag sem">S3</span>                                    <span class="tag filiere">Droit public</span><span class="tag langue">Arabe</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%203%20DROIT%20PUBLIC%20%20EN%20ARABE.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%203%20DROIT%20PUBLIC%20%20EN%20ARABE.pdf" download="SEMESTRE 3 DROIT PUBLIC  EN ARABE.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                                    <article class="card"
+                                     data-search="droit public en francais semestre 3 droit public  en francais droit public francais semestre 3 s3"
+                                     data-sem="3">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%203%20DROIT%20PUBLIC%20%20EN%20FRANCAIS.pdf" target="_blank" rel="noopener" class="title">Droit public en français</a></h3>
+                                        <div class="meta">
+                                            PDF · 58 Ko · mis à jour le 25/09/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                                                        <span class="tag sem">S3</span>                                    <span class="tag filiere">Droit public</span><span class="tag langue">Français</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%203%20DROIT%20PUBLIC%20%20EN%20FRANCAIS.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%203%20DROIT%20PUBLIC%20%20EN%20FRANCAIS.pdf" download="SEMESTRE 3 DROIT PUBLIC  EN FRANCAIS.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                                    <article class="card"
+                                     data-search="economie semestre 3 economie economie semestre 3 s3"
+                                     data-sem="3">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%203%20ECONOMIE.pdf" target="_blank" rel="noopener" class="title">Économie</a></h3>
+                                        <div class="meta">
+                                            PDF · 60 Ko · mis à jour le 07/10/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                    <span class="tag new">Nouveau</span>                                    <span class="tag sem">S3</span>                                    <span class="tag filiere">Économie</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%203%20ECONOMIE.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%203%20ECONOMIE.pdf" download="SEMESTRE 3 ECONOMIE.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                                    <article class="card"
+                                     data-search="gestion semestre 3 gestion gestion semestre 3 s3"
+                                     data-sem="3">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%203%20GESTION.pdf" target="_blank" rel="noopener" class="title">Gestion</a></h3>
+                                        <div class="meta">
+                                            PDF · 64 Ko · mis à jour le 30/09/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                                                        <span class="tag sem">S3</span>                                    <span class="tag filiere">Gestion</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%203%20GESTION.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%203%20GESTION.pdf" download="SEMESTRE 3 GESTION.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                                    <article class="card"
+                                     data-search="langue francaise 2026 – 2027 semestre 3 langue_francaise__2026-2027 langues semestre 3 s3"
+                                     data-sem="3">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%203%20Langue_fran%C3%A7aise__2026-2027.pdf" target="_blank" rel="noopener" class="title">Langue française 2026 – 2027</a></h3>
+                                        <div class="meta">
+                                            PDF · 85 Ko · mis à jour le 30/09/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                                                        <span class="tag sem">S3</span>                                    <span class="tag filiere">Langues</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%203%20Langue_fran%C3%A7aise__2026-2027.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%203%20Langue_fran%C3%A7aise__2026-2027.pdf" download="SEMESTRE 3 Langue_française__2026-2027.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                            </div>
+                </section>
+                            <section class="group" data-group="5">
+                    <div class="group-head">
+                        <h2>Semestre 5</h2>
+                        <span class="count">9</span>
+                    </div>
+                    <div class="grid">
+                                                    <article class="card"
+                                     data-search="analyste juriste et fiscal semestre 5 analyste juriste et fiscal analyste juriste &amp; fiscal semestre 5 s5"
+                                     data-sem="5">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%205%20ANALYSTE%20JURISTE%20ET%20FISCAL.pdf" target="_blank" rel="noopener" class="title">Analyste juriste et fiscal</a></h3>
+                                        <div class="meta">
+                                            PDF · 60 Ko · mis à jour le 25/09/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                                                        <span class="tag sem">S5</span>                                    <span class="tag filiere">Analyste juriste &amp; fiscal</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%205%20ANALYSTE%20JURISTE%20ET%20FISCAL.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%205%20ANALYSTE%20JURISTE%20ET%20FISCAL.pdf" download="SEMESTRE 5 ANALYSTE JURISTE ET FISCAL.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                                    <article class="card"
+                                     data-search="business administration semestre 5 business administration  business administration semestre 5 s5"
+                                     data-sem="5">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%205%20BUSINESS%20ADMINISTRATION%20.pdf" target="_blank" rel="noopener" class="title">Business administration</a></h3>
+                                        <div class="meta">
+                                            PDF · 58 Ko · mis à jour le 25/09/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                                                        <span class="tag sem">S5</span>                                    <span class="tag filiere">Business Administration</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%205%20BUSINESS%20ADMINISTRATION%20.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%205%20BUSINESS%20ADMINISTRATION%20.pdf" download="SEMESTRE 5 BUSINESS ADMINISTRATION .pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                                    <article class="card"
+                                     data-search="droit prive en arabe semestre 5 droit prive en arabe droit prive arabe semestre 5 s5"
+                                     data-sem="5">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%205%20DROIT%20PRIVE%20EN%20ARABE.pdf" target="_blank" rel="noopener" class="title">Droit privé en arabe</a></h3>
+                                        <div class="meta">
+                                            PDF · 97 Ko · mis à jour le 25/09/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                                                        <span class="tag sem">S5</span>                                    <span class="tag filiere">Droit privé</span><span class="tag langue">Arabe</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%205%20DROIT%20PRIVE%20EN%20ARABE.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%205%20DROIT%20PRIVE%20EN%20ARABE.pdf" download="SEMESTRE 5 DROIT PRIVE EN ARABE.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                                    <article class="card"
+                                     data-search="droit prive en francais semestre 5 droit prive en francais droit prive francais semestre 5 s5"
+                                     data-sem="5">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%205%20DROIT%20PRIVE%20EN%20FRANCAIS.pdf" target="_blank" rel="noopener" class="title">Droit privé en français</a></h3>
+                                        <div class="meta">
+                                            PDF · 63 Ko · mis à jour le 25/09/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                                                        <span class="tag sem">S5</span>                                    <span class="tag filiere">Droit privé</span><span class="tag langue">Français</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%205%20DROIT%20PRIVE%20EN%20FRANCAIS.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%205%20DROIT%20PRIVE%20EN%20FRANCAIS.pdf" download="SEMESTRE 5 DROIT PRIVE EN FRANCAIS.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                                    <article class="card"
+                                     data-search="droit public en arabe semestre 5 droit public en arabe droit public arabe semestre 5 s5"
+                                     data-sem="5">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%205%20DROIT%20PUBLIC%20EN%20ARABE.pdf" target="_blank" rel="noopener" class="title">Droit public en arabe</a></h3>
+                                        <div class="meta">
+                                            PDF · 82 Ko · mis à jour le 07/10/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                    <span class="tag new">Nouveau</span>                                    <span class="tag sem">S5</span>                                    <span class="tag filiere">Droit public</span><span class="tag langue">Arabe</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%205%20DROIT%20PUBLIC%20EN%20ARABE.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%205%20DROIT%20PUBLIC%20EN%20ARABE.pdf" download="SEMESTRE 5 DROIT PUBLIC EN ARABE.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                                    <article class="card"
+                                     data-search="droit public en francais semestre 5 droit public en francais droit public francais semestre 5 s5"
+                                     data-sem="5">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%205%20DROIT%20PUBLIC%20EN%20FRANCAIS.pdf" target="_blank" rel="noopener" class="title">Droit public en français</a></h3>
+                                        <div class="meta">
+                                            PDF · 62 Ko · mis à jour le 07/10/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                    <span class="tag new">Nouveau</span>                                    <span class="tag sem">S5</span>                                    <span class="tag filiere">Droit public</span><span class="tag langue">Français</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%205%20DROIT%20PUBLIC%20EN%20FRANCAIS.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%205%20DROIT%20PUBLIC%20EN%20FRANCAIS.pdf" download="SEMESTRE 5 DROIT PUBLIC EN FRANCAIS.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                                    <article class="card"
+                                     data-search="economie semestre 5 economie economie semestre 5 s5"
+                                     data-sem="5">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%205%20ECONOMIE.pdf" target="_blank" rel="noopener" class="title">Économie</a></h3>
+                                        <div class="meta">
+                                            PDF · 58 Ko · mis à jour le 11/10/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                    <span class="tag new">Nouveau</span>                                    <span class="tag sem">S5</span>                                    <span class="tag filiere">Économie</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%205%20ECONOMIE.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%205%20ECONOMIE.pdf" download="SEMESTRE 5 ECONOMIE.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                                    <article class="card"
+                                     data-search="gestion semestre 5 gestion gestion semestre 5 s5"
+                                     data-sem="5">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%205%20GESTION.pdf" target="_blank" rel="noopener" class="title">Gestion</a></h3>
+                                        <div class="meta">
+                                            PDF · 65 Ko · mis à jour le 25/09/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                                                        <span class="tag sem">S5</span>                                    <span class="tag filiere">Gestion</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%205%20GESTION.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%205%20GESTION.pdf" download="SEMESTRE 5 GESTION.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                                    <article class="card"
+                                     data-search="langue etrangere anglais 2026 – 2027 semestre 5 langue etrangere anglais 2026-2027 anglais langues semestre 5 s5"
+                                     data-sem="5">
+                                <div class="card-top">
+                                    <div class="file-ico ext-pdf">
+                                        <i class="fa fa-file-pdf-o"></i>
+                                    </div>
+                                    <div>
+                                        <h3><a href="Emp/2026-2027/Automne26/SEMESTRE%205%20Langue%20%C3%A9trang%C3%A8re%20ANGLAIS%202026-2027.pdf" target="_blank" rel="noopener" class="title">Langue étrangère anglais 2026 – 2027</a></h3>
+                                        <div class="meta">
+                                            PDF · 71 Ko · mis à jour le 01/10/2026                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tags">
+                                                                        <span class="tag sem">S5</span>                                    <span class="tag filiere">Anglais</span><span class="tag filiere">Langues</span>                                </div>
+                                <div class="actions">
+                                    <a class="btn primary" href="Emp/2026-2027/Automne26/SEMESTRE%205%20Langue%20%C3%A9trang%C3%A8re%20ANGLAIS%202026-2027.pdf" target="_blank" rel="noopener"><i class="fa fa-eye"></i> Consulter</a>
+                                    <a class="btn" href="Emp/2026-2027/Automne26/SEMESTRE%205%20Langue%20%C3%A9trang%C3%A8re%20ANGLAIS%202026-2027.pdf" download="SEMESTRE 5 Langue étrangère ANGLAIS 2026-2027.pdf"><i class="fa fa-download"></i> Télécharger</a>
+                                </div>
+                            </article>
+                                            </div>
+                </section>
+            
+            <div class="empty hidden" id="noResult">
+                <i class="fa fa-search"></i>
+                <h3>Aucun résultat</h3>
+                <p>Essayez un autre mot-clé ou choisissez « Tous » les semestres.</p>
+            </div>
+            </div>
+</main>
+
+<footer>FSJES Aïn Chock – Casablanca</footer>
+
+<script>
+(function () {
+    var q = document.getElementById('q');
+    var box = document.getElementById('searchBox');
+    var chips = document.querySelectorAll('.chip');
+    var groups = document.querySelectorAll('.group');
+    var info = document.getElementById('resultInfo');
+    var noResult = document.getElementById('noResult');
+    var sem = 'all';
+
+    function norm(s) {
+        return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+    }
+    function escapeHtml(s) {
+        return s.replace(/[&<>"']/g, function (c) {
+            return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c];
+        });
+    }
+
+    // Surligne les mots recherchés dans les titres (sans tenir compte des accents)
+    function highlight(el, words) {
+        var text = el.dataset.raw || (el.dataset.raw = el.textContent);
+        if (!words.length) { el.textContent = text; return; }
+        var n = norm(text), marks = [];
+        words.forEach(function (w) {
+            var i = n.indexOf(w);
+            while (i !== -1) { marks.push([i, i + w.length]); i = n.indexOf(w, i + w.length); }
+        });
+        if (!marks.length) { el.textContent = text; return; }
+        marks.sort(function (a, b) { return a[0] - b[0]; });
+        var out = '', pos = 0;
+        marks.forEach(function (m) {
+            if (m[0] < pos) return;
+            out += escapeHtml(text.slice(pos, m[0])) + '<mark>' + escapeHtml(text.slice(m[0], m[1])) + '</mark>';
+            pos = m[1];
+        });
+        el.innerHTML = out + escapeHtml(text.slice(pos));
+    }
+
+    function apply() {
+        var words = norm(q.value).split(/\s+/).filter(Boolean);
+        var total = 0;
+        box.classList.toggle('has-value', q.value !== '');
+
+        groups.forEach(function (g) {
+            var visible = 0;
+            g.querySelectorAll('.card').forEach(function (c) {
+                var okSem = sem === 'all' || (' ' + c.dataset.sem + ' ').indexOf(' ' + sem + ' ') !== -1;
+                var okTxt = words.every(function (w) { return c.dataset.search.indexOf(w) !== -1; });
+                var show = okSem && okTxt;
+                c.classList.toggle('hidden', !show);
+                if (show) { visible++; highlight(c.querySelector('.title'), words); }
+            });
+            g.classList.toggle('hidden', visible === 0);
+            g.querySelector('.count').textContent = visible;
+            total += visible;
+        });
+
+        noResult.classList.toggle('hidden', total !== 0);
+        info.innerHTML = '<strong>' + total + '</strong> document' + (total > 1 ? 's' : '') +
+            (words.length ? ' pour « ' + escapeHtml(q.value.trim()) + ' »' : '') +
+            (sem !== 'all' ? (sem === 'autres' ? ' · autres documents' : ' · semestre ' + sem) : '');
+
+        // Garde la recherche dans l'URL (lien partageable)
+        var p = new URLSearchParams(location.search);
+        q.value.trim() ? p.set('q', q.value.trim()) : p.delete('q');
+        sem !== 'all' ? p.set('s', sem) : p.delete('s');
+        history.replaceState(null, '', location.pathname + (p.toString() ? '?' + p : ''));
+    }
+
+    chips.forEach(function (chip) {
+        chip.addEventListener('click', function () {
+            sem = chip.dataset.sem;
+            chips.forEach(function (c) { c.setAttribute('aria-pressed', c === chip ? 'true' : 'false'); });
+            apply();
+        });
+    });
+    q.addEventListener('input', apply);
+    document.getElementById('clearQ').addEventListener('click', function () { q.value = ''; q.focus(); apply(); });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === '/' && document.activeElement !== q) { e.preventDefault(); q.focus(); }
+        if (e.key === 'Escape' && document.activeElement === q) { q.value = ''; apply(); }
+    });
+
+    // Restaure l'état depuis l'URL
+    var params = new URLSearchParams(location.search);
+    if (params.get('q')) q.value = params.get('q');
+    var initial = document.querySelector('.chip[data-sem="' + (params.get('s') || '').replace(/[^\w]/g, '') + '"]');
+    if (initial) initial.click(); else apply();
+})();
+</script>
+</body>
+</html>

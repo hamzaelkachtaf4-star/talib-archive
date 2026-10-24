@@ -1,0 +1,81 @@
+/* Qanouni design tokens (RC2). One source for colour, radius, motion and type. Components consume only these
+   variables (no hex in components). Light = paper, dark = midnight. Every text pair meets WCAG AA (4.5:1 body,
+   3:1 for large text / non-text UI); `--law-gold` is for fills, seals and icons, `--law-gold-ink` is the text variant. */
+.lawos-root {
+  --law-content-max: 48rem; /* reading width of a page; dashboards opt into --law-content-wide */
+  --law-content-wide: 80rem;
+  --law-bg: #f8fafc;
+  --law-surface: #ffffff;
+  --law-surface-2: #efede6;
+  --law-border: #dad6cb;
+  --law-text: #0f172a;
+  --law-muted: #5b6273;
+  --law-primary: #14213d;
+  --law-on-primary: #ffffff;
+  --law-accent: #0f5e4a;
+  --law-on-accent: #ffffff;
+  --law-gold: #9c7a3c;
+  --law-gold-ink: #755a25;
+  --law-danger: #9b2c2c;
+  --law-warn: #8a5a00;
+
+  --law-ok: var(--law-accent);
+  --law-focus: var(--law-primary);
+
+  /* radii: 6-10 px only; pills are for tags */
+  --law-radius-sm: 0.375rem;
+  --law-radius: 0.5rem;
+  --law-radius-lg: 0.625rem;
+  --law-shadow: 0 1px 2px rgb(20 26 38 / 0.06);
+
+  /* motion: 150-200 ms ease-out fades/translates, nothing springy */
+  --law-ease: 180ms ease-out;
+
+  /* type scale (rem): caption / body / heading / display */
+  --law-fs-caption: 0.8125rem;
+  --law-fs-body: 0.9375rem;
+  --law-fs-heading: 1.375rem;
+  --law-fs-display: 2rem;
+  --law-lh-ar: 1.75;
+  --law-lh-latin: 1.55;
+
+  font-family: "LawOS Arabic", "IBM Plex Sans Arabic", "Inter", system-ui, sans-serif;
+  background: var(--law-bg);
+  color: var(--law-text);
+  line-height: var(--law-lh-ar);
+  font-feature-settings: "tnum" 1, "lnum" 1;
+  min-height: 100dvh;
+  color-scheme: light;
+  -webkit-tap-highlight-color: transparent;
+}
+html[lang="fr"] .lawos-root,
+html[lang="en"] .lawos-root { line-height: var(--law-lh-latin); }
+
+html[data-law-theme="dark"] .lawos-root {
+  --law-bg: #0b1220;
+  --law-surface: #121b2f;
+  --law-surface-2: #18233b;
+  --law-border: #2a3654;
+  --law-text: #e8e6df;
+  --law-muted: #9aa3b5;
+  --law-primary: #c9d3ea;
+  --law-on-primary: #0b1220;
+  --law-accent: #3fa585;
+  --law-on-accent: #0b1220;
+  --law-gold: #c7a363;
+  --law-gold-ink: #c7a363;
+  --law-danger: #e07a7a;
+  --law-warn: #d9a441;
+  --law-shadow: none;
+  color-scheme: dark;
+}
+
+/* A visible focus ring everywhere, in both themes. */
+.lawos-root :focus-visible { outline: 2px solid var(--law-focus); outline-offset: 2px; }
+.lawos-root .law-num { font-variant-numeric: tabular-nums lining-nums; }
+
+@media (prefers-reduced-motion: reduce) {
+  .lawos-root *, .lawos-root *::before, .lawos-root *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+
+.lawos-root input[type="checkbox"], .lawos-root input[type="radio"] { accent-color: var(--law-accent); inline-size: 1.125rem; block-size: 1.125rem; }

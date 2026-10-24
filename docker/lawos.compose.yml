@@ -1,0 +1,53 @@
+# LAW-OS deployment for tayebhomeserver (HP dv6, 8 GB RAM, HDD). See docs/DEPLOY.md.
+# Upstream's docker-compose.yml is left untouched; use:
+#   docker compose -f docker/lawos.compose.yml --env-file docker/lawos.env up -d --build
+name: lawos
+
+services:
+  lawos:
+    container_name: lawos
+    image: lawos:latest
+    build:
+      context: ../.
+      dockerfile: ./docker/Dockerfile
+      args:
+        ARG_UID: ${UID:-1000}
+        ARG_GID: ${GID:-1000}
+    user: "${UID:-1000}:${GID:-1000}"
+    restart: unless-stopped
+    # Loopback only: Tailscale Serve on the host terminates HTTPS and proxies here (spec §2.1).
+    ports:
+      - "127.0.0.1:${LAWOS_PORT:-3005}:3001"
+    # Hard ceiling so Jellyfin/Immich/Navidrome/Hermes are never starved (spec §2.1).
+    mem_limit: 1536m
+    memswap_limit: 1536m
+    cpus: 1.5
+    environment:
+      STORAGE_DIR: /app/server/storage
+      TZ: Africa/Casablanca
+      DISABLE_TELEMETRY: "true" # spec §12: no analytics; not overridable from lawos.env
+      # LAW-OS flows never use the collector (document parsing, puppeteer scraping): don't start it. Costs
+      # upstream workspace document upload / agent web-scraping, which are hidden anyway. "on" restores it.
+      LAWOS_COLLECTOR: "off"
+      # Heap cap per node process. With the collector off only the server runs; with it on, 2 x 640 MB heap
+      # plus native memory must still fit under mem_limit.
+      NODE_OPTIONS: --max-old-space-size=640
+    env_file:
+      - ./lawos.env
+    volumes:
+      # Upstream persists UI-chosen settings into server/.env, so it must be a writable bind.
+      - "${LAWOS_DATA_DIR:-/srv/lawos}/server.env:/app/server/.env"
+      - "${LAWOS_DATA_DIR:-/srv/lawos}/storage:/app/server/storage"
+      - "${LAWOS_DATA_DIR:-/srv/lawos}/collector/hotdir:/app/collector/hotdir"
+      - "${LAWOS_DATA_DIR:-/srv/lawos}/collector/outputs:/app/collector/outputs"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:3001/api/law/health >/dev/null || exit 1"]
+      interval: 1m
+      timeout: 10s
+      start_period: 90s
+      retries: 3
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

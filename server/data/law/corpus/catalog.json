@@ -1,0 +1,2157 @@
+{
+  "$schema_version": "1.0",
+  "catalog": "library-hierarchy",
+  "last_audit": "2026-10-14",
+  "legend": {
+    "status": {
+      "in_force": "ساري المفعول",
+      "in_force_pending": "منشور، لم يدخل حيز التنفيذ بعد",
+      "validated_pending_publication": "صادقت عليه المحكمة الدستورية، في انتظار الإصدار/النشر",
+      "bill": "مشروع قيد المسطرة التشريعية",
+      "repealed": "منسوخ (يُحتفظ به للمقارنة والبحث)",
+      "reference": "مرجع غير اتفاقي (لا يخضع للمصادقة)"
+    },
+    "verify": "true = معطى (رقم ظهير/تاريخ) يجب مطابقته مع الجريدة الرسمية قبل النشر في التطبيق"
+  },
+  "levels": [
+    {
+      "rank": 1,
+      "slug": "constitution",
+      "title": {
+        "ar": "الدستور",
+        "fr": "La Constitution",
+        "en": "The Constitution"
+      },
+      "items": [
+        {
+          "slug": "constitution-2011",
+          "title": {
+            "ar": "دستور المملكة المغربية لسنة 2011",
+            "fr": "Constitution du Royaume du Maroc de 2011",
+            "en": "Constitution of the Kingdom of Morocco (2011)"
+          },
+          "dahir": "1.11.91",
+          "date": "2011-07-29",
+          "bo": "5964 مكرر (2011-07-30)",
+          "status": "in_force",
+          "dbSlug": "CONST-2011"
+        }
+      ]
+    },
+    {
+      "rank": 2,
+      "slug": "treaties",
+      "title": {
+        "ar": "الاتفاقيات والمعاهدات الدولية المصادق عليها",
+        "fr": "Conventions et traités internationaux ratifiés",
+        "en": "Ratified International Treaties"
+      },
+      "note": {
+        "ar": "سموّها على التشريعات الوطنية مقيّد بنطاق أحكام الدستور وقوانين المملكة وهويتها الوطنية الراسخة (تصدير الدستور)، وتبقى أدنى من الدستور (الفصل 55). ترتيبها مقارنة بالقوانين التنظيمية محل نقاش فقهي."
+      },
+      "groups": [
+        {
+          "slug": "treaties-general",
+          "title": {
+            "ar": "القانون الدولي العام والمعاهدات",
+            "fr": "Droit international général",
+            "en": "General International Law"
+          },
+          "items": [
+            {
+              "slug": "un-charter",
+              "title": {
+                "ar": "ميثاق الأمم المتحدة",
+                "fr": "Charte des Nations Unies",
+                "en": "Charter of the United Nations"
+              },
+              "adopted": 1945,
+              "morocco": 1956,
+              "status": "in_force"
+            },
+            {
+              "slug": "vclt-1969",
+              "title": {
+                "ar": "اتفاقية فيينا لقانون المعاهدات",
+                "fr": "Convention de Vienne sur le droit des traités",
+                "en": "Vienna Convention on the Law of Treaties"
+              },
+              "adopted": 1969,
+              "morocco": 1972,
+              "status": "in_force"
+            },
+            {
+              "slug": "vcdr-1961",
+              "title": {
+                "ar": "اتفاقية فيينا للعلاقات الدبلوماسية",
+                "fr": "Convention de Vienne sur les relations diplomatiques",
+                "en": "Vienna Convention on Diplomatic Relations"
+              },
+              "adopted": 1961,
+              "morocco": 1968,
+              "status": "in_force"
+            },
+            {
+              "slug": "vccr-1963",
+              "title": {
+                "ar": "اتفاقية فيينا للعلاقات القنصلية",
+                "fr": "Convention de Vienne sur les relations consulaires",
+                "en": "Vienna Convention on Consular Relations"
+              },
+              "adopted": 1963,
+              "morocco": 1977,
+              "status": "in_force"
+            },
+            {
+              "slug": "unclos-1982",
+              "title": {
+                "ar": "اتفاقية الأمم المتحدة لقانون البحار (مونتيغو باي)",
+                "fr": "Convention des Nations Unies sur le droit de la mer (Montego Bay)",
+                "en": "UN Convention on the Law of the Sea (UNCLOS)"
+              },
+              "adopted": 1982,
+              "morocco": 2007,
+              "status": "in_force"
+            },
+            {
+              "slug": "geneva-conventions-1949",
+              "title": {
+                "ar": "اتفاقيات جنيف الأربع للقانون الدولي الإنساني",
+                "fr": "Les quatre Conventions de Genève",
+                "en": "The Four Geneva Conventions"
+              },
+              "adopted": 1949,
+              "morocco": 1956,
+              "status": "in_force"
+            },
+            {
+              "slug": "refugee-convention-1951",
+              "title": {
+                "ar": "الاتفاقية الخاصة بوضع اللاجئين",
+                "fr": "Convention relative au statut des réfugiés",
+                "en": "Convention relating to the Status of Refugees"
+              },
+              "adopted": 1951,
+              "morocco": 1956,
+              "status": "in_force"
+            }
+          ]
+        },
+        {
+          "slug": "treaties-human-rights",
+          "title": {
+            "ar": "حقوق الإنسان",
+            "fr": "Droits de l'homme",
+            "en": "Human Rights"
+          },
+          "items": [
+            {
+              "slug": "iccpr-1966",
+              "title": {
+                "ar": "العهد الدولي الخاص بالحقوق المدنية والسياسية",
+                "fr": "Pacte international relatif aux droits civils et politiques",
+                "en": "International Covenant on Civil and Political Rights"
+              },
+              "adopted": 1966,
+              "morocco": 1979,
+              "status": "in_force",
+              "note": {
+                "ar": "المغرب لم يصادق على البروتوكول الاختياري الأول ولا الثاني."
+              }
+            },
+            {
+              "slug": "icescr-1966",
+              "title": {
+                "ar": "العهد الدولي الخاص بالحقوق الاقتصادية والاجتماعية والثقافية",
+                "fr": "Pacte international relatif aux droits économiques, sociaux et culturels",
+                "en": "International Covenant on Economic, Social and Cultural Rights"
+              },
+              "adopted": 1966,
+              "morocco": 1979,
+              "status": "in_force",
+              "note": {
+                "ar": "البروتوكول الاختياري الملحق به غير مصادق عليه."
+              }
+            },
+            {
+              "slug": "cerd-1965",
+              "title": {
+                "ar": "الاتفاقية الدولية للقضاء على جميع أشكال التمييز العنصري",
+                "fr": "Convention internationale sur l'élimination de toutes les formes de discrimination raciale",
+                "en": "International Convention on the Elimination of All Forms of Racial Discrimination"
+              },
+              "adopted": 1965,
+              "morocco": 1970,
+              "status": "in_force"
+            },
+            {
+              "slug": "cedaw-1979",
+              "title": {
+                "ar": "اتفاقية القضاء على جميع أشكال التمييز ضد المرأة + البروتوكول الاختياري",
+                "fr": "Convention sur l'élimination de toutes les formes de discrimination à l'égard des femmes + Protocole facultatif",
+                "en": "CEDAW + Optional Protocol"
+              },
+              "adopted": 1979,
+              "morocco": 1993,
+              "protocol_morocco": 2022,
+              "status": "in_force",
+              "verify": false,
+              "dahir": "1.93.361",
+              "date": "2000-12-26",
+              "bo": "4866 (2001-01-17)",
+              "note": {
+                "ar": "اتفاقية القضاء على جميع أشكال التمييز ضد المرأة (انضم المغرب في 1993، ونُشرت بالظهير 1.93.361 في ج.ر 4866 لسنة 2001)."
+              }
+            },
+            {
+              "slug": "cat-1984",
+              "title": {
+                "ar": "اتفاقية مناهضة التعذيب + البروتوكول الاختياري",
+                "fr": "Convention contre la torture + Protocole facultatif",
+                "en": "Convention against Torture + Optional Protocol (OPCAT)"
+              },
+              "adopted": 1984,
+              "morocco": 1993,
+              "protocol_morocco": 2014,
+              "status": "in_force"
+            },
+            {
+              "slug": "crc-1989",
+              "title": {
+                "ar": "اتفاقية حقوق الطفل + البروتوكولان الاختياريان",
+                "fr": "Convention relative aux droits de l'enfant + deux Protocoles facultatifs",
+                "en": "Convention on the Rights of the Child + two Optional Protocols"
+              },
+              "adopted": 1989,
+              "morocco": 1993,
+              "status": "in_force"
+            },
+            {
+              "slug": "cmw-1990",
+              "title": {
+                "ar": "الاتفاقية الدولية لحماية حقوق جميع العمال المهاجرين وأفراد أسرهم",
+                "fr": "Convention internationale sur la protection des droits de tous les travailleurs migrants et des membres de leur famille",
+                "en": "International Convention on the Protection of the Rights of All Migrant Workers"
+              },
+              "adopted": 1990,
+              "morocco": 1993,
+              "status": "in_force"
+            },
+            {
+              "slug": "crpd-2006",
+              "title": {
+                "ar": "اتفاقية حقوق الأشخاص ذوي الإعاقة + البروتوكول الاختياري",
+                "fr": "Convention relative aux droits des personnes handicapées + Protocole facultatif",
+                "en": "Convention on the Rights of Persons with Disabilities + Optional Protocol"
+              },
+              "adopted": 2006,
+              "morocco": 2009,
+              "status": "in_force"
+            },
+            {
+              "slug": "ced-2006",
+              "title": {
+                "ar": "الاتفاقية الدولية لحماية جميع الأشخاص من الاختفاء القسري",
+                "fr": "Convention internationale pour la protection de toutes les personnes contre les disparitions forcées",
+                "en": "International Convention for the Protection of All Persons from Enforced Disappearance"
+              },
+              "adopted": 2006,
+              "morocco": 2013,
+              "status": "in_force"
+            }
+          ]
+        },
+        {
+          "slug": "treaties-crime-economy-environment",
+          "title": {
+            "ar": "الجريمة، الاقتصاد، التحكيم والبيئة",
+            "fr": "Criminalité, économie, arbitrage et environnement",
+            "en": "Crime, Economy, Arbitration & Environment"
+          },
+          "items": [
+            {
+              "slug": "uncac-2003",
+              "title": {
+                "ar": "اتفاقية الأمم المتحدة لمكافحة الفساد",
+                "fr": "Convention des Nations Unies contre la corruption",
+                "en": "UN Convention against Corruption (UNCAC)"
+              },
+              "adopted": 2003,
+              "morocco": 2007,
+              "status": "in_force"
+            },
+            {
+              "slug": "palermo-2000",
+              "title": {
+                "ar": "اتفاقية الأمم المتحدة لمكافحة الجريمة المنظمة عبر الوطنية (باليرمو)",
+                "fr": "Convention des Nations Unies contre la criminalité transnationale organisée (Palerme)",
+                "en": "UN Convention against Transnational Organized Crime (Palermo)"
+              },
+              "adopted": 2000,
+              "morocco": 2002,
+              "status": "in_force"
+            },
+            {
+              "slug": "budapest-2001",
+              "title": {
+                "ar": "اتفاقية بودابست بشأن الجريمة المعلوماتية",
+                "fr": "Convention de Budapest sur la cybercriminalité",
+                "en": "Budapest Convention on Cybercrime"
+              },
+              "adopted": 2001,
+              "morocco": 2018,
+              "status": "in_force"
+            },
+            {
+              "slug": "new-york-1958",
+              "title": {
+                "ar": "اتفاقية نيويورك بشأن الاعتراف بالمقررات التحكيمية الأجنبية وتنفيذها",
+                "fr": "Convention de New York pour la reconnaissance et l'exécution des sentences arbitrales étrangères",
+                "en": "New York Convention on Foreign Arbitral Awards"
+              },
+              "adopted": 1958,
+              "morocco": 1959,
+              "status": "in_force"
+            },
+            {
+              "slug": "hague-child-abduction-1980",
+              "title": {
+                "ar": "اتفاقية لاهاي بشأن الجوانب المدنية للاختطاف الدولي للأطفال",
+                "fr": "Convention de La Haye sur les aspects civils de l'enlèvement international d'enfants",
+                "en": "Hague Convention on International Child Abduction"
+              },
+              "adopted": 1980,
+              "morocco": 2010,
+              "status": "in_force"
+            },
+            {
+              "slug": "wto-marrakesh-1994",
+              "title": {
+                "ar": "اتفاق مراكش المؤسس لمنظمة التجارة العالمية",
+                "fr": "Accord de Marrakech instituant l'OMC",
+                "en": "Marrakesh Agreement Establishing the WTO"
+              },
+              "adopted": 1994,
+              "morocco": 1995,
+              "status": "in_force"
+            },
+            {
+              "slug": "paris-agreement-2015",
+              "title": {
+                "ar": "اتفاق باريس بشأن تغير المناخ",
+                "fr": "Accord de Paris sur le climat",
+                "en": "Paris Agreement"
+              },
+              "adopted": 2015,
+              "morocco": 2016,
+              "status": "in_force"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rank": 3,
+      "slug": "organic-laws",
+      "title": {
+        "ar": "القوانين التنظيمية",
+        "fr": "Lois organiques",
+        "en": "Organic Laws"
+      },
+      "note": {
+        "ar": "لا يوجد عدد محصور في 20؛ العبرة بكل نص أحال عليه الدستور صراحة على قانون تنظيمي. اللائحة أدناه تشمل 22 قانوناً تنظيمياً أصلياً (دون احتساب القوانين التنظيمية المعدِّلة)."
+      },
+      "items": [
+        {
+          "slug": "lo-130-13-finance",
+          "ref": "130.13",
+          "basis": "الفصل 75",
+          "title": {
+            "ar": "القانون التنظيمي رقم 130.13 لقانون المالية",
+            "fr": "Loi organique n° 130-13 relative à la loi de finances",
+            "en": "Organic Law No. 130.13 on the Finance Law"
+          },
+          "dahir": "1.15.62",
+          "date": "2015-06-02",
+          "status": "in_force",
+          "dbSlug": "ORG-FINANCES"
+        },
+        {
+          "slug": "lo-111-14-regions",
+          "ref": "111.14",
+          "basis": "الفصل 146",
+          "title": {
+            "ar": "القانون التنظيمي رقم 111.14 المتعلق بالجهات",
+            "fr": "Loi organique n° 111-14 relative aux régions",
+            "en": "Organic Law No. 111.14 on Regions"
+          },
+          "dahir": "1.15.83",
+          "date": "2015-07-07",
+          "status": "in_force",
+          "dbSlug": "ORG-REGIONS"
+        },
+        {
+          "slug": "lo-112-14-prefectures",
+          "ref": "112.14",
+          "basis": "الفصل 146",
+          "title": {
+            "ar": "القانون التنظيمي رقم 112.14 المتعلق بالعمالات والأقاليم",
+            "fr": "Loi organique n° 112-14 relative aux préfectures et provinces",
+            "en": "Organic Law No. 112.14 on Prefectures and Provinces"
+          },
+          "dahir": "1.15.84",
+          "date": "2015-07-07",
+          "status": "in_force",
+          "dbSlug": "ORG-PREFECTURES"
+        },
+        {
+          "slug": "lo-113-14-communes",
+          "ref": "113.14",
+          "basis": "الفصل 146",
+          "title": {
+            "ar": "القانون التنظيمي رقم 113.14 المتعلق بالجماعات",
+            "fr": "Loi organique n° 113-14 relative aux communes",
+            "en": "Organic Law No. 113.14 on Communes"
+          },
+          "dahir": "1.15.85",
+          "date": "2015-07-07",
+          "status": "in_force",
+          "dbSlug": "ORG-COMMUNES"
+        },
+        {
+          "slug": "lo-59-11-local-elections",
+          "ref": "59.11",
+          "basis": "الفصل 146",
+          "title": {
+            "ar": "القانون التنظيمي رقم 59.11 المتعلق بانتخاب أعضاء مجالس الجماعات الترابية",
+            "fr": "Loi organique n° 59-11 relative à l'élection des membres des conseils des collectivités territoriales",
+            "en": "Organic Law No. 59.11 on the Election of Territorial Council Members"
+          },
+          "dahir": "1.11.173",
+          "date": "2011-11-21",
+          "status": "in_force",
+          "added_in_audit": true
+        },
+        {
+          "slug": "lo-065-13-government",
+          "ref": "065.13",
+          "basis": "الفصل 87",
+          "title": {
+            "ar": "القانون التنظيمي رقم 065.13 المتعلق بتنظيم وتسيير أشغال الحكومة والوضع القانوني لأعضائها",
+            "fr": "Loi organique n° 065-13 relative à l'organisation et à la conduite des travaux du gouvernement et au statut de ses membres",
+            "en": "Organic Law No. 065.13 on the Organization of Government Work and the Status of its Members"
+          },
+          "dahir": "1.15.33",
+          "date": "2015-03-19",
+          "status": "in_force"
+        },
+        {
+          "slug": "lo-02-12-senior-appointments",
+          "ref": "02.12",
+          "basis": "الفصلان 49 و92",
+          "title": {
+            "ar": "القانون التنظيمي رقم 02.12 المتعلق بالتعيين في المناصب العليا",
+            "fr": "Loi organique n° 02-12 relative à la nomination aux fonctions supérieures",
+            "en": "Organic Law No. 02.12 on Appointments to Senior Positions"
+          },
+          "dahir": "1.12.20",
+          "date": "2012-07-17",
+          "status": "in_force"
+        },
+        {
+          "slug": "lo-90-15-regency-council",
+          "ref": "90.15",
+          "basis": "الفصل 44",
+          "title": {
+            "ar": "القانون التنظيمي رقم 90.15 المتعلق بمجلس الوصاية",
+            "fr": "Loi organique n° 90-15 relative au Conseil de régence",
+            "en": "Organic Law No. 90.15 on the Regency Council"
+          },
+          "dahir": "1.16.78",
+          "date": "2016-06-07",
+          "status": "in_force",
+          "added_in_audit": true
+        },
+        {
+          "slug": "lo-27-11-house-of-representatives",
+          "ref": "27.11",
+          "basis": "الفصل 62",
+          "title": {
+            "ar": "القانون التنظيمي رقم 27.11 المتعلق بمجلس النواب",
+            "fr": "Loi organique n° 27-11 relative à la Chambre des représentants",
+            "en": "Organic Law No. 27.11 on the House of Representatives"
+          },
+          "dahir": "1.11.165",
+          "date": "2011-10-14",
+          "status": "in_force"
+        },
+        {
+          "slug": "lo-28-11-house-of-councillors",
+          "ref": "28.11",
+          "basis": "الفصل 63",
+          "title": {
+            "ar": "القانون التنظيمي رقم 28.11 المتعلق بمجلس المستشارين",
+            "fr": "Loi organique n° 28-11 relative à la Chambre des conseillers",
+            "en": "Organic Law No. 28.11 on the House of Councillors"
+          },
+          "dahir": "1.11.172",
+          "date": "2011-11-21",
+          "status": "in_force"
+        },
+        {
+          "slug": "lo-29-11-political-parties",
+          "ref": "29.11",
+          "basis": "الفصل 7",
+          "title": {
+            "ar": "القانون التنظيمي رقم 29.11 المتعلق بالأحزاب السياسية",
+            "fr": "Loi organique n° 29-11 relative aux partis politiques",
+            "en": "Organic Law No. 29.11 on Political Parties"
+          },
+          "dahir": "1.11.166",
+          "date": "2011-10-22",
+          "status": "in_force",
+          "dbSlug": "ORG-PARTIS"
+        },
+        {
+          "slug": "lo-085-13-inquiry-committees",
+          "ref": "085.13",
+          "basis": "الفصل 67",
+          "title": {
+            "ar": "القانون التنظيمي رقم 085.13 المتعلق بطريقة تسيير اللجان النيابية لتقصي الحقائق",
+            "fr": "Loi organique n° 085-13 relative aux commissions d'enquête parlementaires",
+            "en": "Organic Law No. 085.13 on Parliamentary Fact-Finding Committees"
+          },
+          "dahir": "1.14.125",
+          "date": "2014-07-31",
+          "status": "in_force"
+        },
+        {
+          "slug": "lo-44-14-petitions",
+          "ref": "44.14",
+          "basis": "الفصل 15",
+          "title": {
+            "ar": "القانون التنظيمي رقم 44.14 بتحديد شروط وكيفيات ممارسة الحق في تقديم العرائض إلى السلطات العمومية",
+            "fr": "Loi organique n° 44-14 fixant les conditions et modalités d'exercice du droit de présenter des pétitions aux pouvoirs publics",
+            "en": "Organic Law No. 44.14 on Petitions to Public Authorities"
+          },
+          "dahir": "1.16.107",
+          "date": "2016-07-28",
+          "status": "in_force"
+        },
+        {
+          "slug": "lo-64-14-legislative-motions",
+          "ref": "64.14",
+          "basis": "الفصل 14",
+          "title": {
+            "ar": "القانون التنظيمي رقم 64.14 بتحديد شروط وكيفيات ممارسة الحق في تقديم الملتمسات في مجال التشريع",
+            "fr": "Loi organique n° 64-14 fixant les conditions et modalités d'exercice du droit de présenter des motions en matière législative",
+            "en": "Organic Law No. 64.14 on Legislative Motions"
+          },
+          "dahir": "1.16.108",
+          "date": "2016-07-28",
+          "status": "in_force"
+        },
+        {
+          "slug": "lo-26-16-amazigh",
+          "ref": "26.16",
+          "basis": "الفصل 5",
+          "title": {
+            "ar": "القانون التنظيمي رقم 26.16 المتعلق بتحديد مراحل تفعيل الطابع الرسمي للأمازيغية",
+            "fr": "Loi organique n° 26-16 définissant le processus de mise en œuvre du caractère officiel de l'amazighe",
+            "en": "Organic Law No. 26.16 on the Official Status of Amazigh"
+          },
+          "dahir": "1.19.121",
+          "date": "2019-09-12",
+          "status": "in_force"
+        },
+        {
+          "slug": "lo-04-16-cnlcm",
+          "ref": "04.16",
+          "basis": "الفصل 5",
+          "title": {
+            "ar": "القانون التنظيمي رقم 04.16 المتعلق بالمجلس الوطني للغات والثقافة المغربية",
+            "fr": "Loi organique n° 04-16 relative au Conseil national des langues et de la culture marocaine",
+            "en": "Organic Law No. 04.16 on the National Council for Languages and Moroccan Culture"
+          },
+          "dahir": "1.20.34",
+          "date": "2020-03-30",
+          "status": "in_force",
+          "verify": false
+        },
+        {
+          "slug": "lo-128-12-cese",
+          "ref": "128.12",
+          "basis": "الفصل 153",
+          "title": {
+            "ar": "القانون التنظيمي رقم 128.12 المتعلق بالمجلس الاقتصادي والاجتماعي والبيئي",
+            "fr": "Loi organique n° 128-12 relative au Conseil économique, social et environnemental",
+            "en": "Organic Law No. 128.12 on the Economic, Social and Environmental Council"
+          },
+          "dahir": "1.14.124",
+          "date": "2014-07-31",
+          "status": "in_force"
+        },
+        {
+          "slug": "lo-100-13-cspj",
+          "ref": "100.13",
+          "basis": "الفصل 116",
+          "title": {
+            "ar": "القانون التنظيمي رقم 100.13 المتعلق بالمجلس الأعلى للسلطة القضائية",
+            "fr": "Loi organique n° 100-13 relative au Conseil supérieur du pouvoir judiciaire",
+            "en": "Organic Law No. 100.13 on the Supreme Council of the Judiciary"
+          },
+          "dahir": "1.16.40",
+          "date": "2016-03-24",
+          "status": "in_force"
+        },
+        {
+          "slug": "lo-106-13-judges-statute",
+          "ref": "106.13",
+          "basis": "الفصل 112",
+          "title": {
+            "ar": "القانون التنظيمي رقم 106.13 المتعلق بالنظام الأساسي للقضاة",
+            "fr": "Loi organique n° 106-13 portant statut des magistrats",
+            "en": "Organic Law No. 106.13 on the Statute of Judges"
+          },
+          "dahir": "1.16.41",
+          "date": "2016-03-24",
+          "status": "in_force"
+        },
+        {
+          "slug": "lo-066-13-constitutional-court",
+          "ref": "066.13",
+          "basis": "الفصل 131",
+          "title": {
+            "ar": "القانون التنظيمي رقم 066.13 المتعلق بالمحكمة الدستورية",
+            "fr": "Loi organique n° 066-13 relative à la Cour constitutionnelle",
+            "en": "Organic Law No. 066.13 on the Constitutional Court"
+          },
+          "dahir": "1.14.139",
+          "date": "2014-08-13",
+          "status": "in_force"
+        },
+        {
+          "slug": "lo-35-24-exception-unconstitutionality",
+          "ref": "35.24",
+          "basis": "الفصل 133",
+          "title": {
+            "ar": "القانون التنظيمي رقم 35.24 المتعلق بتحديد شروط وإجراءات الدفع بعدم دستورية قانون",
+            "fr": "Loi organique n° 35-24 fixant les conditions et modalités de l'exception d'inconstitutionnalité d'une loi",
+            "en": "Organic Law No. 35.24 on the Plea of Unconstitutionality"
+          },
+          "dahir": "1.26.22",
+          "date": "2026-06-25",
+          "status": "in_force",
+          "cc_decision": "264/26 م.د (2026-06-15)",
+          "verify": false,
+          "replaces": "86.15",
+          "note": {
+            "ar": "نُشر بالجريدة الرسمية عدد 7523؛ يدخل حيز التنفيذ بعد 24 شهراً من نشره. يحل محل مشروع 86.15."
+          },
+          "watch": true,
+          "bo": "7523 (2026-07-06)",
+          "in_force_from": "2028-07-01"
+        },
+        {
+          "slug": "lo-97-15-strike",
+          "ref": "97.15",
+          "basis": "الفصل 29",
+          "title": {
+            "ar": "القانون التنظيمي رقم 97.15 بتحديد شروط وكيفيات ممارسة حق الإضراب",
+            "fr": "Loi organique n° 97-15 fixant les conditions et modalités d'exercice du droit de grève",
+            "en": "Organic Law No. 97.15 on the Right to Strike"
+          },
+          "dahir": "1.25.34",
+          "date": "2025-03-18",
+          "bo": "7389 (2025-03-24)",
+          "in_force_from": "2025-09-24",
+          "status": "in_force",
+          "verify": false
+        }
+      ]
+    },
+    {
+      "rank": 4,
+      "slug": "framework-laws",
+      "title": {
+        "ar": "القوانين الإطار",
+        "fr": "Lois-cadres",
+        "en": "Framework Laws"
+      },
+      "note": {
+        "ar": "تنبيه بيداغوجي: القانون الإطار يصدر بنفس مسطرة القانون العادي (الفصل 71، الفقرة الأخيرة) ولا يتمتع بسمو شكلي عليه؛ فصله في مستوى مستقل اختيار تعليمي لا تراتبية دستورية."
+      },
+      "items": [
+        {
+          "slug": "lc-03-22-investment-charter",
+          "ref": "03.22",
+          "title": {
+            "ar": "القانون الإطار رقم 03.22 بمثابة ميثاق الاستثمار",
+            "fr": "Loi-cadre n° 03-22 formant charte de l'investissement",
+            "en": "Framework Law No. 03.22 – Investment Charter"
+          },
+          "dahir": "1.22.76",
+          "date": "2022-12-09",
+          "status": "in_force",
+          "verify": false,
+          "dbSlug": "FRAMEWORK-INVESTMENT",
+          "bo": "7151 (2022-12-12)"
+        },
+        {
+          "slug": "lc-06-22-health-system",
+          "ref": "06.22",
+          "title": {
+            "ar": "القانون الإطار رقم 06.22 المتعلق بالمنظومة الصحية الوطنية",
+            "fr": "Loi-cadre n° 06-22 relative au système national de santé",
+            "en": "Framework Law No. 06.22 on the National Health System"
+          },
+          "dahir": "1.22.77",
+          "date": "2022-12-09",
+          "status": "in_force",
+          "verify": false,
+          "dbSlug": "FRAMEWORK-HEALTH",
+          "bo": "7151 (2022-12-12)"
+        },
+        {
+          "slug": "lc-09-21-social-protection",
+          "ref": "09.21",
+          "title": {
+            "ar": "القانون الإطار رقم 09.21 المتعلق بالحماية الاجتماعية",
+            "fr": "Loi-cadre n° 09-21 relative à la protection sociale",
+            "en": "Framework Law No. 09.21 on Social Protection"
+          },
+          "dahir": "1.21.30",
+          "date": "2021-03-23",
+          "status": "in_force"
+        },
+        {
+          "slug": "lc-69-19-tax-reform",
+          "ref": "69.19",
+          "title": {
+            "ar": "القانون الإطار رقم 69.19 المتعلق بالإصلاح الجبائي",
+            "fr": "Loi-cadre n° 69-19 portant réforme fiscale",
+            "en": "Framework Law No. 69.19 on Tax Reform"
+          },
+          "dahir": "1.21.86",
+          "date": "2021-07-26",
+          "status": "in_force"
+        },
+        {
+          "slug": "lc-50-21-public-enterprises",
+          "ref": "50.21",
+          "title": {
+            "ar": "القانون الإطار رقم 50.21 المتعلق بإصلاح المؤسسات والمقاولات العمومية",
+            "fr": "Loi-cadre n° 50-21 relative à la réforme des établissements et entreprises publics",
+            "en": "Framework Law No. 50.21 on Reforming Public Establishments and Enterprises"
+          },
+          "dahir": "1.21.89",
+          "date": "2021-07-26",
+          "status": "in_force",
+          "added_in_audit": true
+        },
+        {
+          "slug": "lc-51-17-education",
+          "ref": "51.17",
+          "title": {
+            "ar": "القانون الإطار رقم 51.17 المتعلق بمنظومة التربية والتكوين والبحث العلمي",
+            "fr": "Loi-cadre n° 51-17 relative au système d'éducation, de formation et de recherche scientifique",
+            "en": "Framework Law No. 51.17 on Education, Training and Scientific Research"
+          },
+          "dahir": "1.19.113",
+          "date": "2019-08-09",
+          "status": "in_force",
+          "dbSlug": "FRAMEWORK-EDUCATION"
+        },
+        {
+          "slug": "lc-97-13-disability",
+          "ref": "97.13",
+          "title": {
+            "ar": "القانون الإطار رقم 97.13 المتعلق بحماية حقوق الأشخاص في وضعية إعاقة والنهوض بها",
+            "fr": "Loi-cadre n° 97-13 relative à la protection et à la promotion des droits des personnes en situation de handicap",
+            "en": "Framework Law No. 97.13 on the Rights of Persons with Disabilities"
+          },
+          "dahir": "1.16.52",
+          "date": "2016-04-27",
+          "status": "in_force",
+          "verify": false,
+          "added_in_audit": true,
+          "bo": "6466 (2016-05-19)",
+          "note": {
+            "ar": "القانون-الإطار لحماية حقوق الأشخاص في وضعية إعاقة والنهوض بها."
+          }
+        },
+        {
+          "slug": "lc-99-12-environment-charter",
+          "ref": "99.12",
+          "title": {
+            "ar": "القانون الإطار رقم 99.12 بمثابة ميثاق وطني للبيئة والتنمية المستدامة",
+            "fr": "Loi-cadre n° 99-12 portant charte nationale de l'environnement et du développement durable",
+            "en": "Framework Law No. 99.12 – National Charter for the Environment and Sustainable Development"
+          },
+          "dahir": "1.14.09",
+          "date": "2014-03-06",
+          "status": "in_force"
+        },
+        {
+          "slug": "lc-18-95-investment-charter-1995",
+          "ref": "18.95",
+          "title": {
+            "ar": "القانون الإطار رقم 18.95 بمثابة ميثاق الاستثمار (1995)",
+            "fr": "Loi-cadre n° 18-95 formant charte de l'investissement (1995)",
+            "en": "Framework Law No. 18.95 – Investment Charter (1995)"
+          },
+          "date": "1995-11-08",
+          "status": "repealed",
+          "replaced_by": "lc-03-22-investment-charter",
+          "added_in_audit": true
+        },
+        {
+          "slug": "lc-34-09-health-2011",
+          "ref": "34.09",
+          "title": {
+            "ar": "القانون الإطار رقم 34.09 المتعلق بالمنظومة الصحية وبعرض العلاجات (2011)",
+            "fr": "Loi-cadre n° 34-09 relative au système de santé et à l'offre de soins (2011)",
+            "en": "Framework Law No. 34.09 on the Health System (2011)"
+          },
+          "date": "2011-07-02",
+          "status": "repealed",
+          "replaced_by": "lc-06-22-health-system",
+          "added_in_audit": true
+        }
+      ]
+    },
+    {
+      "rank": 5,
+      "slug": "ordinary-laws-codes",
+      "title": {
+        "ar": "التشريع العادي والمدونات الأساسية",
+        "fr": "Lois ordinaires et codes",
+        "en": "Ordinary Laws and Codes"
+      },
+      "note": {
+        "ar": "تشمل أيضاً الظهائر التشريعية السابقة على 1962 (ق.ل.ع، الجنسية، الوظيفة العمومية...) لأنها بمرتبة القانون، والقوانين المنظمة للمهن القضائية وهيئات الحكامة."
+      },
+      "groups": [
+        {
+          "slug": "civil-real-estate",
+          "title": {
+            "ar": "المدني والعقاري",
+            "fr": "Civil et foncier",
+            "en": "Civil & Real Estate"
+          },
+          "items": [
+            {
+              "slug": "doc-1913",
+              "ref": "DOC",
+              "title": {
+                "ar": "ظهير الالتزامات والعقود",
+                "fr": "Dahir formant Code des obligations et des contrats",
+                "en": "Code of Obligations and Contracts"
+              },
+              "date": "1913-08-12",
+              "status": "in_force",
+              "dbSlug": "DOC"
+            },
+            {
+              "slug": "law-39-08-real-rights",
+              "ref": "39.08",
+              "title": {
+                "ar": "مدونة الحقوق العينية",
+                "fr": "Code des droits réels",
+                "en": "Code of Real Rights"
+              },
+              "dahir": "1.11.178",
+              "date": "2011-11-22",
+              "status": "in_force"
+            },
+            {
+              "slug": "land-registration-1913",
+              "ref": "1913-08-12",
+              "title": {
+                "ar": "ظهير التحفيظ العقاري (المعدل والمتمم بالقانون 14.07)",
+                "fr": "Dahir sur l'immatriculation des immeubles (modifié par la loi 14-07)",
+                "en": "Land Registration Dahir (amended by Law 14.07)"
+              },
+              "date": "1913-08-12",
+              "amended_by": {
+                "ref": "14.07",
+                "dahir": "1.11.177",
+                "date": "2011-11-22"
+              },
+              "status": "in_force",
+              "dbSlug": "DAHIR-LAND-REG"
+            },
+            {
+              "slug": "law-18-00-co-ownership",
+              "ref": "18.00",
+              "title": {
+                "ar": "القانون رقم 18.00 المتعلق بنظام الملكية المشتركة للعقارات المبنية",
+                "fr": "Loi n° 18-00 relative au statut de la copropriété des immeubles bâtis",
+                "en": "Law No. 18.00 on Co-ownership of Buildings"
+              },
+              "dahir": "1.02.298",
+              "date": "2002-10-03",
+              "amended_by": {
+                "ref": "106.12",
+                "title": {
+                  "ar": "القانون رقم 106.12"
+                }
+              },
+              "status": "in_force"
+            },
+            {
+              "slug": "law-67-12-residential-lease",
+              "ref": "67.12",
+              "title": {
+                "ar": "القانون رقم 67.12 المتعلق بتنظيم العلاقات التعاقدية بين المكري والمكتري للمحلات المعدة للسكنى أو للاستعمال المهني",
+                "fr": "Loi n° 67-12 relative aux baux d'habitation et à usage professionnel",
+                "en": "Law No. 67.12 on Residential and Professional Leases"
+              },
+              "dahir": "1.13.111",
+              "date": "2013-11-19",
+              "status": "in_force"
+            },
+            {
+              "slug": "law-49-16-commercial-lease",
+              "ref": "49.16",
+              "title": {
+                "ar": "القانون رقم 49.16 المتعلق بكراء العقارات أو المحلات المخصصة للاستعمال التجاري أو الصناعي أو الحرفي",
+                "fr": "Loi n° 49-16 relative aux baux commerciaux, industriels ou artisanaux",
+                "en": "Law No. 49.16 on Commercial, Industrial and Craft Leases"
+              },
+              "dahir": "1.16.99",
+              "date": "2016-07-18",
+              "status": "in_force"
+            },
+            {
+              "slug": "laws-62-63-64-17-collective-lands",
+              "ref": "62.17 / 63.17 / 64.17",
+              "title": {
+                "ar": "منظومة الأراضي السلالية (القوانين 62.17 و63.17 و64.17)",
+                "fr": "Lois 62-17, 63-17 et 64-17 sur les terres collectives",
+                "en": "Collective (Soulaliya) Lands Laws 62.17, 63.17, 64.17"
+              },
+              "date": "2019-08-09",
+              "status": "in_force",
+              "verify": false,
+              "bo": "6807 (2019-08-26)",
+              "dahirs": {
+                "62.17": "1.19.115",
+                "63.17": "1.19.116",
+                "64.17": "1.19.117"
+              },
+              "note": {
+                "ar": "منظومة الأراضي السلالية: 62.17 (ظهير 1.19.115 نسخ ظهيري 1919 و1951 بالمادة 37)، و63.17 (ظهير 1.19.116)، و64.17 (ظهير 1.19.117 المتعلق بدوائر الري)."
+              }
+            },
+            {
+              "slug": "law-43-20-trust-services",
+              "ref": "43.20",
+              "title": {
+                "ar": "القانون رقم 43.20 المتعلق بخدمات الثقة بشأن المعاملات الإلكترونية",
+                "fr": "Loi n° 43-20 relative aux services de confiance pour les transactions électroniques",
+                "en": "Law No. 43.20 on Trust Services for Electronic Transactions"
+              },
+              "dahir": "1.20.100",
+              "date": "2020-12-31",
+              "status": "in_force",
+              "note": {
+                "ar": "نسخ (المادة 83) الفصل التمهيدي والقسم الثاني من القانون 53.05؛ القسم الأول من 53.05 (تعديلات ق.ل.ع: الفصول 2-1، 65-1 إلى 65-7، 417-1 إلى 417-3) ما زال سارياً."
+              },
+              "verify": false,
+              "bo": "6970 (2021-03-18)"
+            },
+            {
+              "slug": "law-31-08-consumer",
+              "ref": "31.08",
+              "title": {
+                "ar": "القانون رقم 31.08 القاضي بتحديد تدابير لحماية المستهلك",
+                "fr": "Loi n° 31-08 édictant des mesures de protection du consommateur",
+                "en": "Law No. 31.08 on Consumer Protection"
+              },
+              "dahir": "1.11.03",
+              "date": "2011-02-18",
+              "status": "in_force"
+            },
+            {
+              "slug": "law-7-81-expropriation",
+              "ref": "7.81",
+              "title": {
+                "ar": "القانون رقم 7.81 المتعلق بنزع الملكية لأجل المنفعة العامة وبالاحتلال المؤقت",
+                "fr": "Loi n° 7-81 relative à l'expropriation pour cause d'utilité publique et à l'occupation temporaire",
+                "en": "Law No. 7.81 on Expropriation for Public Utility"
+              },
+              "dahir": "1.81.254",
+              "date": "1982-05-06",
+              "status": "in_force"
+            },
+            {
+              "slug": "law-12-90-urbanism",
+              "ref": "12.90",
+              "title": {
+                "ar": "القانون رقم 12.90 المتعلق بالتعمير",
+                "fr": "Loi n° 12-90 relative à l'urbanisme",
+                "en": "Law No. 12.90 on Urban Planning"
+              },
+              "dahir": "1.92.31",
+              "date": "1992-06-17",
+              "status": "in_force",
+              "added_in_audit": true
+            },
+            {
+              "slug": "law-25-90-subdivisions",
+              "ref": "25.90",
+              "title": {
+                "ar": "القانون رقم 25.90 المتعلق بالتجزئات العقارية والمجموعات السكنية وتقسيم العقارات",
+                "fr": "Loi n° 25-90 relative aux lotissements, groupes d'habitations et morcellements",
+                "en": "Law No. 25.90 on Land Subdivisions"
+              },
+              "dahir": "1.92.7",
+              "date": "1992-06-17",
+              "status": "in_force",
+              "added_in_audit": true
+            }
+          ]
+        },
+        {
+          "slug": "commercial-financial",
+          "title": {
+            "ar": "التجاري والمالي والبنكي",
+            "fr": "Commercial, financier et bancaire",
+            "en": "Commercial, Financial & Banking"
+          },
+          "items": [
+            {
+              "slug": "law-15-95-commerce-code",
+              "ref": "15.95",
+              "title": {
+                "ar": "مدونة التجارة",
+                "fr": "Code de commerce",
+                "en": "Commercial Code"
+              },
+              "dahir": "1.96.83",
+              "date": "1996-08-01",
+              "status": "in_force",
+              "note": {
+                "ar": "الكتاب الخامس (صعوبات المقاولة) عُوِّض بالقانون 73.17 سنة 2018."
+              },
+              "dbSlug": "CCOM"
+            },
+            {
+              "slug": "law-17-95-sa",
+              "ref": "17.95",
+              "title": {
+                "ar": "القانون رقم 17.95 المتعلق بشركات المساهمة",
+                "fr": "Loi n° 17-95 relative aux sociétés anonymes",
+                "en": "Law No. 17.95 on Public Limited Companies"
+              },
+              "dahir": "1.96.124",
+              "date": "1996-08-30",
+              "status": "in_force"
+            },
+            {
+              "slug": "law-5-96-other-companies",
+              "ref": "5.96",
+              "title": {
+                "ar": "القانون رقم 5.96 المتعلق بشركة التضامن وشركة التوصية البسيطة وشركة التوصية بالأسهم والشركة ذات المسؤولية المحدودة وشركة المحاصة",
+                "fr": "Loi n° 5-96 sur la SNC, la SCS, la SCA, la SARL et la société en participation",
+                "en": "Law No. 5.96 on Other Commercial Companies"
+              },
+              "dahir": "1.97.49",
+              "date": "1997-02-13",
+              "status": "in_force"
+            },
+            {
+              "slug": "law-103-12-banking",
+              "ref": "103.12",
+              "title": {
+                "ar": "القانون رقم 103.12 المتعلق بمؤسسات الائتمان والهيئات المعتبرة في حكمها",
+                "fr": "Loi n° 103-12 relative aux établissements de crédit et organismes assimilés",
+                "en": "Law No. 103.12 on Credit Institutions"
+              },
+              "dahir": "1.14.193",
+              "date": "2014-12-24",
+              "status": "in_force"
+            },
+            {
+              "slug": "law-43-12-ammc",
+              "ref": "43.12",
+              "title": {
+                "ar": "القانون رقم 43.12 المتعلق بالهيئة المغربية لسوق الرساميل",
+                "fr": "Loi n° 43-12 relative à l'Autorité marocaine du marché des capitaux",
+                "en": "Law No. 43.12 on the Moroccan Capital Market Authority"
+              },
+              "dahir": "1.13.21",
+              "date": "2013-03-13",
+              "status": "in_force"
+            },
+            {
+              "slug": "law-104-12-competition",
+              "ref": "104.12",
+              "title": {
+                "ar": "القانون رقم 104.12 المتعلق بحرية الأسعار والمنافسة",
+                "fr": "Loi n° 104-12 relative à la liberté des prix et de la concurrence",
+                "en": "Law No. 104.12 on Freedom of Prices and Competition"
+              },
+              "dahir": "1.14.116",
+              "date": "2014-06-30",
+              "status": "in_force"
+            },
+            {
+              "slug": "law-20-13-competition-council",
+              "ref": "20.13",
+              "title": {
+                "ar": "القانون رقم 20.13 المتعلق بمجلس المنافسة",
+                "fr": "Loi n° 20-13 relative au Conseil de la concurrence",
+                "en": "Law No. 20.13 on the Competition Council"
+              },
+              "dahir": "1.14.117",
+              "date": "2014-06-30",
+              "status": "in_force",
+              "added_in_audit": true
+            },
+            {
+              "slug": "law-17-97-industrial-property",
+              "ref": "17.97",
+              "title": {
+                "ar": "القانون رقم 17.97 المتعلق بحماية الملكية الصناعية",
+                "fr": "Loi n° 17-97 relative à la protection de la propriété industrielle",
+                "en": "Law No. 17.97 on Industrial Property"
+              },
+              "dahir": "1.00.19",
+              "date": "2000-02-15",
+              "status": "in_force"
+            },
+            {
+              "slug": "law-2-00-copyright",
+              "ref": "2.00",
+              "title": {
+                "ar": "القانون رقم 2.00 المتعلق بحقوق المؤلف والحقوق المجاورة",
+                "fr": "Loi n° 2-00 relative aux droits d'auteur et droits voisins",
+                "en": "Law No. 2.00 on Copyright and Related Rights"
+              },
+              "dahir": "1.00.20",
+              "date": "2000-02-15",
+              "status": "in_force",
+              "added_in_audit": true
+            },
+            {
+              "slug": "law-17-99-insurance",
+              "ref": "17.99",
+              "title": {
+                "ar": "القانون رقم 17.99 المتعلق بمدونة التأمينات",
+                "fr": "Loi n° 17-99 portant Code des assurances",
+                "en": "Law No. 17.99 – Insurance Code"
+              },
+              "dahir": "1.02.238",
+              "date": "2002-10-03",
+              "status": "in_force"
+            },
+            {
+              "slug": "law-86-12-ppp",
+              "ref": "86.12",
+              "title": {
+                "ar": "القانون رقم 86.12 المتعلق بعقود الشراكة بين القطاعين العام والخاص",
+                "fr": "Loi n° 86-12 relative aux contrats de partenariat public-privé",
+                "en": "Law No. 86.12 on Public-Private Partnerships"
+              },
+              "dahir": "1.14.192",
+              "date": "2014-12-24",
+              "status": "in_force",
+              "verify": false,
+              "added_in_audit": true,
+              "bo": "6328 (2015-01-22)",
+              "note": {
+                "ar": "عقود الشراكة بين القطاعين العام والخاص، عُدّل بالقانون 46.18."
+              }
+            }
+          ]
+        },
+        {
+          "slug": "criminal",
+          "title": {
+            "ar": "الجنائي",
+            "fr": "Pénal",
+            "en": "Criminal Law"
+          },
+          "items": [
+            {
+              "slug": "penal-code-1962",
+              "ref": "1.59.413",
+              "title": {
+                "ar": "مجموعة القانون الجنائي",
+                "fr": "Code pénal",
+                "en": "Penal Code"
+              },
+              "dahir": "1.59.413",
+              "date": "1962-11-26",
+              "status": "in_force",
+              "dbSlug": "CP"
+            },
+            {
+              "slug": "law-22-01-criminal-procedure",
+              "ref": "22.01",
+              "title": {
+                "ar": "القانون رقم 22.01 المتعلق بالمسطرة الجنائية",
+                "fr": "Loi n° 22-01 relative à la procédure pénale",
+                "en": "Law No. 22.01 – Code of Criminal Procedure"
+              },
+              "dahir": "1.02.255",
+              "date": "2002-10-03",
+              "status": "in_force",
+              "amended_by": {
+                "ref": "03.23",
+                "dahir": "1.25.55",
+                "bo": "7437 (2025-09-08)",
+                "in_force_from": "2025-12-08"
+              },
+              "note": {
+                "ar": "إصلاح شامل بالقانون 03.23 (أزيد من 420 مادة) — يجب اعتماد الصيغة المحينة."
+              },
+              "dbSlug": "CPP"
+            },
+            {
+              "slug": "law-43-22-alternative-sanctions",
+              "ref": "43.22",
+              "title": {
+                "ar": "القانون رقم 43.22 المتعلق بالعقوبات البديلة",
+                "fr": "Loi n° 43-22 relative aux peines alternatives",
+                "en": "Law No. 43.22 on Alternative Sentences"
+              },
+              "dahir": "1.24.32",
+              "date": "2024-07-24",
+              "bo": "7328 (2024-08-22)",
+              "in_force_from": "2025-08-22",
+              "status": "in_force"
+            },
+            {
+              "slug": "law-43-05-aml",
+              "ref": "43.05",
+              "title": {
+                "ar": "القانون رقم 43.05 المتعلق بمكافحة غسل الأموال",
+                "fr": "Loi n° 43-05 relative à la lutte contre le blanchiment de capitaux",
+                "en": "Law No. 43.05 on Anti-Money Laundering"
+              },
+              "dahir": "1.07.79",
+              "date": "2007-04-17",
+              "status": "in_force"
+            },
+            {
+              "slug": "law-03-03-terrorism",
+              "ref": "03.03",
+              "title": {
+                "ar": "القانون رقم 03.03 المتعلق بمكافحة الإرهاب",
+                "fr": "Loi n° 03-03 relative à la lutte contre le terrorisme",
+                "en": "Law No. 03.03 on Counter-Terrorism"
+              },
+              "dahir": "1.03.140",
+              "date": "2003-05-28",
+              "status": "in_force"
+            },
+            {
+              "slug": "law-103-13-violence-women",
+              "ref": "103.13",
+              "title": {
+                "ar": "القانون رقم 103.13 المتعلق بمحاربة العنف ضد النساء",
+                "fr": "Loi n° 103-13 relative à la lutte contre les violences faites aux femmes",
+                "en": "Law No. 103.13 on Combating Violence against Women"
+              },
+              "dahir": "1.18.19",
+              "date": "2018-02-22",
+              "status": "in_force",
+              "added_in_audit": true
+            },
+            {
+              "slug": "law-27-14-trafficking",
+              "ref": "27.14",
+              "title": {
+                "ar": "القانون رقم 27.14 المتعلق بمكافحة الاتجار بالبشر",
+                "fr": "Loi n° 27-14 relative à la lutte contre la traite des êtres humains",
+                "en": "Law No. 27.14 on Human Trafficking"
+              },
+              "dahir": "1.16.127",
+              "date": "2016-08-25",
+              "status": "in_force",
+              "verify": false,
+              "added_in_audit": true,
+              "bo": "6501 (2016-09-18)",
+              "note": {
+                "ar": "قانون مكافحة الاتجار بالبشر."
+              }
+            },
+            {
+              "slug": "law-52-05-road-code",
+              "ref": "52.05",
+              "title": {
+                "ar": "القانون رقم 52.05 المتعلق بمدونة السير على الطرق",
+                "fr": "Loi n° 52-05 portant Code de la route",
+                "en": "Law No. 52.05 – Highway Code"
+              },
+              "dahir": "1.10.07",
+              "date": "2010-02-11",
+              "status": "in_force",
+              "added_in_audit": true
+            }
+          ]
+        },
+        {
+          "slug": "procedure-judicial-organization",
+          "title": {
+            "ar": "المسطرة والتنظيم القضائي",
+            "fr": "Procédure et organisation judiciaire",
+            "en": "Procedure & Judicial Organization"
+          },
+          "items": [
+            {
+              "slug": "law-58-25-civil-procedure",
+              "ref": "58.25",
+              "title": {
+                "ar": "القانون رقم 58.25 المتعلق بالمسطرة المدنية",
+                "fr": "Loi n° 58-25 relative à la procédure civile",
+                "en": "Law No. 58.25 on Civil Procedure"
+              },
+              "dahir": "1.26.07",
+              "date": "2026-02-11",
+              "bo": "7485 (2026-02-23)",
+              "in_force_from": "2026-08-23",
+              "status": "in_force",
+              "verify": false,
+              "note": {
+                "ar": "تصحيح: الرقم الصحيح 58.25 وليس 58.23. صدر بعد قرار المحكمة الدستورية 255/25 بشأن المشروع السابق 02.23."
+              },
+              "dbSlug": "CPC-58.25"
+            },
+            {
+              "slug": "civil-procedure-1974",
+              "ref": "1.74.447",
+              "title": {
+                "ar": "قانون المسطرة المدنية لسنة 1974 (للمقارنة)",
+                "fr": "Code de procédure civile de 1974 (comparaison)",
+                "en": "Code of Civil Procedure 1974 (for comparison)"
+              },
+              "dahir": "1.74.447",
+              "date": "1974-09-28",
+              "status": "repealed",
+              "replaced_by": "law-58-25-civil-procedure",
+              "verify": false,
+              "dbSlug": "CPC-1974",
+              "bo": "3230 مكرر مرتين (1974-09-30)",
+              "note": {
+                "ar": "قانون المسطرة المدنية 1974، نُسخ بالكامل بالمادة 644 (البند 1) من القانون 58.25 ابتداء من 23 غشت 2026."
+              }
+            },
+            {
+              "slug": "law-38-15-judicial-organization",
+              "ref": "38.15",
+              "title": {
+                "ar": "القانون رقم 38.15 المتعلق بالتنظيم القضائي",
+                "fr": "Loi n° 38-15 relative à l'organisation judiciaire",
+                "en": "Law No. 38.15 on Judicial Organization"
+              },
+              "dahir": "1.22.38",
+              "date": "2022-06-30",
+              "status": "in_force"
+            },
+            {
+              "slug": "law-41-90-administrative-courts",
+              "ref": "41.90",
+              "title": {
+                "ar": "القانون رقم 41.90 المحدثة بموجبه محاكم إدارية",
+                "fr": "Loi n° 41-90 instituant des tribunaux administratifs",
+                "en": "Law No. 41.90 Establishing Administrative Courts"
+              },
+              "dahir": "1.91.225",
+              "date": "1993-09-10",
+              "status": "in_force",
+              "verify": false,
+              "note": {
+                "ar": "نُسخت مقتضياته التنظيمية بالمادة 110 من القانون 38.15، وباقي مقتضياته بالمادة 644 من القانون 58.25 ابتداء من تاريخ دخوله حيز التنفيذ في 23 غشت 2026، وتُعوّض مقتضياته بالمقتضيات المماثلة في القانون 58.25."
+              },
+              "dbSlug": "ADMIN-COURTS",
+              "partial_repeal": [
+                {
+                  "articles": "1 (ف1)، 2، 5، 7",
+                  "by": "law-38-15-judicial-organization",
+                  "provision": "المادة 110"
+                },
+                {
+                  "articles": "45-48",
+                  "by": "law-80-03-administrative-appeal-courts",
+                  "provision": "المادة 20"
+                }
+              ],
+              "in_force_to": "2026-08-23",
+              "replaced_by": "law-58-25-civil-procedure",
+              "verified_source": "الجريدة الرسمية عدد 7485 (23 فبراير 2026)، المادة 644 من القانون رقم 58.25"
+            },
+            {
+              "slug": "law-80-03-administrative-appeal-courts",
+              "ref": "80.03",
+              "title": {
+                "ar": "القانون رقم 80.03 المحدثة بموجبه محاكم استئناف إدارية",
+                "fr": "Loi n° 80-03 instituant des cours d'appel administratives",
+                "en": "Law No. 80.03 Establishing Administrative Courts of Appeal"
+              },
+              "dahir": "1.06.07",
+              "date": "2006-02-14",
+              "status": "in_force",
+              "verify": false,
+              "in_force_to": "2026-08-23",
+              "replaced_by": "law-58-25-civil-procedure",
+              "note": {
+                "ar": "نُسخت مقتضياته التنظيمية بالمادة 110 من 38.15، وباقي مقتضياته بالمادة 644 من 58.25 ابتداء من تاريخ دخوله حيز التنفيذ في 23 غشت 2026."
+              },
+              "verified_source": "الجريدة الرسمية عدد 7485 (23 فبراير 2026)، المادة 644 من القانون رقم 58.25"
+            },
+            {
+              "slug": "law-53-95-commercial-courts",
+              "ref": "53.95",
+              "title": {
+                "ar": "القانون رقم 53.95 القاضي بإحداث محاكم تجارية",
+                "fr": "Loi n° 53-95 instituant des juridictions de commerce",
+                "en": "Law No. 53.95 Establishing Commercial Courts"
+              },
+              "dahir": "1.97.65",
+              "date": "1997-02-12",
+              "status": "in_force",
+              "verify": false,
+              "in_force_to": "2026-08-23",
+              "replaced_by": "law-58-25-civil-procedure",
+              "note": {
+                "ar": "نُسخ القانون 53.95 بالكامل بالمادة 644 (البند 3) من قانون المسطرة المدنية رقم 58.25 ابتداء من تاريخ دخوله حيز التنفيذ في 23 غشت 2026، وتُعوّض مقتضياته بالمقتضيات المماثلة في القانون 58.25."
+              },
+              "verified_source": "الجريدة الرسمية عدد 7485 (23 فبراير 2026)، المادة 644 من القانون رقم 58.25"
+            },
+            {
+              "slug": "law-42-10-proximity-courts",
+              "ref": "42.10",
+              "title": {
+                "ar": "القانون رقم 42.10 المتعلق بتنظيم قضاء القرب",
+                "fr": "Loi n° 42-10 portant organisation des juridictions de proximité",
+                "en": "Law No. 42.10 on Proximity Courts"
+              },
+              "dahir": "1.11.151",
+              "date": "2011-08-17",
+              "status": "in_force",
+              "verify": false,
+              "added_in_audit": true,
+              "partial_repeal": [
+                {
+                  "articles": "4، 5، 7-13",
+                  "by": "law-58-25-civil-procedure",
+                  "provision": "المادة 644"
+                }
+              ],
+              "note": {
+                "ar": "تُنْسخ المواد 4 و 5 ومن 7 إلى 13 بالمادة 644 (البند 2) من قانون المسطرة المدنية 58.25 ابتداء من 23 غشت 2026."
+              }
+            },
+            {
+              "slug": "law-95-17-arbitration-mediation",
+              "ref": "95.17",
+              "title": {
+                "ar": "القانون رقم 95.17 المتعلق بالتحكيم والوساطة الاتفاقية",
+                "fr": "Loi n° 95-17 relative à l'arbitrage et à la médiation conventionnelle",
+                "en": "Law No. 95.17 on Arbitration and Conventional Mediation"
+              },
+              "dahir": "1.22.34",
+              "date": "2022-05-24",
+              "status": "in_force"
+            }
+          ]
+        },
+        {
+          "slug": "family-social",
+          "title": {
+            "ar": "الأسرة والاجتماعي",
+            "fr": "Famille et social",
+            "en": "Family & Social"
+          },
+          "items": [
+            {
+              "slug": "law-70-03-family-code",
+              "ref": "70.03",
+              "title": {
+                "ar": "مدونة الأسرة",
+                "fr": "Code de la famille",
+                "en": "Family Code (Moudawana)"
+              },
+              "dahir": "1.04.22",
+              "date": "2004-02-03",
+              "status": "in_force",
+              "note": {
+                "ar": "مشروع مراجعة المدونة لم يُحسم بعد في البرلمان؛ يجب تتبع مآله."
+              },
+              "dbSlug": "MOUDAWANA",
+              "watch": true
+            },
+            {
+              "slug": "law-65-99-labour-code",
+              "ref": "65.99",
+              "title": {
+                "ar": "مدونة الشغل",
+                "fr": "Code du travail",
+                "en": "Labour Code"
+              },
+              "dahir": "1.03.194",
+              "date": "2003-09-11",
+              "status": "in_force",
+              "dbSlug": "CT"
+            },
+            {
+              "slug": "law-18-12-work-accidents",
+              "ref": "18.12",
+              "title": {
+                "ar": "القانون رقم 18.12 المتعلق بالتعويض عن حوادث الشغل",
+                "fr": "Loi n° 18-12 relative à la réparation des accidents du travail",
+                "en": "Law No. 18.12 on Compensation for Work Accidents"
+              },
+              "dahir": "1.14.190",
+              "date": "2014-12-29",
+              "status": "in_force"
+            },
+            {
+              "slug": "social-security-1972",
+              "ref": "1.72.184",
+              "title": {
+                "ar": "الظهير المتعلق بنظام الضمان الاجتماعي",
+                "fr": "Dahir relatif au régime de sécurité sociale",
+                "en": "Social Security Dahir"
+              },
+              "dahir": "1.72.184",
+              "date": "1972-07-27",
+              "status": "in_force"
+            },
+            {
+              "slug": "law-36-21-civil-status",
+              "ref": "36.21",
+              "title": {
+                "ar": "القانون رقم 36.21 المتعلق بالحالة المدنية",
+                "fr": "Loi n° 36-21 relative à l'état civil",
+                "en": "Law No. 36.21 on Civil Status"
+              },
+              "dahir": "1.21.81",
+              "date": "2021-07-14",
+              "status": "in_force"
+            },
+            {
+              "slug": "nationality-code-1958",
+              "ref": "1.58.250",
+              "title": {
+                "ar": "قانون الجنسية المغربية",
+                "fr": "Code de la nationalité marocaine",
+                "en": "Moroccan Nationality Code"
+              },
+              "dahir": "1.58.250",
+              "date": "1958-09-06",
+              "status": "in_force"
+            },
+            {
+              "slug": "road-accidents-1984",
+              "ref": "1.84.177",
+              "title": {
+                "ar": "الظهير المتعلق بتعويض المصابين في حوادث تسببت فيها عربات برية ذات محرك",
+                "fr": "Dahir relatif à l'indemnisation des victimes d'accidents causés par des véhicules terrestres à moteur",
+                "en": "Dahir on Compensation for Road Accident Victims"
+              },
+              "dahir": "1.84.177",
+              "date": "1984-10-02",
+              "status": "in_force"
+            }
+          ]
+        },
+        {
+          "slug": "administrative-public-finance",
+          "title": {
+            "ar": "الإداري والمالية العامة",
+            "fr": "Administratif et finances publiques",
+            "en": "Administrative Law & Public Finance"
+          },
+          "items": [
+            {
+              "slug": "civil-service-statute-1958",
+              "ref": "1.58.008",
+              "title": {
+                "ar": "النظام الأساسي العام للوظيفة العمومية",
+                "fr": "Statut général de la fonction publique",
+                "en": "General Statute of the Civil Service"
+              },
+              "dahir": "1.58.008",
+              "date": "1958-02-24",
+              "status": "in_force",
+              "moved_from_level": 7
+            },
+            {
+              "slug": "law-54-19-public-services-charter",
+              "ref": "54.19",
+              "title": {
+                "ar": "القانون رقم 54.19 بمثابة ميثاق المرافق العمومية",
+                "fr": "Loi n° 54-19 portant Charte des services publics",
+                "en": "Law No. 54.19 – Public Services Charter"
+              },
+              "dahir": "1.21.58",
+              "date": "2021-07-14",
+              "status": "in_force"
+            },
+            {
+              "slug": "law-55-19-simplification",
+              "ref": "55.19",
+              "title": {
+                "ar": "القانون رقم 55.19 المتعلق بتبسيط المساطر والإجراءات الإدارية",
+                "fr": "Loi n° 55-19 relative à la simplification des procédures et formalités administratives",
+                "en": "Law No. 55.19 on Simplifying Administrative Procedures"
+              },
+              "dahir": "1.20.06",
+              "date": "2020-03-06",
+              "status": "in_force"
+            },
+            {
+              "slug": "law-03-01-reasoning-decisions",
+              "ref": "03.01",
+              "title": {
+                "ar": "القانون رقم 03.01 بشأن إلزام الإدارات العمومية والجماعات المحلية والمؤسسات العمومية بتعليل قراراتها الإدارية",
+                "fr": "Loi n° 03-01 relative à l'obligation de motivation des décisions administratives",
+                "en": "Law No. 03.01 on the Duty to State Reasons for Administrative Decisions"
+              },
+              "dahir": "1.02.202",
+              "date": "2002-07-23",
+              "status": "in_force"
+            },
+            {
+              "slug": "law-31-13-access-information",
+              "ref": "31.13",
+              "title": {
+                "ar": "القانون رقم 31.13 المتعلق بالحق في الحصول على المعلومات",
+                "fr": "Loi n° 31-13 relative au droit d'accès à l'information",
+                "en": "Law No. 31.13 on the Right of Access to Information"
+              },
+              "dahir": "1.18.15",
+              "date": "2018-02-22",
+              "status": "in_force"
+            },
+            {
+              "slug": "law-09-08-personal-data",
+              "ref": "09.08",
+              "title": {
+                "ar": "القانون رقم 09.08 المتعلق بحماية الأشخاص الذاتيين تجاه معالجة المعطيات ذات الطابع الشخصي",
+                "fr": "Loi n° 09-08 relative à la protection des personnes physiques à l'égard du traitement des données à caractère personnel",
+                "en": "Law No. 09.08 on Personal Data Protection"
+              },
+              "dahir": "1.09.15",
+              "date": "2009-02-18",
+              "status": "in_force"
+            },
+            {
+              "slug": "law-62-99-financial-courts",
+              "ref": "62.99",
+              "title": {
+                "ar": "القانون رقم 62.99 المتعلق بمدونة المحاكم المالية",
+                "fr": "Loi n° 62-99 formant Code des juridictions financières",
+                "en": "Law No. 62.99 – Code of Financial Courts"
+              },
+              "dahir": "1.02.124",
+              "date": "2002-06-13",
+              "status": "in_force",
+              "added_in_audit": true
+            },
+            {
+              "slug": "law-15-97-public-debt-recovery",
+              "ref": "15.97",
+              "title": {
+                "ar": "القانون رقم 15.97 بمثابة مدونة تحصيل الديون العمومية",
+                "fr": "Loi n° 15-97 formant Code de recouvrement des créances publiques",
+                "en": "Law No. 15.97 – Public Debt Recovery Code"
+              },
+              "dahir": "1.00.175",
+              "date": "2000-05-03",
+              "status": "in_force",
+              "added_in_audit": true
+            },
+            {
+              "slug": "law-47-06-local-taxation",
+              "ref": "47.06",
+              "title": {
+                "ar": "القانون رقم 47.06 المتعلق بجبايات الجماعات المحلية",
+                "fr": "Loi n° 47-06 relative à la fiscalité des collectivités locales",
+                "en": "Law No. 47.06 on Local Taxation"
+              },
+              "dahir": "1.07.195",
+              "date": "2007-11-30",
+              "status": "in_force",
+              "verify": false,
+              "added_in_audit": true,
+              "bo": "5583 (2007-12-06)",
+              "note": {
+                "ar": "جبايات الجماعات الترابية، عُدّل بالقانونين 07.20 و14.25."
+              }
+            },
+            {
+              "slug": "cgi",
+              "ref": "CGI",
+              "title": {
+                "ar": "المدونة العامة للضرائب",
+                "fr": "Code général des impôts",
+                "en": "General Tax Code"
+              },
+              "date": "2006-12-31",
+              "status": "in_force",
+              "note": {
+                "ar": "أُحدثت بالمادة 5 من قانون المالية رقم 43.06 لسنة 2007، وتُحيَّن سنوياً بقوانين المالية."
+              }
+            },
+            {
+              "slug": "customs-code-1977",
+              "ref": "1.77.339",
+              "title": {
+                "ar": "مدونة الجمارك والضرائب غير المباشرة",
+                "fr": "Code des douanes et impôts indirects",
+                "en": "Customs and Indirect Taxes Code"
+              },
+              "dahir": "1.77.339",
+              "date": "1977-10-09",
+              "status": "in_force"
+            },
+            {
+              "slug": "law-88-13-press",
+              "ref": "88.13",
+              "title": {
+                "ar": "القانون رقم 88.13 المتعلق بالصحافة والنشر",
+                "fr": "Loi n° 88-13 relative à la presse et à l'édition",
+                "en": "Law No. 88.13 on Press and Publishing"
+              },
+              "dahir": "1.16.122",
+              "date": "2016-08-10",
+              "status": "in_force"
+            }
+          ]
+        },
+        {
+          "slug": "governance-bodies",
+          "title": {
+            "ar": "مؤسسات الحكامة وحقوق الإنسان",
+            "fr": "Instances de gouvernance et droits de l'homme",
+            "en": "Governance & Human Rights Bodies"
+          },
+          "items": [
+            {
+              "slug": "law-76-15-cndh",
+              "ref": "76.15",
+              "title": {
+                "ar": "القانون رقم 76.15 المتعلق بإعادة تنظيم المجلس الوطني لحقوق الإنسان",
+                "fr": "Loi n° 76-15 relative à la réorganisation du Conseil national des droits de l'homme",
+                "en": "Law No. 76.15 on the National Human Rights Council"
+              },
+              "dahir": "1.18.17",
+              "date": "2018-02-22",
+              "status": "in_force",
+              "moved_from_level": 7
+            },
+            {
+              "slug": "law-14-16-mediator",
+              "ref": "14.16",
+              "title": {
+                "ar": "القانون رقم 14.16 المتعلق بمؤسسة الوسيط",
+                "fr": "Loi n° 14-16 relative à l'institution du Médiateur",
+                "en": "Law No. 14.16 on the Ombudsman (Médiateur)"
+              },
+              "dahir": "1.19.43",
+              "date": "2019-03-11",
+              "status": "in_force",
+              "verify": false,
+              "moved_from_level": 7,
+              "note": {
+                "ar": "يعوّض ظهير 1.11.25 (2011) الوارد في اللائحة الأصلية."
+              }
+            },
+            {
+              "slug": "law-46-19-inpplc",
+              "ref": "46.19",
+              "title": {
+                "ar": "القانون رقم 46.19 المتعلق بالهيئة الوطنية للنزاهة والوقاية من الرشوة ومحاربتها",
+                "fr": "Loi n° 46-19 relative à l'Instance nationale de la probité, de la prévention et de la lutte contre la corruption",
+                "en": "Law No. 46.19 on the National Authority for Probity and Anti-Corruption"
+              },
+              "dahir": "1.21.36",
+              "date": "2021-04-21",
+              "status": "in_force",
+              "verify": false,
+              "added_in_audit": true,
+              "bo": "6986 (2021-05-13)",
+              "note": {
+                "ar": "نسخ القانون 113.12 (المادة 54)."
+              }
+            },
+            {
+              "slug": "law-78-14-family-childhood-council",
+              "ref": "78.14",
+              "title": {
+                "ar": "القانون رقم 78.14 المتعلق بالمجلس الاستشاري للأسرة والطفولة",
+                "fr": "Loi n° 78-14 relative au Conseil consultatif de la famille et de l'enfance",
+                "en": "Law No. 78.14 on the Advisory Council for Family and Childhood"
+              },
+              "dahir": "1.16.102",
+              "date": "2016-07-20",
+              "status": "in_force",
+              "added_in_audit": true
+            },
+            {
+              "slug": "law-79-14-apald",
+              "ref": "79.14",
+              "title": {
+                "ar": "القانون رقم 79.14 المتعلق بهيئة المناصفة ومكافحة كل أشكال التمييز",
+                "fr": "Loi n° 79-14 relative à l'Autorité pour la parité et la lutte contre toutes formes de discrimination",
+                "en": "Law No. 79.14 on the Authority for Parity and Anti-Discrimination"
+              },
+              "dahir": "1.17.47",
+              "date": "2017-09-21",
+              "status": "in_force",
+              "verify": false,
+              "added_in_audit": true,
+              "bo": "6612 (2017-10-12)"
+            }
+          ]
+        },
+        {
+          "slug": "judicial-professions",
+          "title": {
+            "ar": "المهن القانونية والقضائية",
+            "fr": "Professions juridiques et judiciaires",
+            "en": "Legal & Judicial Professions"
+          },
+          "items": [
+            {
+              "slug": "law-28-08-bar",
+              "ref": "28.08",
+              "title": {
+                "ar": "القانون رقم 28.08 المتعلق بتنظيم مهنة المحاماة",
+                "fr": "Loi n° 28-08 réglementant la profession d'avocat",
+                "en": "Law No. 28.08 on the Legal Profession"
+              },
+              "dahir": "1.08.101",
+              "date": "2008-10-20",
+              "status": "in_force",
+              "moved_from_level": 7,
+              "note": {
+                "ar": "القانون الجديد 66.23 لم يصدر: المحكمة الدستورية صرحت بتعذر البت في إحالته (القرار 277/26). يبقى 28.08 هو الساري."
+              },
+              "watch": true
+            },
+            {
+              "slug": "law-32-09-notaries",
+              "ref": "32.09",
+              "title": {
+                "ar": "القانون رقم 32.09 المتعلق بتنظيم مهنة التوثيق",
+                "fr": "Loi n° 32-09 relative à l'organisation de la profession de notaire",
+                "en": "Law No. 32.09 on the Notarial Profession"
+              },
+              "dahir": "1.11.179",
+              "date": "2011-11-22",
+              "status": "in_force",
+              "moved_from_level": 7
+            },
+            {
+              "slug": "law-16-03-adouls",
+              "ref": "16.03",
+              "title": {
+                "ar": "القانون رقم 16.03 المتعلق بخطة العدالة",
+                "fr": "Loi n° 16-03 relative à la profession d'adoul",
+                "en": "Law No. 16.03 on the Adoul Profession"
+              },
+              "dahir": "1.06.56",
+              "date": "2006-02-14",
+              "status": "in_force",
+              "moved_from_level": 7
+            },
+            {
+              "slug": "law-81-03-bailiffs",
+              "ref": "81.03",
+              "title": {
+                "ar": "القانون رقم 81.03 المتعلق بتنظيم مهنة المفوضين القضائيين",
+                "fr": "Loi n° 81-03 portant organisation de la profession d'huissier de justice",
+                "en": "Law No. 81.03 on Judicial Officers (Bailiffs)"
+              },
+              "dahir": "1.06.23",
+              "date": "2006-02-14",
+              "status": "in_force",
+              "moved_from_level": 7
+            },
+            {
+              "slug": "law-45-00-judicial-experts",
+              "ref": "45.00",
+              "title": {
+                "ar": "القانون رقم 45.00 المتعلق بالخبراء القضائيين",
+                "fr": "Loi n° 45-00 relative aux experts judiciaires",
+                "en": "Law No. 45.00 on Judicial Experts"
+              },
+              "dahir": "1.01.126",
+              "date": "2001-06-22",
+              "status": "in_force",
+              "verify": false,
+              "moved_from_level": 7,
+              "bo": "4918 (2001-07-19)",
+              "note": {
+                "ar": "قانون الخبراء القضائيين."
+              }
+            },
+            {
+              "slug": "law-50-00-sworn-translators",
+              "ref": "50.00",
+              "title": {
+                "ar": "القانون رقم 50.00 المتعلق بالتراجمة المقبولين لدى المحاكم",
+                "fr": "Loi n° 50-00 relative aux traducteurs agréés près les juridictions",
+                "en": "Law No. 50.00 on Court-Approved Translators"
+              },
+              "dahir": "1.01.127",
+              "date": "2001-06-22",
+              "status": "in_force",
+              "verify": false,
+              "moved_from_level": 7,
+              "bo": "4918 (2001-07-19)",
+              "note": {
+                "ar": "قانون التراجمة المقبولين لدى المحاكم."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rank": 6,
+      "slug": "decrees",
+      "title": {
+        "ar": "المراسيم التنظيمية",
+        "fr": "Décrets réglementaires",
+        "en": "Regulatory Decrees"
+      },
+      "items": [
+        {
+          "slug": "decree-2-22-431-public-procurement",
+          "ref": "2.22.431",
+          "title": {
+            "ar": "مرسوم رقم 2.22.431 المتعلق بالصفقات العمومية",
+            "fr": "Décret n° 2-22-431 relatif aux marchés publics",
+            "en": "Decree No. 2.22.431 on Public Procurement"
+          },
+          "date": "2023-03-08",
+          "status": "in_force",
+          "dbSlug": "DECREE-PUBLIC-PROCUREMENT"
+        },
+        {
+          "slug": "decree-2-17-618-deconcentration",
+          "ref": "2.17.618",
+          "title": {
+            "ar": "مرسوم رقم 2.17.618 بمثابة ميثاق وطني للاتمركز الإداري",
+            "fr": "Décret n° 2-17-618 portant Charte nationale de la déconcentration administrative",
+            "en": "Decree No. 2.17.618 – National Charter of Administrative Deconcentration"
+          },
+          "date": "2018-12-26",
+          "status": "in_force"
+        },
+        {
+          "slug": "decree-2-11-681-responsibility-posts",
+          "ref": "2.11.681",
+          "title": {
+            "ar": "مرسوم رقم 2.11.681 في شأن كيفية تعيين رؤساء الأقسام ورؤساء المصالح بالإدارات العمومية",
+            "fr": "Décret n° 2-11-681 fixant les modalités de nomination des chefs de division et chefs de service",
+            "en": "Decree No. 2.11.681 on Appointing Heads of Divisions and Services"
+          },
+          "date": "2011-11-25",
+          "status": "in_force"
+        },
+        {
+          "slug": "decrees-2-16-299-301-action-programs",
+          "ref": "2.16.299 / 2.16.300 / 2.16.301",
+          "title": {
+            "ar": "مراسيم مسطرة إعداد برامج التنمية الجهوية وبرامج تنمية العمالات والأقاليم وبرامج عمل الجماعات",
+            "fr": "Décrets fixant la procédure d'élaboration des programmes de développement régional, provincial et des plans d'action communaux",
+            "en": "Decrees on Drafting Territorial Development and Action Programs"
+          },
+          "date": "2016-06-29",
+          "status": "in_force",
+          "verify": false,
+          "bo": "6482 (2016-07-14)",
+          "note": {
+            "ar": "مراسيم برامج التنمية: 2.16.299 (جُدّد بالمرسوم 2.22.475 لسنة 2023)، و2.16.300، و2.16.301."
+          }
+        },
+        {
+          "slug": "decree-2-15-426-finance-law-execution",
+          "ref": "2.15.426",
+          "title": {
+            "ar": "مرسوم رقم 2.15.426 المتعلق بإعداد وتنفيذ قوانين المالية",
+            "fr": "Décret n° 2-15-426 relatif à l'élaboration et à l'exécution des lois de finances",
+            "en": "Decree No. 2.15.426 on Preparing and Executing Finance Laws"
+          },
+          "date": "2015-07-15",
+          "status": "in_force",
+          "verify": false,
+          "added_in_audit": true,
+          "bo": "6378 (2015-07-16)",
+          "note": {
+            "ar": "مرسوم إعداد وتنفيذ قوانين المالية تطبيقاً للقانون التنظيمي 130.13."
+          }
+        },
+        {
+          "slug": "decree-alternative-sanctions",
+          "ref": "2.25.386",
+          "title": {
+            "ar": "المرسوم التطبيقي للقانون 43.22 المتعلق بالعقوبات البديلة",
+            "fr": "Décret d'application de la loi n° 43-22 relative aux peines alternatives",
+            "en": "Implementing Decree of Law 43.22 on Alternative Sentences"
+          },
+          "date": "2025-06-03",
+          "status": "in_force",
+          "verify": false,
+          "added_in_audit": true,
+          "note": {
+            "ar": "مرسوم تطبيق القانون 43.22 المتعلق بالعقوبات البديلة (صادر في 6 ذو الحجة 1446 / 3 يونيو 2025 ونُشر في ج.ر عدد 7431، دخل حيز التنفيذ في 22 غشت 2025)."
+          },
+          "bo": "7431 (2025-08-18)",
+          "in_force_from": "2025-08-22",
+          "implements": "law-43-22-alternative-sanctions",
+          "verified_source": "عدالة / الجريدة الرسمية عدد 7431 (18 غشت 2025)"
+        }
+      ]
+    },
+    {
+      "rank": 7,
+      "slug": "orders-regulatory-decisions",
+      "title": {
+        "ar": "القرارات التنظيمية والنصوص التطبيقية",
+        "fr": "Arrêtés et décisions réglementaires",
+        "en": "Ministerial Orders & Regulatory Decisions"
+      },
+      "note": {
+        "ar": "أُعيدت تسمية هذا المستوى: الظهائر المنفِّذة للقوانين تأخذ مرتبة القانون الذي تنفذه، والظهائر التشريعية القديمة بمرتبة القانون، فلا يصح وضعها تحت المراسيم. هذا المستوى مخصص للقرارات الوزارية والمشتركة ومقررات الهيئات ذات الطابع التنظيمي."
+      },
+      "items": [
+        {
+          "slug": "arretes-public-procurement",
+          "type": "group",
+          "title": {
+            "ar": "القرارات الوزارية التطبيقية لمرسوم الصفقات العمومية",
+            "fr": "Arrêtés d'application du décret des marchés publics",
+            "en": "Ministerial Orders Implementing the Procurement Decree"
+          },
+          "status": "in_force",
+          "verify": false,
+          "ref": "1692.23",
+          "date": "2023-06-23",
+          "bo": "7215 (2023-07-24)",
+          "implements": "decree-2-22-431-public-procurement",
+          "verified_source": "الجريدة الرسمية عدد 7215 (24 يوليوز 2023)",
+          "note": {
+            "ar": "قرار وزيرة الاقتصاد والمالية رقم 1692.23 بتحديد نماذج دفاتر الشروط الخاصة، لتطبيق مرسوم الصفقات العمومية 2.22.431."
+          }
+        },
+        {
+          "slug": "arretes-territorial-collectivities",
+          "type": "group",
+          "title": {
+            "ar": "قرارات وزير الداخلية التطبيقية للقوانين التنظيمية للجماعات الترابية",
+            "fr": "Arrêtés du ministre de l'Intérieur pris pour l'application des lois organiques des collectivités territoriales",
+            "en": "Interior Ministry Orders Implementing Territorial Organic Laws"
+          },
+          "status": "in_force",
+          "verify": false,
+          "ref": "3352.17",
+          "date": "2017-11-20",
+          "bo": "6640 (2018-01-18)",
+          "implements": "lo-111-14-regions",
+          "verified_source": "الجريدة الرسمية عدد 6640 (18 يناير 2018)",
+          "note": {
+            "ar": "قرار وزير الداخلية رقم 3352.17 بتحديد نموذج المخطط المحاسبي للجهات، لتطبيق القانون التنظيمي 111.14."
+          }
+        },
+        {
+          "slug": "arretes-higher-education-law-degrees",
+          "type": "group",
+          "title": {
+            "ar": "قرارات وزارة التعليم العالي المتعلقة بدفاتر الضوابط البيداغوجية لسلك الإجازة في الحقوق",
+            "fr": "Arrêtés fixant le cahier des normes pédagogiques de la licence en droit",
+            "en": "Higher Education Orders on Law Degree Pedagogical Standards"
+          },
+          "status": "in_force",
+          "verify": false,
+          "ref": "2154.23",
+          "date": "2023-09-04",
+          "bo": "7232 (2023-09-21)",
+          "implements": "lc-51-17-education",
+          "verified_source": "الجريدة الرسمية عدد 7232 (21 سبتمبر 2023)",
+          "note": {
+            "ar": "قرار وزير التعليم العالي رقم 2154.23 بالمصادقة على دفتر الضوابط البيداغوجية الوطنية لسلك الإجازة (نظام مسالك القانون)."
+          }
+        },
+        {
+          "slug": "cspj-bank-al-maghrib-regulatory-decisions",
+          "type": "group",
+          "title": {
+            "ar": "المقررات التنظيمية للهيئات (بنك المغرب، الهيئة المغربية لسوق الرساميل، اللجنة الوطنية لحماية المعطيات)",
+            "fr": "Circulaires et décisions réglementaires (Bank Al-Maghrib, AMMC, CNDP)",
+            "en": "Regulatory Decisions of Authorities (Bank Al-Maghrib, AMMC, CNDP)"
+          },
+          "status": "in_force",
+          "verify": false,
+          "ref": "1/و/2020",
+          "date": "2020-03-24",
+          "bo": "6919 (2020-09-21)",
+          "implements": "law-103-12-banking",
+          "verified_source": "الجريدة الرسمية عدد 6919 (21 سبتمبر 2020)",
+          "note": {
+            "ar": "منشور والي بنك المغرب رقم 1/و/2020 بالتنظيم والرقابة الاحترازية، صادر بتأشيرة وزير الاقتصاد والمالية لتطبيق القانون 103.12."
+          }
+        }
+      ],
+      "explainer": {
+        "ar": "القرار التنظيمي نص يصدره وزير أو أكثر (قرار مشترك) لتطبيق قانون أو مرسوم، ولا يجوز أن يخالفهما. يخضع للطعن بالإلغاء أمام القضاء الإداري.",
+        "fr": "L'arrêté réglementaire est un texte pris par un ou plusieurs ministres pour l'application d'une loi ou d'un décret. Il ne peut y déroger et est susceptible de recours pour excès de pouvoir devant la juridiction administrative.",
+        "en": "A regulatory order is issued by one or more ministers to implement a statute or decree. It cannot contradict them and is subject to judicial review before administrative courts."
+      },
+      "how_to_find": {
+        "ar": "ابحث في الجريدة الرسمية (sgg.gov.ma) أو بوابة عدالة (adala.justice.gov.ma) برقم القرار أو النص الذي يطبقه.",
+        "fr": "Recherchez au Bulletin Officiel (sgg.gov.ma) ou sur le portail Adala (adala.justice.gov.ma) par numéro d'arrêté ou par le texte qu'il applique.",
+        "en": "Search the Official Bulletin (sgg.gov.ma) or the Adala portal (adala.justice.gov.ma) by order number or by the parent legislation it implements."
+      }
+    }
+  ],
+  "non_binding_references": {
+    "title": {
+      "ar": "مرجعيات دولية غير ملزمة للمغرب (خارج الهرم الدستوري)",
+      "fr": "Références internationales indicatives non contraignantes",
+      "en": "Non-Binding International Reference Instruments"
+    },
+    "note": {
+      "ar": "إعلانات ومواثيق دولية ذات قيمة أدبية أو حقوقية أو لم يصادق عليها المغرب رسمياً بعد، وبالتالي لا ترتب التزاماً قانونياً داخلياً في الهرم الدستوري المغربي (تصدير الدستور والفصل 55)."
+    },
+    "items": [
+      {
+        "slug": "udhr-1948",
+        "title": {
+          "ar": "الإعلان العالمي لحقوق الإنسان",
+          "fr": "Déclaration universelle des droits de l'homme",
+          "en": "Universal Declaration of Human Rights"
+        },
+        "adopted": 1948,
+        "status": "reference",
+        "note": {
+          "ar": "إعلان وليس معاهدة؛ لا يُصادق عليه ولا ينشر كاتفاقية. يُدرج كمرجع يحيل إليه تصدير الدستور."
+        }
+      },
+      {
+        "slug": "achpr-1981",
+        "title": {
+          "ar": "الميثاق الإفريقي لحقوق الإنسان والشعوب",
+          "fr": "Charte africaine des droits de l'homme et des peuples",
+          "en": "African Charter on Human and Peoples' Rights"
+        },
+        "adopted": 1981,
+        "morocco": 2022,
+        "status": "unratified",
+        "verify": false,
+        "note": {
+          "ar": "الميثاق الإفريقي لحقوق الإنسان والشعوب: لم يصادق عليه المغرب رسمياً حتى الآن ولا يوجد ظهير بنشره بالجريدة الرسمية."
+        }
+      }
+    ]
+  }
+}
